@@ -71,16 +71,6 @@ input,textarea{font-family:inherit}
 .wod-score{width:100%;background:var(--bg3);border:1px solid var(--border2);border-radius:6px;padding:8px 10px;color:#ddd;font-size:12px;outline:none;margin-bottom:6px}
 .wod-note{width:100%;background:var(--bg1);border:1px solid var(--border);border-radius:6px;padding:7px 10px;color:var(--muted);font-size:11px;outline:none}
 
-/* ── BLOC RÉCAP SESSION PRÉCÉDENTE (TOP) ── */
-.prev-recap{background:#0f1115;border:1px solid #F59E0B22;border-left:3px solid #F59E0B;border-radius:8px;padding:12px 14px;margin-bottom:18px}
-.prev-recap-ttl{font-size:9px;font-weight:800;letter-spacing:3px;color:#F59E0B;margin-bottom:10px;text-transform:uppercase}
-.prev-recap-row{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;padding:5px 0;border-bottom:1px solid #181818;gap:2px}
-.prev-recap-row:last-child{border-bottom:none;padding-bottom:0}
-.prev-recap-ex{font-size:11px;font-weight:600;color:#aaa;flex:1;min-width:120px;line-height:1.3}
-.prev-recap-val{font-size:13px;font-weight:800;color:#d4a843;margin-left:8px;flex-shrink:0}
-.prev-recap-inc{color:#4ade80;font-size:10px;font-weight:800;margin-left:4px}
-.prev-recap-note{font-size:9px;color:#666;font-style:italic;padding:1px 0 3px;flex-basis:100%;line-height:1.4}
-
 /* ── DONNÉES SESSION PRÉCÉDENTE (PAR EXERCICE) ── */
 .prev-data{margin-top:8px;background:#111418;border-radius:6px;padding:8px 10px;border-left:2px solid #F59E0B44;display:flex;flex-direction:column;gap:3px}
 .prev-lbl{font-size:8px;font-weight:800;letter-spacing:2px;color:#F59E0Baa;text-transform:uppercase;margin-bottom:2px}
@@ -492,41 +482,6 @@ const prevSk = state.week > 1 ? `${state.week-1}-${state.session}` : null;
 let h=`<div class="detail-inner" style="border:1px solid ${ac}2a;box-shadow:0 0 30px ${ac}0d;background:#0d0d0d">
 <div class="d-tag" style="color:${ac}">${sess.tag}</div>
 <div class="d-title">${sess.title}</div>`;
-
-// ── BLOC RÉCAP SÉANCE PRÉCÉDENTE (en haut, tout d'un coup) ──
-if(prevSk){
-const recapItems=[];
-sess.blocks.forEach((block,bi)=>{
-block.exs.forEach((ex,ei)=>{
-const prevW=logs[`${prevSk}-${bi}-${ei}-w`]||'';
-const prevN=logs[`${prevSk}-${bi}-${ei}-n`]||'';
-const prevInc=!!logs[`${prevSk}-${bi}-${ei}-inc`];
-const showLog=!block.wod&&ex.p&&!ex.p.startsWith("60→");
-if((showLog||ex.test)&&(prevW||prevN)){
-recapItems.push({name:ex.n||'',w:prevW,n:prevN,inc:prevInc,wod:false});
-}
-});
-if(block.wod){
-const prevScore=logs[`${prevSk}-wod${bi}-score`]||'';
-const prevNote=logs[`${prevSk}-wod${bi}-note`]||'';
-if(prevScore||prevNote){
-recapItems.push({name:`WOD — ${block.wi?.type||''}`,w:prevScore,n:prevNote,inc:false,wod:true});
-}
-}
-});
-if(recapItems.length>0){
-h+=`<div class="prev-recap">
-<div class="prev-recap-ttl">📌 RAPPEL S${state.week-1} — DERNIÈRE FOIS</div>
-${recapItems.map(item=>`
-<div class="prev-recap-row">
-<div class="prev-recap-ex">${item.name}</div>
-${item.w?`<div class="prev-recap-val">${item.wod?'🏁 ':'⚖️ '}${item.w}${item.inc?`<span class="prev-recap-inc"> ↑</span>`:''}</div>`:''}
-</div>
-${item.n?`<div class="prev-recap-note">💬 ${item.n}</div>`:''}
-`).join('')}
-</div>`;
-}
-}
 
 sess.blocks.forEach((block,bi)=>{
 const tc=block.wi?TAG_COL[block.wi.tag]||"#555":ac;
