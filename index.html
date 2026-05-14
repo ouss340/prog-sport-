@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Mon Programme">
+<meta name="theme-color" content="#080808">
+<title>Mon Programme</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+:root{
+--bg:#080808;--bg1:#0d0d0d;--bg2:#111;--bg3:#161616;
+--border:#1e1e1e;--border2:#252525;
+--text:#f0f0f0;--muted:#888;--dim:#444;--faint:#222;
+--red:#FF4500;
+}
+body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed','Arial Narrow',Arial,sans-serif;min-height:100vh;overflow-x:hidden}
+input,textarea{font-family:inherit}
+
+#header{background:var(--bg1);border-bottom:3px solid var(--red);padding:env(safe-area-inset-top,0) 16px 12px;padding-top:calc(env(safe-area-inset-top,0px) + 16px)}
+#header .kicker{font-size:9px;letter-spacing:5px;color:var(--red);font-weight:800;margin-bottom:3px}
+#header h1{font-size:21px;font-weight:900;letter-spacing:1.5px;text-transform:uppercase;line-height:1.1}
+#sync-row{display:flex;align-items:center;justify-content:space-between;margin-top:6px}
+#sync-status{font-size:10px;font-weight:700;letter-spacing:1px;transition:all .3s}
+#sync-btn{font-size:9px;font-weight:800;letter-spacing:1.5px;background:none;border:1px solid #222;border-radius:4px;color:#444;padding:3px 8px;cursor:pointer;font-family:inherit}
+
+#save-bar{display:flex;gap:8px;padding:10px 12px;background:#0a0a0a;border-bottom:1px solid #131313}
+.save-btn{flex:1;padding:10px 4px;border-radius:8px;border:none;font-family:inherit;font-size:10px;font-weight:800;letter-spacing:1px;cursor:pointer;text-transform:uppercase;transition:all .15s;text-align:center;line-height:1.3}
+.btn-export{background:#FF450018;color:var(--red);border:1px solid #FF450044}
+.btn-import{background:#1e1e1e;color:#555;border:1px solid #252525}
+.btn-claude{background:#10B98118;color:#10B981;border:1px solid #10B98144}
+
+#week-tabs{display:flex;gap:8px;padding:12px;background:var(--bg);border-bottom:1px solid #131313}
+.wtab{flex:1;padding:10px 4px;border-radius:8px;border:2px solid var(--border);background:var(--bg1);color:var(--dim);font-size:11px;font-weight:900;letter-spacing:1px;cursor:pointer;transition:all .15s;text-align:center}
+.wtab div:nth-child(2){font-size:9px;margin-top:2px;opacity:.8}
+.wtab div:nth-child(3){font-size:8px;margin-top:1px;opacity:.6}
+
+#session-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:10px 12px}
+.scard{background:var(--bg1);border:2px solid var(--border);border-radius:10px;padding:14px 12px;cursor:pointer;transition:all .18s}
+.scard .sc-day{font-size:9px;letter-spacing:3px;font-weight:800;margin-bottom:5px}
+.scard .sc-id{font-size:20px;font-weight:900}
+.scard .sc-title{font-size:10px;color:var(--dim);margin-top:4px;line-height:1.4}
+.scard .sc-badge{margin-top:8px;display:inline-block;border-radius:4px;padding:2px 8px;font-size:9px;font-weight:800}
+
+#detail{padding:2px 12px 60px}
+.detail-inner{border-radius:12px;padding:18px 14px}
+.d-tag{font-size:9px;letter-spacing:4px;font-weight:800;margin-bottom:3px}
+.d-title{font-size:19px;font-weight:900;text-transform:uppercase;letter-spacing:.8px;margin-bottom:18px}
+
+.block{margin-bottom:22px}
+.block-hdr{display:flex;align-items:center;justify-content:space-between;padding-bottom:8px;margin-bottom:10px;border-bottom:1px solid #1e1e1e}
+.block-ttl{font-size:10px;font-weight:900;letter-spacing:3px;text-transform:uppercase}
+.wod-tag{border-radius:4px;padding:2px 8px;font-size:8px;font-weight:800;letter-spacing:1px}
+
+.ex-row{padding:11px 0;border-bottom:1px solid #131313}
+.ex-top{display:flex;justify-content:space-between;align-items:flex-start}
+.ex-name{font-size:13px;font-weight:700;line-height:1.3}
+.ex-p{font-size:10px;color:var(--dim);margin-top:2px}
+.ex-o{font-size:10px;color:#2a2a2a;margin-top:1px}
+.ex-s{font-size:14px;font-weight:900;margin-left:12px;flex-shrink:0}
+.log-row{display:flex;gap:8px;align-items:center;margin-top:10px}
+.log-input{flex:1;background:var(--bg3);border:1px solid var(--border2);border-radius:6px;padding:8px 10px;color:#ddd;font-size:12px;outline:none}
+.inc-btn{width:36px;height:36px;border-radius:8px;flex-shrink:0;cursor:pointer;background:var(--bg3);border:2px solid var(--border2);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;color:#333;transition:all .15s;user-select:none}
+.inc-lbl{font-size:9px;font-weight:800;letter-spacing:2px;margin-top:5px}
+.note-input{width:100%;margin-top:6px;background:#0d0d0d;border:1px solid #181818;border-radius:6px;padding:7px 10px;color:var(--muted);font-size:11px;outline:none}
+
+.wod-box{margin-top:12px;background:var(--bg2);border-radius:8px;padding:12px;border:1px solid var(--border)}
+.wod-box-ttl{font-size:9px;color:var(--red);font-weight:800;letter-spacing:3px;margin-bottom:8px}
+.wod-score{width:100%;background:var(--bg3);border:1px solid var(--border2);border-radius:6px;padding:8px 10px;color:#ddd;font-size:12px;outline:none;margin-bottom:6px}
+.wod-note{width:100%;background:var(--bg1);border:1px solid var(--border);border-radius:6px;padding:7px 10px;color:var(--muted);font-size:11px;outline:none}
+
+/* ── BLOC RÉCAP SESSION PRÉCÉDENTE (TOP) ── */
+.prev-recap{background:#0f1115;border:1px solid #F59E0B22;border-left:3px solid #F59E0B;border-radius:8px;padding:12px 14px;margin-bottom:18px}
+.prev-recap-ttl{font-size:9px;font-weight:800;letter-spacing:3px;color:#F59E0B;margin-bottom:10px;text-transform:uppercase}
+.prev-recap-row{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;padding:5px 0;border-bottom:1px solid #181818;gap:2px}
+.prev-recap-row:last-child{border-bottom:none;padding-bottom:0}
+.prev-recap-ex{font-size:11px;font-weight:600;color:#aaa;flex:1;min-width:120px;line-height:1.3}
+.prev-recap-val{font-size:13px;font-weight:800;color:#d4a843;margin-left:8px;flex-shrink:0}
+.prev-recap-inc{color:#4ade80;font-size:10px;font-weight:800;margin-left:4px}
+.prev-recap-note{font-size:9px;color:#666;font-style:italic;padding:1px 0 3px;flex-basis:100%;line-height:1.4}
+
+/* ── DONNÉES SESSION PRÉCÉDENTE (PAR EXERCICE) ── */
+.prev-data{margin-top:8px;background:#111418;border-radius:6px;padding:8px 10px;border-left:2px solid #F59E0B44;display:flex;flex-direction:column;gap:3px}
+.prev-lbl{font-size:8px;font-weight:800;letter-spacing:2px;color:#F59E0Baa;text-transform:uppercase;margin-bottom:2px}
+.prev-charge{font-size:13px;font-weight:700;color:#d4a843}
+.prev-up{font-size:9px;font-weight:800;color:#4ade80;margin-left:5px;letter-spacing:1px}
+.prev-note-txt{font-size:10px;color:#888;line-height:1.5;font-style:italic}
+.prev-wod{margin-bottom:10px;background:#111418;border-radius:6px;padding:8px 10px;border-left:2px solid #F59E0B33}
+.prev-wod .prev-lbl{margin-bottom:3px}
+.prev-wod .prev-charge{font-size:12px;color:#d4a843}
+
+.prog-note{margin-top:10px;background:var(--bg2);border-radius:8px;padding:12px;border-left:3px solid var(--red)}
+.prog-note-ttl{font-size:9px;color:var(--red);font-weight:800;letter-spacing:3px;margin-bottom:6px}
+.prog-note-txt{font-size:11px;color:var(--dim);line-height:1.7}
+
+#empty-state{text-align:center;padding:20px 0;color:var(--faint);font-size:11px;letter-spacing:2px}
+#bottom-spacer{height:calc(env(safe-area-inset-bottom,0px) + 20px)}
+#file-input{display:none}
+
+#overlay{display:none;position:fixed;inset:0;background:#000a;z-index:200;align-items:flex-end}
+#overlay.open{display:flex}
+#modal{width:100%;background:#111;border-radius:16px 16px 0 0;padding:24px 16px calc(env(safe-area-inset-bottom,0px) + 24px);max-height:88vh;overflow-y:auto}
+#modal-ttl{font-size:15px;font-weight:900;letter-spacing:2px;text-transform:uppercase;margin-bottom:6px}
+#modal-sub{font-size:12px;color:#555;margin-bottom:14px;line-height:1.6}
+#modal-body{background:#0d0d0d;border-radius:8px;padding:14px;font-size:11px;color:#777;line-height:1.9;max-height:38vh;overflow-y:auto;white-space:pre-wrap;word-break:break-word;border:1px solid #1e1e1e;margin-bottom:14px;-webkit-user-select:all;user-select:all}
+.mbtn{width:100%;padding:14px;border-radius:10px;border:none;font-family:inherit;font-size:13px;font-weight:800;letter-spacing:1.5px;cursor:pointer;margin-bottom:8px;text-transform:uppercase}
+.mbtn-primary{background:var(--red);color:#fff}
+.mbtn-green{background:#10B981;color:#000}
+.mbtn-sec{background:#1e1e1e;color:#666}
+
+#toast{position:fixed;bottom:calc(env(safe-area-inset-bottom,0px) + 20px);left:50%;transform:translateX(-50%) translateY(20px);background:#10B981;color:#000;font-weight:800;font-size:12px;letter-spacing:1.5px;padding:10px 20px;border-radius:20px;opacity:0;transition:all .3s;z-index:300;pointer-events:none;white-space:nowrap}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+#toast.error{background:#FF4500;color:#fff}
+</style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+
+<div id="header">
+<div class="kicker">PROGRAMME COMPLET · 4 SEMAINES</div>
+<h1>HALTÉRO × FORCE × CF</h1>
+<div id="sync-row">
+<div id="sync-status">⏳ Chargement…</div>
+<button id="sync-btn" onclick="syncNow()">↻ SYNC</button>
+</div>
+</div>
+
+<div id="save-bar">
+<button class="save-btn btn-export" onclick="openExport()">💾 Exporter</button>
+<button class="save-btn btn-import" onclick="document.getElementById('file-input').click()">📂 Importer</button>
+<button class="save-btn btn-claude" onclick="openClaude()">🤖 → Claude</button>
+</div>
+<input type="file" id="file-input" accept=".json" onchange="importData(event)">
+
+<div id="week-tabs"></div>
+<div id="session-grid"></div>
+<div id="detail"></div>
+<div id="empty-state">↑ TAPEZ UNE SÉANCE POUR VOIR LE DÉTAIL</div>
+<div id="bottom-spacer"></div>
+
+<div id="overlay" onclick="overlayClick(event)">
+<div id="modal">
+<div id="modal-ttl"></div>
+<div id="modal-sub"></div>
+<div id="modal-body"></div>
+<button class="mbtn" id="mbtn-action"></button>
+<button class="mbtn mbtn-sec" onclick="closeModal()">Fermer</button>
+</div>
+</div>
+<div id="toast"></div>
+
+<script>
+// ═══════════════════ CONFIG SUPABASE ═══════════════════
+const SB_URL = "https://cyczhlsugdbguahbfbuz.supabase.co";
+const SB_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN5Y3pobHN1Z2RiZ3VhaGJmYnV6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg2MTAzNzgsImV4cCI6MjA5NDE4NjM3OH0.bRNltAnc7QGf2o6B2IwsvOS_KHWUj0ejlvjfrRHIt2M";
+const SB_TABLE = "training_logs";
+const STORE_KEY = "prog_logs_v3";
+const sb = window.supabase.createClient(SB_URL, SB_KEY);
+
+// ═══ SUPABASE SYNC ═══
+async function sbLoad(){
+try{
+const {data,error}=await sb.from(SB_TABLE).select("data").eq("store_key",STORE_KEY).maybeSingle();
+if(error||!data)return null;
+const d=data.data;
+return d&&Object.keys(d).length>0?d:null;
+}catch{return null;}
+}
+
+async function sbSave(data){
+try{
+const {error}=await sb.from(SB_TABLE).upsert({store_key:STORE_KEY,data},{onConflict:"store_key"});
+return !error;
+}catch{return false;}
+}
+
+let syncTimer=null;
+function setSyncStatus(state){
+const el=document.getElementById("sync-status");
+if(state==="ok"){el.textContent="☁️ Synchronisé";el.style.color="#10B981";}
+else if(state==="syncing"){el.textContent="⏳ Sync…";el.style.color="#F59E0B";}
+else if(state==="offline"){el.textContent="📵 Hors ligne — local";el.style.color="#888";}
+else if(state==="error"){el.textContent="⚠️ Erreur sync";el.style.color="#FF4500";}
+}
+
+async function syncNow(){
+setSyncStatus("syncing");
+const ok=await sbSave(logs);
+setSyncStatus(ok?"ok":"error");
+if(ok)toast("☁️ Synchronisé !");
+else toast("⚠️ Hors ligne — données locales OK","error");
+}
+
+// ═══ STATE & STORAGE ═══
+let state={week:1,session:null};
+let logs={};
+
+async function initData(){
+setSyncStatus("syncing");
+// 1. Supabase en priorité (source de vérité)
+const cloud=await sbLoad();
+if(cloud&&Object.keys(cloud).length>0){
+logs=cloud;
+saveLocal();
+render();
+setSyncStatus("ok");
+return;
+}
+// 2. Fallback localStorage si Supabase vide ou hors ligne
+try{const r=localStorage.getItem(STORE_KEY);if(r)logs=JSON.parse(r);}catch{}
+render();
+if(Object.keys(logs).length>0){
+// Données locales dispo : on les pousse vers Supabase
+const ok=await sbSave(logs);
+setSyncStatus(ok?"ok":"offline");
+} else {
+setSyncStatus("offline");
+}
+}
+
+function saveLocal(){
+try{localStorage.setItem(STORE_KEY,JSON.stringify(logs));}catch{}
+}
+
+function save(){
+saveLocal();
+// Sync cloud avec délai (évite trop de requêtes)
+clearTimeout(syncTimer);
+setSyncStatus("syncing");
+syncTimer=setTimeout(async()=>{
+const ok=await sbSave(logs);
+setSyncStatus(ok?"ok":"offline");
+},500);
+}
+
+// ═══ TOAST ═══
+function toast(msg,type){
+const t=document.getElementById("toast");
+t.textContent=msg;
+t.className=type==="error"?"show error":"show";
+setTimeout(()=>t.className="",2500);
+}
+
+// ═══ EXPORT ═══
+function openExport(){
+const data=JSON.stringify(logs,null,2);
+const date=new Date().toLocaleDateString("fr-FR").replace(/\//g,"-");
+document.getElementById("modal-ttl").textContent="💾 Exporter";
+document.getElementById("modal-sub").textContent="Télécharge une sauvegarde locale. En plus de la sync Supabase automatique.";
+document.getElementById("modal-body").textContent=data;
+const btn=document.getElementById("mbtn-action");
+btn.textContent="⬇️ Télécharger le fichier";btn.className="mbtn mbtn-primary";
+btn.onclick=()=>{
+const blob=new Blob([data],{type:"application/json"});
+const url=URL.createObjectURL(blob);
+const a=document.createElement("a");a.href=url;
+a.download=`programme_${date}.json`;
+document.body.appendChild(a);a.click();
+document.body.removeChild(a);URL.revokeObjectURL(url);
+toast("✓ Fichier téléchargé !");closeModal();
+};
+openModal();
+}
+
+// ═══ IMPORT ═══
+function importData(event){
+const file=event.target.files[0];if(!file)return;
+const reader=new FileReader();
+reader.onload=e=>{
+try{
+logs=JSON.parse(e.target.result);
+save();render();toast("✓ Données importées et synchronisées !");
+}catch{toast("❌ Fichier invalide","error");}
+};
+reader.readAsText(file);event.target.value="";
+}
+
+// ═══ RÉSUMÉ CLAUDE ═══
+function openClaude(){
+const lines=["=== MON BILAN — PROGRAMME HALTÉRO×FORCE×CF ===\n"];
+lines.push(`Date : ${new Date().toLocaleDateString("fr-FR")}\n`);
+let hasData=false;
+[1,2,3,4].forEach(w=>{
+let wLines=[];
+["A","B","C","D"].forEach(s=>{
+const sk=`${w}-${s}`;const sess=P[sk];if(!sess)return;
+let sLines=[];
+sess.blocks.forEach((block,bi)=>{
+block.exs.forEach((ex,ei)=>{
+const wv=logs[`${sk}-${bi}-${ei}-w`];
+const inc=logs[`${sk}-${bi}-${ei}-inc`];
+const nv=logs[`${sk}-${bi}-${ei}-n`];
+if(wv||nv){
+let l=` • ${ex.n||""}`;
+if(ex.s)l+=` (${ex.s})`;
+if(wv)l+=` → ${wv}`;
+if(inc)l+=` ↑`;
+if(nv)l+=`\n Note: ${nv}`;
+sLines.push(l);hasData=true;
+}
+});
+if(block.wod){
+const sc=logs[`${sk}-wod${bi}-score`];
+const sn=logs[`${sk}-wod${bi}-note`];
+if(sc||sn){
+let l=` • WOD: ${sc||"—"}`;
+if(sn)l+=`\n Note: ${sn}`;
+sLines.push(l);hasData=true;
+}
+}
+});
+if(sLines.length){wLines.push(`\n SÉANCE ${s} — ${sess.title}`);wLines.push(...sLines);}
+});
+if(wLines.length){lines.push(`\n── SEMAINE ${w} ──`);lines.push(...wLines);}
+});
+if(!hasData)lines.push("\nAucune donnée enregistrée pour l'instant.");
+lines.push("\n\n=== DEMANDE ===");
+lines.push("Voici mon bilan après ce bloc. Analyse mes progressions et crée mon prochain programme.");
+const summary=lines.join("\n");
+document.getElementById("modal-ttl").textContent="🤖 Partager avec Claude";
+document.getElementById("modal-sub").textContent="Copie ce texte et colle-le dans Claude pour générer ton prochain programme.";
+document.getElementById("modal-body").textContent=summary;
+const btn=document.getElementById("mbtn-action");
+btn.textContent="📋 Copier le résumé";btn.className="mbtn mbtn-green";
+btn.onclick=()=>{
+if(navigator.clipboard){navigator.clipboard.writeText(summary).then(()=>toast("✓ Copié !")).catch(()=>selectBody());}
+else selectBody();
+};
+openModal();
+}
+function selectBody(){
+const el=document.getElementById("modal-body");
+const r=document.createRange();r.selectNodeContents(el);
+const s=window.getSelection();s.removeAllRanges();s.addRange(r);
+toast("Sélectionne et copie le texte !");
+}
+
+// ═══ MODAL ═══
+function openModal(){document.getElementById("overlay").classList.add("open")}
+function closeModal(){document.getElementById("overlay").classList.remove("open")}
+function overlayClick(e){if(e.target===document.getElementById("overlay"))closeModal();}
+
+// ═══ HELPERS ═══
+function countLogged(w,s){
+const sess=P[`${w}-${s}`];if(!sess)return 0;
+return sess.blocks.reduce((a,b,bi)=>a+b.exs.filter((_,ei)=>logs[`${w}-${s}-${bi}-${ei}-w`]).length,0);
+}
+
+// ═══ PROGRAMME DATA ═══
+const WEEKS=[
+{id:1,label:"S1",name:"Base", pct:"75–80%",color:"#3B82F6"},
+{id:2,label:"S2",name:"Accumulation",pct:"80–85%",color:"#F59E0B"},
+{id:3,label:"S3",name:"Intensif.", pct:"85–90%",color:"#A855F7"},
+{id:4,label:"S4",name:"Test", pct:"Max", color:"#10B981"},
+];
+const META={
+A:{day:"LUNDI", title:"Clean & Force Inf."},
+B:{day:"MERCREDI", title:"Snatch & Force Sup."},
+C:{day:"VENDREDI", title:"Complexes & Puissance"},
+D:{day:"SAMEDI", title:"Technique & Condo"},
+};
+const TAG_COL={"SHORT":"#555","SHORT INTENSE":"#C0392B","MEDIUM":"#2471A3","LONG":"#E67E22","TRÈS LONG":"#C0392B","BENCHMARK":"#8E44AD","LÉGER":"#27AE60","BILAN":"#16A085"};
+const ACCENT={A:"#3B82F6",B:"#F59E0B",C:"#A855F7",D:"#10B981"};
+
+const P={
+"1-A":{tag:"LUNDI — S1",title:"Clean & Force Inférieure",blocks:[
+{t:"HALTÉROPHILIE",e:"🏋️",wod:false,exs:[{n:"Clean Pull",s:"3×3",p:"~155 lb",o:"90% du C&J"},{n:"Squat Clean",s:"4×2",p:"~145 lb",o:"85% du C&J"},{n:"Front Squat",s:"4×3",p:"~150 lb",o:"80% FS estimé"}]},
+{t:"FORCE",e:"💪",wod:false,exs:[{n:"Back Squat",s:"5×3",p:"~180 lb",o:"80% du max"},{n:"Deadlift",s:"3×3",p:"~268 lb",o:"80% du max"}]},
+{t:"WOD",e:"⚡",wod:true,wi:{type:"FOR TIME",dur:"~20 min",tag:"MEDIUM"},exs:[{n:"4 Rounds For Time"},{n:"500m Row"},{n:"10 Burpees Box Jump",p:'24"'},{n:"10 KB Swing",p:"32 kg"}]},
+]},
+"1-B":{tag:"MERCREDI — S1",title:"Snatch & Force Supérieure",blocks:[
+{t:"HALTÉROPHILIE",e:"🏋️",wod:false,exs:[{n:"Snatch Pull",s:"3×3",p:"~105 lb",o:"90% du snatch"},{n:"Hang Squat Snatch",s:"5×2",p:"~92 lb",o:"80% du max"},{n:"OHS",s:"4×3",p:"~100 lb",o:"Stabilité + confort"}]},
+{t:"FORCE",e:"💪",wod:false,exs:[{n:"Shoulder Press",s:"5×3",p:"~109 lb",o:"75% du max"},{n:"Push Jerk",s:"4×3",p:"~116 lb",o:"80% du 3RM"},{n:"Pendlay Row",s:"4×6",p:"~130 lb",o:"Votre 10RM actuel"}]},
+{t:"WOD",e:"⚡",wod:true,wi:{type:"FOR TIME",dur:"~10 min",tag:"SHORT"},exs:[{n:"21-15-9 For Time"},{n:"Thruster",p:"95 lb"},{n:"Pull-ups strictes"}]},
+]},
+"1-C":{tag:"VENDREDI — S1",title:"Complexes & Puissance",blocks:[
+{t:"HALTÉROPHILIE",e:"🏋️",wod:false,exs:[{n:"1 Power Clean + 1 Power Jerk + 1 Squat Clean",s:"5×1",p:"~136 lb",o:"80% du C&J"},{n:"Clean & Jerk",s:"5×1",p:"~145 lb",o:"85% — qualité max"}]},
+{t:"FORCE",e:"💪",wod:false,exs:[{n:"Bench Press",s:"4×4",p:"~165 lb",o:"75% du max"},{n:"Romanian Deadlift",s:"3×8",p:"~185 lb",o:"Excentrique 3s"}]},
+{t:"WOD",e:"⚡",wod:true,wi:{type:"AMRAP",dur:"12 min",tag:"MEDIUM"},exs:[{n:"AMRAP 12 min"},{n:"5 Clean & Jerk",p:"115 lb"},{n:"10 Box Jumps",p:'30"'},{n:"15 Wall Balls",p:"20 lb"}]},
+]},
+"1-D":{tag:"SAMEDI — S1",title:"Technique & Conditionnement",blocks:[
+{t:"HALTÉROPHILIE",e:"🏋️",wod:false,exs:[{n:"Snatch Balance",s:"4×3",p:"~76 lb",o:"80% snatch balance"},{n:"Snatch Pull + Hang Squat Snatch + Squat Snatch",s:"4×1",p:"~84 lb",o:"80% complex"},{n:"Squat Clean Thruster",s:"4×2",p:"~124 lb",o:"80% du max"}]},
+{t:"FORCE",e:"💪",wod:false,exs:[{n:"Front Squat",s:"3×5",p:"~140 lb",o:"75% FS"},{n:"Push Press",s:"4×5",p:"~120 lb",o:"Transfert jerk"}]},
+{t:"WOD 🔥",e:"⚡",wod:true,wi:{type:"FOR TIME",dur:"~25 min",tag:"LONG"},exs:[{n:"5 Rounds For Time"},{n:"400m Run"},{n:"10 Power Snatch",p:"75 lb"},{n:"10 Pull-ups"}]},
+]},
+"2-A":{tag:"LUNDI — S2",title:"Clean & Force Inférieure",blocks:[
+{t:"HALTÉROPHILIE",e:"🏋️",wod:false,exs:[{n:"Clean Pull",s:"4×3",p:"~160 lb",o:"92% du C&J"},{n:"Squat Clean",s:"5×2",p:"~150 lb",o:"88% du C&J"},{n:"Front Squat",s:"4×3",p:"~157 lb",o:"83% FS estimé"}]},
+{t:"FORCE",e:"💪",wod:false,exs:[{n:"Back Squat",s:"5×4",p:"~185 lb",o:"82% du max"},{n:"Deadlift",s:"4×3",p:"~275 lb",o:"82% du max"}]},
+{t:"WOD 🔥🔥",e:"⚡",wod:true,wi:{type:"CHIPPER",dur:"~30 min",tag:"LONG"},exs:[{n:"CHIPPER For Time"},{n:"50 Cal Row"},{n:"40 Wall Balls",p:"20 lb"},{n:"30 Box Jumps",p:'24"'},{n:"20 Hang Power Clean",p:"115 lb"},{n:"10 Toes-to-Bar"}]},
+]},
+"2-B":{tag:"MERCREDI — S2",title:"Snatch & Force Supérieure",blocks:[
+{t:"HALTÉROPHILIE",e:"🏋️",wod:false,exs:[{n:"Snatch Pull",s:"4×3",p:"~108 lb",o:"92% du snatch"},{n:"Hang Squat Snatch",s:"5×2",p:"~97 lb",o:"84% du max"},{n:"OHS",s:"4×3",p:"~105 lb",o:"Qualité de réception"}]},
+{t:"FORCE",e:"💪",wod:false,exs:[{n:"Shoulder Press",s:"5×3",p:"~114 lb",o:"78% du max"},{n:"Push Jerk",s:"4×3",p:"~122 lb",o:"84% du 3RM"},{n:"Pendlay Row",s:"4×6",p:"~134 lb",o:"+4 lb vs S1"}]},
+{t:"WOD",e:"⚡",wod:true,wi:{type:"AMRAP",dur:"15 min",tag:"MEDIUM"},exs:[{n:"AMRAP 15 min"},{n:"3 Power Snatch",p:"85 lb"},{n:"6 Toes-to-Bar"},{n:"9 Box Jumps",p:'24"'}]},
+]},
+"2-C":{tag:"VENDREDI — S2",title:"Complexes & Puissance",blocks:[
+{t:"HALTÉROPHILIE",e:"🏋️",wod:false,exs:[{n:"1 Power Clean + 1 Power Jerk + 1 Squat Clean",s:"5×1",p:"~143 lb",o:"84% du C&J"},{n:"Clean & Jerk",s:"5×1",p:"~150 lb",o:"88%"}]},
+{t:"FORCE",e:"💪",wod:false,exs:[{n:"Bench Press",s:"4×4",p:"~172 lb",o:"78% du max"},{n:"Romanian Deadlift",s:"3×8",p:"~190 lb",o:"Contrôle +++"}]},
+{t:"WOD",e:"⚡",wod:true,wi:{type:"FOR TIME",dur:"~18 min",tag:"MEDIUM"},exs:[{n:"3 Rounds For Time"},{n:"21 Wall Balls",p:"20 lb"},{n:"15 Toes-to-Bar"},{n:"9 Squat Clean",p:"125 lb"}]},
+]},
+"2-D":{tag:"SAMEDI — S2",title:"Technique & Conditionnement",blocks:[
+{t:"HALTÉROPHILIE",e:"🏋️",wod:false,exs:[{n:"Snatch Balance",s:"4×3",p:"~82 lb",o:"+6 lb vs S1"},{n:"Snatch Pull + Hang Squat Snatch + Squat Snatch",s:"4×1",p:"~88 lb"},{n:"Squat Clean Thruster",s:"4×2",p:"~130 lb",o:"84% du max"}]},
+{t:"FORCE",e:"💪",wod:false,exs:[{n:"Front Squat",s:"4×5",p:"~148 lb",o:"80% FS"},{n:"Push Press",s:"4×5",p:"~125 lb",o:"+5 lb vs S1"}]},
+{t:"WOD 🔥🔥",e:"⚡",wod:true,wi:{type:"FOR TIME",dur:"~35 min",tag:"TRÈS LONG"},exs:[{n:"5 Rounds For Time"},{n:"800m Run"},{n:"10 OHS",p:"75 lb"},{n:"15 GHD / Sit-ups"}]},
+]},
+"3-A":{tag:"LUNDI — S3",title:"Clean & Force Inférieure",blocks:[
+{t:"HALTÉROPHILIE",e:"🏋️",wod:false,exs:[{n:"Clean Pull",s:"4×2",p:"~165 lb",o:"97% du C&J"},{n:"Squat Clean",s:"5×2",p:"~155 lb",o:"91% du C&J"},{n:"Front Squat",s:"5×2",p:"~163 lb",o:"88% FS"}]},
+{t:"FORCE",e:"💪",wod:false,exs:[{n:"Back Squat",s:"5×2",p:"~200 lb",o:"89% du max"},{n:"Deadlift",s:"3×2",p:"~290 lb",o:"87% du max"}]},
+{t:"WOD",e:"⚡",wod:true,wi:{type:"FOR TIME",dur:"~12 min",tag:"SHORT INTENSE"},exs:[{n:"Ladder 10-8-6-4-2 For Time"},{n:"Deadlift",p:"225 lb"},{n:"Toes-to-Bar (×2 reps)",p:"Ex: 10 DL → 20 TTB"}]},
+]},
+"3-B":{tag:"MERCREDI — S3",title:"Snatch & Force Supérieure",blocks:[
+{t:"HALTÉROPHILIE",e:"🏋️",wod:false,exs:[{n:"Snatch Pull",s:"4×2",p:"~113 lb",o:"97% du snatch"},{n:"Hang Squat Snatch",s:"4×2",p:"~103 lb",o:"90% du max"},{n:"OHS",s:"4×2",p:"~109 lb",o:"Lourd mais propre"}]},
+{t:"FORCE",e:"💪",wod:false,exs:[{n:"Shoulder Press",s:"4×2",p:"~122 lb",o:"84% du max"},{n:"Push Jerk",s:"5×2",p:"~128 lb",o:"88% du 3RM"},{n:"Pendlay Row",s:"3×6",p:"~138 lb",o:"+4 lb vs S2"}]},
+{t:"WOD 🔥🔥",e:"⚡",wod:true,wi:{type:"FOR TIME",dur:"~30 min",tag:"LONG"},exs:[{n:"4 Rounds For Time"},{n:"400m Run"},{n:"15 Power Snatch",p:"75 lb"},{n:"15 Pull-ups"},{n:"10 Toes-to-Bar"}]},
+]},
+"3-C":{tag:"VENDREDI — S3",title:"Complexes & Puissance",blocks:[
+{t:"HALTÉROPHILIE",e:"🏋️",wod:false,exs:[{n:"1 Power Clean + 1 Power Jerk + 1 Squat Clean",s:"5×1",p:"~150 lb",o:"88% du C&J"},{n:"Clean & Jerk",s:"5×1",p:"~155 lb",o:"91%"}]},
+{t:"FORCE",e:"💪",wod:false,exs:[{n:"Bench Press",s:"5×3",p:"~178 lb",o:"81% du max"},{n:"Romanian Deadlift",s:"3×6",p:"~200 lb",o:"Excentrique 4s"}]},
+{t:"WOD 🔥🔥",e:"⚡",wod:true,wi:{type:"AMRAP",dur:"20 min",tag:"LONG"},exs:[{n:"AMRAP 20 min"},{n:"5 Squat Clean Thruster",p:"115 lb"},{n:"10 Toes-to-Bar"},{n:"15 Box Jumps",p:'30"'},{n:"200m Run"}]},
+]},
+"3-D":{tag:"SAMEDI — S3",title:"Technique & Conditionnement",blocks:[
+{t:"HALTÉROPHILIE",e:"🏋️",wod:false,exs:[{n:"Snatch Balance",s:"5×2",p:"~88 lb",o:"+6 lb vs S2"},{n:"Snatch Pull + Hang Squat Snatch + Squat Snatch",s:"5×1",p:"~94 lb"},{n:"Squat Clean Thruster",s:"4×2",p:"~136 lb",o:"88% du max"}]},
+{t:"FORCE",e:"💪",wod:false,exs:[{n:"Front Squat",s:"4×3",p:"~158 lb",o:"85% FS"},{n:"Push Press",s:"5×3",p:"~130 lb",o:"+5 lb vs S2"}]},
+{t:"WOD",e:"⚡",wod:true,wi:{type:"FOR TIME",dur:"~20 min",tag:"MEDIUM"},exs:[{n:"5 Rounds For Time"},{n:"15 Wall Balls",p:"20 lb"},{n:"12 Toes-to-Bar"},{n:"9 Push Jerk",p:"115 lb"},{n:"200m Sprint"}]},
+]},
+"4-A":{tag:"LUNDI — S4",title:"TEST MAX — C&J & Squat",blocks:[
+{t:"TESTS MAX 🎯",e:"🎯",wod:false,exs:[{n:"Squat Clean — montée progressive",s:"1RM",p:"60→75→85→90→95→100%+",o:"Notez votre nouveau max !",test:true},{n:"Clean & Jerk — TEST MAX",s:"1RM",p:"Cible : >170 lb",test:true},{n:"Back Squat — TEST MAX",s:"1RM",p:"Cible : >225 lb",test:true}]},
+{t:"FORCE — ALLÉGÉ",e:"💪",wod:false,exs:[{n:"Deadlift",s:"3×3",p:"~200 lb",o:"Léger, récupération active"}]},
+{t:"WOD — DÉCHARGE",e:"⚡",wod:true,wi:{type:"FOR TIME",dur:"~10 min",tag:"LÉGER"},exs:[{n:"3 Rounds For Time"},{n:"10 Hang Power Clean",p:"~95 lb"},{n:"15 Toes-to-Bar"},{n:"400m Jog",p:"Pace cool-down"}]},
+]},
+"4-B":{tag:"MERCREDI — S4",title:"TEST MAX — Snatch & Press",blocks:[
+{t:"TESTS MAX 🎯",e:"🎯",wod:false,exs:[{n:"Squat Snatch — TEST MAX",s:"1RM",p:"Cible : >115 lb",test:true},{n:"Shoulder Press — TEST MAX",s:"1RM",p:"Cible : >145 lb",test:true},{n:"Push Jerk — TEST 3RM",s:"3RM",p:"Cible : >145 lb",test:true}]},
+{t:"FORCE — ALLÉGÉ",e:"💪",wod:false,exs:[{n:"Pendlay Row",s:"3×8",p:"~115 lb",o:"Récupération active"}]},
+{t:"WOD — BENCHMARK 🎯",e:"⚡",wod:true,wi:{type:"FOR TIME",dur:"~15 min",tag:"BENCHMARK"},exs:[{n:'"Karen" — 150 Wall Balls For Time',p:"20 lb / 10 ft"},{n:"Notez votre temps !"}]},
+]},
+"4-C":{tag:"VENDREDI — S4",title:"TEST MAX — Bench & Complexes",blocks:[
+{t:"TESTS MAX 🎯",e:"🎯",wod:false,exs:[{n:"Bench Press — TEST MAX",s:"1RM",p:"Cible : >220 lb (100 kg)",test:true},{n:"Squat Clean Thruster — TEST MAX",s:"1RM",p:"Cible : >155 lb",test:true},{n:"Pendlay Row — TEST 10RM",s:"10RM",p:"Cible : >130 lb",test:true}]},
+{t:"HALTÉROPHILIE — RAPPEL",e:"🏋️",wod:false,exs:[{n:"Complex léger: Power Clean + Power Jerk + Squat Clean",s:"3×1",p:"~95 lb",o:"Technique pure"}]},
+{t:"WOD — LÉGER",e:"⚡",wod:true,wi:{type:"AMRAP",dur:"10 min",tag:"LÉGER"},exs:[{n:"AMRAP 10 min"},{n:"3 Power Clean",p:"~95 lb"},{n:"6 Push-ups"},{n:"9 Toes-to-Bar"}]},
+]},
+"4-D":{tag:"SAMEDI — S4",title:"BILAN CONDITIONNING",blocks:[
+{t:"TESTS MAX 🎯",e:"🎯",wod:false,exs:[{n:"Front Squat — TEST 3RM",s:"3RM",p:"Cible : >175 lb",test:true},{n:"Snatch Balance — TEST MAX",s:"1RM",p:"Cible : >95 lb",test:true}]},
+{t:"FORCE — ALLÉGÉ",e:"💪",wod:false,exs:[{n:"Push Press",s:"3×5",p:"~95 lb",o:"Léger, mobilisation"}]},
+{t:"WOD — TIME TRIAL 🏁",e:"⚡",wod:true,wi:{type:"TIME TRIAL",dur:"~20 min",tag:"BILAN"},exs:[{n:"1 Mile Run — For Time",p:"Notez votre temps !"},{n:"— Repos 5 min —"},{n:"500m Row — For Time",p:"Cible : <1'40\""}]},
+]},
+};
+
+// ═══ RENDER ═══
+function render(){renderWeekTabs();renderSessionGrid();renderDetail();}
+
+function renderWeekTabs(){
+document.getElementById("week-tabs").innerHTML=WEEKS.map(w=>`
+<div class="wtab" onclick="selectWeek(${w.id})"
+style="border-color:${state.week===w.id?w.color:"#1e1e1e"};
+background:${state.week===w.id?w.color+"18":"#0d0d0d"};
+color:${state.week===w.id?w.color:"#444"}">
+<div>${w.label}</div><div>${w.name}</div><div>${w.pct}</div>
+</div>`).join("");
+}
+
+function renderSessionGrid(){
+document.getElementById("session-grid").innerHTML=["A","B","C","D"].map(sid=>{
+const sk=`${state.week}-${sid}`;
+const sess=P[sk];if(!sess)return"";
+const m=META[sid];const ac=ACCENT[sid];
+const isActive=state.session===sid;
+const logged=countLogged(state.week,sid);
+return `<div class="scard" onclick="selectSession('${sid}')"
+style="border-color:${isActive?ac:"#1e1e1e"};background:${isActive?"#131313":"#0d0d0d"};
+box-shadow:${isActive?`0 0 18px ${ac}1a`:"none"}">
+<div class="sc-day" style="color:${ac}">${m.day}</div>
+<div class="sc-id">SÉANCE ${sid}</div>
+<div class="sc-title">${m.title}</div>
+${logged?`<div class="sc-badge" style="background:${ac}22;color:${ac}">✓ ${logged} noté${logged>1?"s":""}</div>`:""}
+</div>`;
+}).join("");
+document.getElementById("empty-state").style.display=state.session?"none":"block";
+}
+
+function renderDetail(){
+const el=document.getElementById("detail");
+if(!state.session){el.innerHTML="";return;}
+const sk=`${state.week}-${state.session}`;
+const sess=P[sk];if(!sess){el.innerHTML="";return;}
+const ac=ACCENT[state.session];
+
+// ── Clé de la session précédente (semaine -1, même lettre) ──
+const prevSk = state.week > 1 ? `${state.week-1}-${state.session}` : null;
+
+let h=`<div class="detail-inner" style="border:1px solid ${ac}2a;box-shadow:0 0 30px ${ac}0d;background:#0d0d0d">
+<div class="d-tag" style="color:${ac}">${sess.tag}</div>
+<div class="d-title">${sess.title}</div>`;
+
+// ── BLOC RÉCAP SÉANCE PRÉCÉDENTE (en haut, tout d'un coup) ──
+if(prevSk){
+const recapItems=[];
+sess.blocks.forEach((block,bi)=>{
+block.exs.forEach((ex,ei)=>{
+const prevW=logs[`${prevSk}-${bi}-${ei}-w`]||'';
+const prevN=logs[`${prevSk}-${bi}-${ei}-n`]||'';
+const prevInc=!!logs[`${prevSk}-${bi}-${ei}-inc`];
+const showLog=!block.wod&&ex.p&&!ex.p.startsWith("60→");
+if((showLog||ex.test)&&(prevW||prevN)){
+recapItems.push({name:ex.n||'',w:prevW,n:prevN,inc:prevInc,wod:false});
+}
+});
+if(block.wod){
+const prevScore=logs[`${prevSk}-wod${bi}-score`]||'';
+const prevNote=logs[`${prevSk}-wod${bi}-note`]||'';
+if(prevScore||prevNote){
+recapItems.push({name:`WOD — ${block.wi?.type||''}`,w:prevScore,n:prevNote,inc:false,wod:true});
+}
+}
+});
+if(recapItems.length>0){
+h+=`<div class="prev-recap">
+<div class="prev-recap-ttl">📌 RAPPEL S${state.week-1} — DERNIÈRE FOIS</div>
+${recapItems.map(item=>`
+<div class="prev-recap-row">
+<div class="prev-recap-ex">${item.name}</div>
+${item.w?`<div class="prev-recap-val">${item.wod?'🏁 ':'⚖️ '}${item.w}${item.inc?`<span class="prev-recap-inc"> ↑</span>`:''}</div>`:''}
+</div>
+${item.n?`<div class="prev-recap-note">💬 ${item.n}</div>`:''}
+`).join('')}
+</div>`;
+}
+}
+
+sess.blocks.forEach((block,bi)=>{
+const tc=block.wi?TAG_COL[block.wi.tag]||"#555":ac;
+h+=`<div class="block">
+<div class="block-hdr" style="border-color:${ac}2a">
+<div class="block-ttl" style="color:${ac}">${block.e} ${block.t}</div>
+${block.wod&&block.wi?`<div class="wod-tag" style="background:${tc}22;border:1px solid ${tc};color:${tc}">${block.wi.tag} · ${block.wi.dur}</div>`:""}
+</div>`;
+
+block.exs.forEach((ex,ei)=>{
+if(!ex)return;
+const wK=`${sk}-${bi}-${ei}-w`,iK=`${sk}-${bi}-${ei}-inc`,nK=`${sk}-${bi}-${ei}-n`;
+const showLog=!block.wod&&ex.p&&!ex.p.startsWith("60→");
+const isTest=ex.test;const incOn=!!logs[iK];
+
+// ── Données session précédente pour cet exercice ──
+const prevW  = prevSk ? (logs[`${prevSk}-${bi}-${ei}-w`]||'')   : '';
+const prevN  = prevSk ? (logs[`${prevSk}-${bi}-${ei}-n`]||'')   : '';
+const prevInc= prevSk ? !!logs[`${prevSk}-${bi}-${ei}-inc`]     : false;
+const hasPrev= !!(prevW||prevN);
+
+h+=`<div class="ex-row">
+<div class="ex-top">
+<div>
+<div class="ex-name">${ex.n||""}</div>
+${ex.p?`<div class="ex-p" style="${isTest?`color:${ac};font-weight:700`:""}">${ex.p}</div>`:""}
+${ex.o?`<div class="ex-o">${ex.o}</div>`:""}
+</div>
+${ex.s?`<div class="ex-s" style="color:${ac}">${ex.s}</div>`:""}
+</div>`;
+
+if(showLog||isTest){
+// ── Bloc "Dernière fois" ──
+if(hasPrev){
+h+=`<div class="prev-data">
+<span class="prev-lbl">S${state.week-1} — DERNIÈRE FOIS</span>
+${prevW?`<span class="prev-charge">⚖️ ${prevW}${prevInc?`<span class="prev-up">↑ AUGMENTÉ</span>`:''}</span>`:''}
+${prevN?`<div class="prev-note-txt">💬 ${prevN}</div>`:''}
+</div>`;
+}
+h+=`<div class="log-row">
+<input class="log-input" type="text" inputmode="decimal"
+placeholder="${isTest?"Résultat / nouveau max…":"Charge utilisée…"}"
+value="${(logs[wK]||"").replace(/"/g,"&quot;")}"
+oninput="logVal('${wK}',this.value,this,'${ac}')"
+style="border-color:${logs[wK]?ac+"55":"#252525"}">
+${!isTest?`<div class="inc-btn" onclick="toggleInc('${iK}','${ac}')"
+style="background:${incOn?ac:"#161616"};border-color:${incOn?ac:"#252525"};color:${incOn?"#000":"#333"}">↑</div>`:""}
+</div>
+${!isTest&&incOn?`<div class="inc-lbl" style="color:${ac}">✓ AUGMENTER LA SEMAINE PROCHAINE (+2–3%)</div>`:""}
+<input class="note-input" type="text"
+placeholder="Notes (RPE, sensations, technique…)"
+value="${(logs[nK]||"").replace(/"/g,"&quot;")}"
+oninput="logVal('${nK}',this.value)">`;
+}
+h+=`</div>`;
+});
+
+if(block.wod){
+const sK=`${sk}-wod${bi}-score`,nbK=`${sk}-wod${bi}-note`;
+
+// ── Données WOD session précédente ──
+const prevWodScore = prevSk ? (logs[`${prevSk}-wod${bi}-score`]||'') : '';
+const prevWodNote  = prevSk ? (logs[`${prevSk}-wod${bi}-note`]||'')  : '';
+const hasPrevWod   = !!(prevWodScore||prevWodNote);
+
+h+=`<div class="wod-box">
+<div class="wod-box-ttl">📋 NOTER MON WOD</div>
+${hasPrevWod?`<div class="prev-wod">
+<span class="prev-lbl">S${state.week-1} — DERNIER WOD</span>
+${prevWodScore?`<div class="prev-charge">🏁 ${prevWodScore}</div>`:''}
+${prevWodNote?`<div class="prev-note-txt">💬 ${prevWodNote}</div>`:''}
+</div>`:''}
+<input class="wod-score" type="text" placeholder="Temps / Rounds / Score…"
+value="${(logs[sK]||"").replace(/"/g,"&quot;")}"
+oninput="logVal('${sK}',this.value,this,'#FF4500')"
+style="border-color:${logs[sK]?"#FF450099":"#252525"}">
+<input class="wod-note" type="text" placeholder="Ressenti, ajustements, prochaine fois…"
+value="${(logs[nbK]||"").replace(/"/g,"&quot;")}"
+oninput="logVal('${nbK}',this.value)">
+</div>`;
+}
+h+=`</div>`;
+});
+
+h+=`<div class="prog-note">
+<div class="prog-note-ttl">${state.week===4?"SEMAINE DE TEST":"RÈGLE DE PROGRESSION"}</div>
+<div class="prog-note-txt">${state.week===4
+?"Repos 48h min entre les tests · Mange en surplus · Dors 8h+ · Note TOUS tes nouveaux records"
+:"↑ coché = augmenter de 2–3% la semaine suivante · Non coché = maintenir · La technique prime toujours"
+}</div>
+</div></div>`;
+el.innerHTML=h;
+}
+
+// ═══ ACTIONS ═══
+function selectWeek(w){state.week=w;state.session=null;render();}
+function selectSession(s){state.session=state.session===s?null:s;renderSessionGrid();renderDetail();}
+function logVal(key,val,el,ac){
+logs[key]=val;save();
+if(el&&ac)el.style.borderColor=val?ac+"55":"#252525";
+}
+function toggleInc(key){logs[key]=!logs[key];save();renderDetail();renderSessionGrid();}
+
+// ═══ INIT ═══
+initData();
+</script>
+</body>
+</html>
