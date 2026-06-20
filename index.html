@@ -32,10 +32,11 @@ input,textarea{font-family:inherit}
 .btn-import{background:#1e1e1e;color:#555;border:1px solid #252525}
 .btn-claude{background:#10B98118;color:#10B981;border:1px solid #10B98144}
 
-#week-tabs{display:flex;gap:8px;padding:12px;background:var(--bg);border-bottom:1px solid #131313}
-.wtab{flex:1;padding:10px 4px;border-radius:8px;border:2px solid var(--border);background:var(--bg1);color:var(--dim);font-size:11px;font-weight:900;letter-spacing:1px;cursor:pointer;transition:all .15s;text-align:center}
-.wtab div:nth-child(2){font-size:9px;margin-top:2px;opacity:.8}
-.wtab div:nth-child(3){font-size:8px;margin-top:1px;opacity:.6}
+#week-tabs{display:flex;gap:6px;padding:10px 12px;background:var(--bg);border-bottom:1px solid #131313;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+#week-tabs::-webkit-scrollbar{display:none}
+.wtab{flex:0 0 auto;min-width:68px;padding:8px 4px;border-radius:8px;border:2px solid var(--border);background:var(--bg1);color:var(--dim);font-size:10px;font-weight:900;letter-spacing:.5px;cursor:pointer;transition:all .15s;text-align:center}
+.wtab div:nth-child(2){font-size:8px;margin-top:2px;opacity:.8}
+.wtab div:nth-child(3){font-size:7px;margin-top:1px;opacity:.6}
 
 #session-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:10px 12px}
 .scard{background:var(--bg1);border:2px solid var(--border);border-radius:10px;padding:14px 12px;cursor:pointer;transition:all .18s}
@@ -304,9 +305,12 @@ return sess.blocks.reduce((a,b,bi)=>a+b.exs.filter((_,ei)=>logs[`${w}-${s}-${bi}
 // ═══ PROGRAMME DATA — BLOC 2 ═══
 const WEEKS=[
 {id:1,label:"S1",name:"Fondation",pct:"75–80%",color:"#3B82F6"},
-{id:2,label:"S2",name:"Accumulation",pct:"80–85%",color:"#F59E0B"},
-{id:3,label:"S3",name:"Intensif.",pct:"85–90%",color:"#A855F7"},
-{id:4,label:"S4",name:"Tests Max",pct:"Max",color:"#10B981"},
+{id:2,label:"S2",name:"Accumulation",pct:"80–85%",color:"#60A5FA"},
+{id:3,label:"S3",name:"Intensif.",pct:"85–90%",color:"#F59E0B"},
+{id:4,label:"S4",name:"Décharge",pct:"65–70%",color:"#6B7280"},
+{id:5,label:"S5",name:"Réaccum.",pct:"82–87%",color:"#A855F7"},
+{id:6,label:"S6",name:"Force+",pct:"87–90%",color:"#EC4899"},
+{id:7,label:"S7",name:"Pic",pct:"90–93%",color:"#10B981"},
 ];
 const META={
 A:{day:"LUNDI",title:"Clean & Dos Complet"},
@@ -510,54 +514,260 @@ const P={
 {n:"12 Wall Balls",p:"20 lb"}
 ]},
 ]},
-// ─── SEMAINE 4 — TESTS MAX ───
-"4-A":{tag:"LUNDI — S4",title:"TEST MAX — Clean & Squat",blocks:[
-{t:"TESTS MAX 🎯",e:"🎯",wod:false,exs:[
-{n:"Squat Clean — TEST 1RM",s:"1RM",p:"Cible : >170 lb",test:true},
-{n:"Clean & Jerk — TEST 1RM",s:"1RM",p:"Cible : >175 lb",test:true},
-{n:"Back Squat — TEST 1RM",s:"1RM",p:"Cible : >200 lb",test:true}
+// ─── SEMAINE 4 — DÉCHARGE ───
+"4-A":{tag:"LUNDI — S4",title:"Décharge — Clean & Dos",blocks:[
+{t:"HALTÉROPHILIE",e:"🏋️",wod:false,exs:[
+{n:"Clean Pull",s:"3×3",p:"~110 lb",o:"65% — technique pure, vitesse"},
+{n:"Squat Clean",s:"3×2",p:"~110 lb",o:"65% — placement, pas de charge"},
+{n:"Front Squat",s:"3×3",p:"~115 lb",o:"66% — mobilité et profondeur"}
 ]},
-{t:"ALLÉGÉ",e:"💪",wod:false,exs:[
-{n:"Deadlift",s:"3×3",p:"~215 lb",o:"Léger — récup active"}
-]},
-]},
-"4-B":{tag:"MERCREDI — S4",title:"TEST MAX — Snatch & Bench",blocks:[
-{t:"TESTS MAX 🎯",e:"🎯",wod:false,exs:[
-{n:"Squat Snatch — TEST 1RM",s:"1RM",p:"Cible : >120 lb",test:true},
-{n:"Bench Press — TEST 1RM",s:"1RM",p:"Cible : >200 lb (90 kg)",test:true},
-{n:"Shoulder Press — TEST 1RM",s:"1RM",p:"Cible : >140 lb",test:true}
-]},
-{t:"ALLÉGÉ",e:"💪",wod:false,exs:[
-{n:"Pendlay Row",s:"3×8",p:"~115 lb",o:"Récup active"}
-]},
-{t:"WOD — BENCHMARK 🎯",e:"⚡",wod:true,wi:{type:"FOR TIME",dur:"~10 min",tag:"BENCHMARK"},exs:[
-{n:'"Fran" — 21-15-9 For Time'},
-{n:"Thruster",p:"95 lb"},
-{n:"Pull-ups"}
+{t:"DOS — VOLUME LÉGER",e:"💪",wod:false,exs:[
+{n:"Pendlay Row",s:"3×12",p:"~95 lb",o:"Léger — pompe musculaire"},
+{n:"Pull-ups",s:"3×max",p:"Poids de corps",o:"Sans effort max — s'arrêter à 2 reps du max"},
+{n:"DB Row (unilatéral)",s:"3×15",p:"~35 lb DB",o:"Flux sanguin — pas de force"},
+{n:"Bicep Curl",s:"3×15",p:"~35 lb",o:"Léger — récupération active"}
 ]},
 ]},
-"4-C":{tag:"VENDREDI — S4",title:"TEST MAX — Deadlift & Jambes",blocks:[
-{t:"TESTS MAX 🎯",e:"🎯",wod:false,exs:[
-{n:"Deadlift — TEST 1RM",s:"1RM",p:"Cible : >320 lb (145 kg)",test:true},
-{n:"Front Squat — TEST 3RM",s:"3RM",p:"Cible : >165 lb",test:true},
-{n:"Push Jerk — TEST 3RM",s:"3RM",p:"Cible : >145 lb",test:true}
+"4-B":{tag:"MERCREDI — S4",title:"Décharge — Snatch & Pecto",blocks:[
+{t:"HALTÉROPHILIE",e:"🏋️",wod:false,exs:[
+{n:"Snatch Pull",s:"3×3",p:"~80 lb",o:"65% — vitesse et amplitude"},
+{n:"Hang Squat Snatch",s:"3×2",p:"~78 lb",o:"65% — technique pure"},
+{n:"OHS",s:"3×3",p:"~78 lb",o:"Mobilité épaules / poignets"}
 ]},
-{t:"ALLÉGÉ",e:"💪",wod:false,exs:[
-{n:"Squat Clean Thruster",s:"3×2",p:"~105 lb",o:"Léger — focus technique"}
+{t:"PECTORAUX & TRICEPS",e:"💪",wod:false,exs:[
+{n:"Bench Press",s:"4×15",p:"~130 lb",o:"Léger — hypertrophie active"},
+{n:"Dips",s:"3×10",p:"Poids de corps",o:"Sans lest — flux sanguin"},
+{n:"Incline DB Press",s:"3×15",p:"~30 lb DB",o:"Léger — récupération"},
+{n:"Skull Crusher",s:"3×15",p:"~45 lb",o:"Très léger — étirement triceps"}
+]},
+{t:"WOD",e:"⚡",wod:true,wi:{type:"FOR TIME",dur:"~10 min",tag:"LÉGER"},exs:[
+{n:"3 Rounds For Time — LÉGER"},
+{n:"200m Run"},
+{n:"10 KB Swing",p:"16 kg"},
+{n:"10 Box Jumps",p:'20"'}
 ]},
 ]},
-"4-D":{tag:"SAMEDI — S4",title:"BILAN CONDITIONNING",blocks:[
-{t:"TESTS COMPLÉMENTS 🎯",e:"🎯",wod:false,exs:[
-{n:"Snatch Balance — TEST 1RM",s:"1RM",p:"Cible : >100 lb",test:true},
-{n:"Squat Clean Thruster — TEST 1RM",s:"1RM",p:"Cible : >145 lb",test:true}
+"4-C":{tag:"VENDREDI — S4",title:"Décharge — Jambes & Force",blocks:[
+{t:"JAMBES — LÉGER",e:"🦵",wod:false,exs:[
+{n:"Back Squat",s:"3×5",p:"~130 lb",o:"65% — mobilité et profondeur"},
+{n:"Romanian DL",s:"3×12",p:"~130 lb",o:"Excentrique lent — étirement"},
+{n:"Bulgarian Split Squat",s:"3×12",p:"~20 lb DB",o:"Équilibre — pas de charge"},
+{n:"Nordic Curl",s:"2×8",p:"Poids de corps",o:"Excentrique uniquement"},
+{n:"Calf Raise",s:"3×25",p:"~75 lb",o:"Volume léger — amplitude max"}
 ]},
-{t:"ALLÉGÉ",e:"💪",wod:false,exs:[
-{n:"Push Press",s:"3×5",p:"~105 lb",o:"Léger, mobilisation"}
+{t:"FORCE",e:"💪",wod:false,exs:[
+{n:"Deadlift",s:"3×3",p:"~205 lb",o:"65% — technique et placement"},
+{n:"Clean & Jerk",s:"3×1",p:"~110 lb",o:"65% — vitesse, pas de charge"}
 ]},
-{t:"WOD — TIME TRIAL 🏁",e:"⚡",wod:true,wi:{type:"TIME TRIAL",dur:"~20 min",tag:"BILAN"},exs:[
-{n:"1 Mile Run — For Time",p:"Notez votre temps !"},
-{n:"— Repos 5 min —"},
-{n:"500m Row — For Time",p:"Cible : <1'35\""}
+]},
+"4-D":{tag:"SAMEDI — S4",title:"Décharge — Épaules & Mobilité",blocks:[
+{t:"ÉPAULES — LÉGER",e:"🎯",wod:false,exs:[
+{n:"Shoulder Press",s:"4×8",p:"~85 lb",o:"63% — strict, contrôle"},
+{n:"Push Jerk",s:"3×3",p:"~95 lb",o:"65% — split propre, pas lourd"},
+{n:"Lateral Raise",s:"4×20",p:"~12 lb DB",o:"Flux sanguin deltoïde"},
+{n:"Face Pull / Band Pull-Apart",s:"4×25",p:"Élastique léger",o:"Santé épaule — mobilité"}
+]},
+{t:"TECHNIQUE",e:"🏋️",wod:false,exs:[
+{n:"Snatch Balance",s:"3×3",p:"~60 lb",o:"Très léger — vitesse pure"},
+{n:"Squat Clean Thruster",s:"3×2",p:"~95 lb",o:"Technique — pas de charge"}
+]},
+{t:"WOD",e:"⚡",wod:true,wi:{type:"AMRAP",dur:"8 min",tag:"LÉGER"},exs:[
+{n:"AMRAP 8 min — LÉGER"},
+{n:"5 Power Snatch",p:"55 lb"},
+{n:"10 Air Squats"},
+{n:"5 Pull-ups"}
+]},
+]},
+// ─── SEMAINE 5 — RÉACCUMULATION ───
+"5-A":{tag:"LUNDI — S5",title:"Clean & Dos Complet",blocks:[
+{t:"HALTÉROPHILIE",e:"🏋️",wod:false,exs:[
+{n:"Clean Pull",s:"4×3",p:"~160 lb",o:"94% C&J — corps frais après décharge"},
+{n:"Squat Clean",s:"5×2",p:"~140 lb",o:"82% — genou OK après récup"},
+{n:"Front Squat",s:"4×3",p:"~145 lb",o:"83% FS"}
+]},
+{t:"DOS COMPLET",e:"💪",wod:false,exs:[
+{n:"Pendlay Row",s:"4×8",p:"~138 lb",o:"Reprend où S3 finissait"},
+{n:"Pull-ups lestés",s:"4×6",p:"+12 lb",o:"Force — charge stable"},
+{n:"DB Row (unilatéral)",s:"4×8",p:"~62 lb DB",o:"+2 lb vs S3"},
+{n:"Bicep Curl",s:"3×8",p:"~58 lb",o:"+3 lb vs S3"}
+]},
+]},
+"5-B":{tag:"MERCREDI — S5",title:"Snatch & Pectoraux / Triceps",blocks:[
+{t:"HALTÉROPHILIE",e:"🏋️",wod:false,exs:[
+{n:"Snatch Pull",s:"4×3",p:"~100 lb",o:"83% snatch — corp reposé"},
+{n:"Hang Squat Snatch",s:"4×2",p:"~100 lb",o:"83% — montée progressive"},
+{n:"OHS",s:"3×3",p:"~100 lb",o:"Focus poignets"}
+]},
+{t:"PECTORAUX & TRICEPS",e:"💪",wod:false,exs:[
+{n:"Bench Press",s:"4×7",p:"~168 lb",o:"84% — +3 lb vs S3"},
+{n:"Dips lestés",s:"3×6",p:"+18 lb",o:"Force — +3 lb vs S3"},
+{n:"Incline DB Press",s:"3×8",p:"~52 lb DB",o:"+2 lb vs S3"},
+{n:"Skull Crusher",s:"3×8",p:"~68 lb",o:"+3 lb vs S3"}
+]},
+{t:"WOD",e:"⚡",wod:true,wi:{type:"FOR TIME",dur:"~15 min",tag:"MEDIUM"},exs:[
+{n:"4 Rounds For Time"},
+{n:"400m Run"},
+{n:"10 Toes-to-Bar"},
+{n:"10 Wall Balls",p:"20 lb"}
+]},
+]},
+"5-C":{tag:"VENDREDI — S5",title:"Jambes Complètes & Force",blocks:[
+{t:"JAMBES COMPLET",e:"🦵",wod:false,exs:[
+{n:"Back Squat",s:"5×4",p:"~165 lb",o:"82% — corps frais"},
+{n:"Romanian DL",s:"4×10",p:"~170 lb",o:"+5 lb vs S3"},
+{n:"Bulgarian Split Squat",s:"3×10",p:"~38 lb DB",o:"+3 lb vs S3"},
+{n:"Nordic Curl",s:"3×8",p:"Poids de corps / lesté",o:"Excentrique lent"},
+{n:"Calf Raise",s:"4×20",p:"~140 lb",o:"+5 lb vs S3"}
+]},
+{t:"FORCE",e:"💪",wod:false,exs:[
+{n:"Deadlift",s:"4×3",p:"~258 lb",o:"82% — +3 lb vs S3"},
+{n:"Clean & Jerk",s:"4×1",p:"~142 lb",o:"83% C&J"}
+]},
+]},
+"5-D":{tag:"SAMEDI — S5",title:"Épaules & Technique + WOD",blocks:[
+{t:"ÉPAULES",e:"🎯",wod:false,exs:[
+{n:"Shoulder Press",s:"5×4",p:"~112 lb",o:"83% — reprend S3 +2 lb"},
+{n:"Push Jerk",s:"4×3",p:"~122 lb",o:"84% — dip-drive explosif"},
+{n:"Lateral Raise",s:"4×12",p:"~22 lb DB",o:"Délié après décharge"},
+{n:"Face Pull / Band Pull-Apart",s:"4×15",p:"Élastique moyen",o:"Rotateurs"}
+]},
+{t:"TECHNIQUE",e:"🏋️",wod:false,exs:[
+{n:"Snatch Balance",s:"4×2",p:"~84 lb",o:"+2 lb vs S3"},
+{n:"Squat Clean Thruster",s:"3×2",p:"~128 lb",o:"+3 lb vs S3"}
+]},
+{t:"WOD",e:"⚡",wod:true,wi:{type:"AMRAP",dur:"12 min",tag:"MEDIUM"},exs:[
+{n:"AMRAP 12 min"},
+{n:"8 Toes-to-Bar"},
+{n:"8 Power Clean",p:"95 lb"},
+{n:"12 Wall Balls",p:"20 lb"}
+]},
+]},
+// ─── SEMAINE 6 — FORCE+ ───
+"6-A":{tag:"LUNDI — S6",title:"Clean & Dos Complet",blocks:[
+{t:"HALTÉROPHILIE",e:"🏋️",wod:false,exs:[
+{n:"Clean Pull",s:"4×2",p:"~163 lb",o:"96% C&J — lourd"},
+{n:"Squat Clean",s:"5×2",p:"~150 lb",o:"88% — surveille le genou"},
+{n:"Front Squat",s:"5×2",p:"~155 lb",o:"89% FS"}
+]},
+{t:"DOS COMPLET",e:"💪",wod:false,exs:[
+{n:"Pendlay Row",s:"4×6",p:"~145 lb",o:"+7 lb vs S5 — explosif"},
+{n:"Pull-ups lestés",s:"4×5",p:"+15 lb",o:"Force — +3 lb vs S5"},
+{n:"DB Row (unilatéral)",s:"4×6",p:"~67 lb DB",o:"+5 lb vs S5"},
+{n:"Bicep Curl",s:"4×6",p:"~62 lb",o:"+4 lb vs S5 — force"}
+]},
+]},
+"6-B":{tag:"MERCREDI — S6",title:"Snatch & Pectoraux / Triceps",blocks:[
+{t:"HALTÉROPHILIE",e:"🏋️",wod:false,exs:[
+{n:"Snatch Pull",s:"4×2",p:"~107 lb",o:"89% snatch"},
+{n:"Hang Squat Snatch",s:"4×2",p:"~107 lb",o:"89% — propre avant lourd"},
+{n:"OHS",s:"4×2",p:"~107 lb",o:"89% — stop si poignet"}
+]},
+{t:"PECTORAUX & TRICEPS",e:"💪",wod:false,exs:[
+{n:"Bench Press",s:"5×5",p:"~180 lb",o:"90% — force pure"},
+{n:"Dips lestés",s:"4×5",p:"+20 lb",o:"+2 lb vs S5"},
+{n:"Incline DB Press",s:"3×6",p:"~55 lb DB",o:"+3 lb vs S5"},
+{n:"Skull Crusher",s:"4×6",p:"~70 lb",o:"+2 lb vs S5 — excentrique lent"}
+]},
+{t:"WOD 🔥🔥",e:"⚡",wod:true,wi:{type:"FOR TIME",dur:"~20 min",tag:"LONG"},exs:[
+{n:"4 Rounds For Time"},
+{n:"500m Row"},
+{n:"15 Toes-to-Bar"},
+{n:"10 Hang Power Clean",p:"115 lb"}
+]},
+]},
+"6-C":{tag:"VENDREDI — S6",title:"Jambes Complètes & Force",blocks:[
+{t:"JAMBES COMPLET",e:"🦵",wod:false,exs:[
+{n:"Back Squat",s:"5×3",p:"~175 lb",o:"87% — +10 lb vs S5"},
+{n:"Romanian DL",s:"4×8",p:"~180 lb",o:"excentrique 4s — +10 lb vs S5"},
+{n:"Bulgarian Split Squat",s:"3×8",p:"~42 lb DB",o:"+4 lb vs S5"},
+{n:"Nordic Curl",s:"3×6",p:"Lesté",o:"Excentrique très lent"},
+{n:"Calf Raise",s:"4×15",p:"~155 lb",o:"+15 lb vs S5"}
+]},
+{t:"FORCE",e:"💪",wod:false,exs:[
+{n:"Deadlift",s:"4×2",p:"~275 lb",o:"87% — technique parfaite"},
+{n:"Clean & Jerk",s:"5×1",p:"~150 lb",o:"88% — qualité max"}
+]},
+]},
+"6-D":{tag:"SAMEDI — S6",title:"Épaules & Technique + WOD",blocks:[
+{t:"ÉPAULES",e:"🎯",wod:false,exs:[
+{n:"Shoulder Press",s:"5×3",p:"~122 lb",o:"90% — lourd"},
+{n:"Push Jerk",s:"5×2",p:"~130 lb",o:"90% — split explosif"},
+{n:"Lateral Raise",s:"4×12",p:"~24 lb DB",o:"+2 lb vs S5"},
+{n:"Face Pull / Band Pull-Apart",s:"4×15",p:"Élastique fort",o:"Rotateurs"}
+]},
+{t:"TECHNIQUE",e:"🏋️",wod:false,exs:[
+{n:"Snatch Balance",s:"5×2",p:"~92 lb",o:"+8 lb vs S5"},
+{n:"Squat Clean Thruster",s:"4×2",p:"~138 lb",o:"+10 lb vs S5"}
+]},
+{t:"WOD 🔥",e:"⚡",wod:true,wi:{type:"FOR TIME",dur:"~15 min",tag:"MEDIUM"},exs:[
+{n:"5 Rounds For Time"},
+{n:"5 Power Snatch",p:"85 lb"},
+{n:"10 Box Jumps",p:'30"'},
+{n:"15 KB Swing",p:"32 kg"}
+]},
+]},
+// ─── SEMAINE 7 — PIC ───
+"7-A":{tag:"LUNDI — S7",title:"Clean & Dos Complet",blocks:[
+{t:"HALTÉROPHILIE",e:"🏋️",wod:false,exs:[
+{n:"Clean Pull",s:"4×2",p:"~168 lb",o:"99% C&J — maximal"},
+{n:"Squat Clean",s:"5×1",p:"~157 lb",o:"92% — singles lourds"},
+{n:"Front Squat",s:"5×1",p:"~162 lb",o:"93% FS — lourd mais propre"}
+]},
+{t:"DOS COMPLET",e:"💪",wod:false,exs:[
+{n:"Pendlay Row",s:"4×5",p:"~150 lb",o:"+5 lb vs S6 — force max"},
+{n:"Pull-ups lestés",s:"4×4",p:"+18 lb",o:"+3 lb vs S6"},
+{n:"DB Row (unilatéral)",s:"4×5",p:"~70 lb DB",o:"+3 lb vs S6"},
+{n:"Bicep Curl",s:"4×5",p:"~65 lb",o:"+3 lb vs S6 — force max"}
+]},
+]},
+"7-B":{tag:"MERCREDI — S7",title:"Snatch & Pectoraux / Triceps",blocks:[
+{t:"HALTÉROPHILIE",e:"🏋️",wod:false,exs:[
+{n:"Snatch Pull",s:"4×2",p:"~113 lb",o:"94% snatch — quasi-max"},
+{n:"Hang Squat Snatch",s:"4×1",p:"~113 lb",o:"94% — singles — propre"},
+{n:"OHS",s:"4×2",p:"~113 lb",o:"94% — stop si poignet"}
+]},
+{t:"PECTORAUX & TRICEPS",e:"💪",wod:false,exs:[
+{n:"Bench Press",s:"5×3",p:"~187 lb",o:"93% — lourd, technique"},
+{n:"Dips lestés",s:"4×4",p:"+25 lb",o:"+5 lb vs S6"},
+{n:"Incline DB Press",s:"3×5",p:"~58 lb DB",o:"+3 lb vs S6"},
+{n:"Skull Crusher",s:"4×5",p:"~73 lb",o:"+3 lb vs S6"}
+]},
+{t:"WOD",e:"⚡",wod:true,wi:{type:"FOR TIME",dur:"~10 min",tag:"SHORT"},exs:[
+{n:"3 Rounds For Time — LÉGER (semaine lourde)"},
+{n:"10 Pull-ups"},
+{n:"10 Push-ups"},
+{n:"15 Air Squats"}
+]},
+]},
+"7-C":{tag:"VENDREDI — S7",title:"Jambes Complètes & Force",blocks:[
+{t:"JAMBES COMPLET",e:"🦵",wod:false,exs:[
+{n:"Back Squat",s:"5×2",p:"~185 lb",o:"92% — lourd, singles ou doubles"},
+{n:"Romanian DL",s:"3×6",p:"~188 lb",o:"Lourd — excentrique contrôlé"},
+{n:"Bulgarian Split Squat",s:"3×6",p:"~45 lb DB",o:"+3 lb vs S6"},
+{n:"Nordic Curl",s:"3×5",p:"Lesté",o:"Excentrique max"},
+{n:"Calf Raise",s:"3×12",p:"~165 lb",o:"+10 lb vs S6"}
+]},
+{t:"FORCE",e:"💪",wod:false,exs:[
+{n:"Deadlift",s:"4×1",p:"~290 lb",o:"92% — singles lourds"},
+{n:"Clean & Jerk",s:"5×1",p:"~157 lb",o:"92% — meilleur de la semaine"}
+]},
+]},
+"7-D":{tag:"SAMEDI — S7",title:"Épaules & Technique + WOD",blocks:[
+{t:"ÉPAULES",e:"🎯",wod:false,exs:[
+{n:"Shoulder Press",s:"5×2",p:"~127 lb",o:"94% — lourd"},
+{n:"Push Jerk",s:"5×2",p:"~135 lb",o:"93% — pic du programme"},
+{n:"Lateral Raise",s:"3×12",p:"~24 lb DB",o:"Volume réduit S7"},
+{n:"Face Pull / Band Pull-Apart",s:"4×15",p:"Élastique fort",o:"Santé épaule"}
+]},
+{t:"TECHNIQUE",e:"🏋️",wod:false,exs:[
+{n:"Snatch Balance",s:"5×2",p:"~97 lb",o:"+5 lb vs S6 — pic"},
+{n:"Squat Clean Thruster",s:"4×2",p:"~143 lb",o:"+5 lb vs S6"}
+]},
+{t:"WOD",e:"⚡",wod:true,wi:{type:"AMRAP",dur:"8 min",tag:"LÉGER"},exs:[
+{n:"AMRAP 8 min — volume réduit S7"},
+{n:"5 Toes-to-Bar"},
+{n:"5 Power Clean",p:"85 lb"},
+{n:"10 Wall Balls",p:"20 lb"}
 ]},
 ]},
 };
@@ -695,10 +905,12 @@ h+=`</div>`;
 });
 
 h+=`<div class="prog-note">
-<div class="prog-note-ttl">${state.week===4?"SEMAINE DE TEST":"RÈGLE DE PROGRESSION"}</div>
+<div class="prog-note-ttl">${state.week===4?"SEMAINE DE DÉCHARGE":state.week===7?"SEMAINE PIC":"RÈGLE DE PROGRESSION"}</div>
 <div class="prog-note-txt">${state.week===4
-?"Repos 48h min entre tests · Note TOUS tes nouveaux records · Mange bien"
-:"↑ coché = +2–3% semaine suivante · Note tes reps série par série · La technique prime"
+?"Volumes réduits — c'est obligatoire, pas optionnel · Le corps se reconstruit cette semaine · Ne rajoute pas de volume"
+:state.week===7
+?"Semaine la plus lourde du programme — pas de tests 1RM · WODs légers · Dors 8h+ · Mange en surplus"
+:"↑ coché = +2–3% semaine suivante · Note tes reps série par série · La technique prime toujours"
 }</div>
 </div></div>`;
 el.innerHTML=h;
