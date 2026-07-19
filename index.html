@@ -613,29 +613,29 @@ const P={
 ]},
 "5-C":{tag:"VENDREDI — S5",title:"Haltéro, Force & Jambes",blocks:[
 {t:"HALTÉROPHILIE",e:"🏋️",wod:false,exs:[
-{n:"Clean & Jerk",s:"4×1",p:"~130 lb",o:"⚡ En 1er — technique fraîche"}
+{n:"Clean & Jerk",s:"4×1",p:"~130 lb",o:"⚡ En 1er — technique fraîche",prevK:"3-C-1-1-"}
 ]},
 {t:"FORCE",e:"💪",wod:false,exs:[
-{n:"Back Squat",s:"5×4",p:"~165 lb",o:"82% — corps frais"},
-{n:"Deadlift",s:"4×3",p:"~258 lb",o:"82% — focus technique"}
+{n:"Back Squat",s:"5×4",p:"~165 lb",o:"82% — corps frais",prevK:"3-C-0-0-"},
+{n:"Deadlift",s:"4×3",p:"~258 lb",o:"82% — focus technique",prevK:"3-C-1-0-"}
 ]},
 {t:"JAMBES HYPERTROPHIE",e:"🦵",wod:false,exs:[
-{n:"Romanian DL",s:"4×10",p:"~165 lb",o:"Base S3 — excentrique 3s"},
-{n:"Bulgarian Split Squat",s:"3×10",p:"~33 lb DB",o:"Base S3 — plus de reps"},
-{n:"Nordic Curl",s:"3×8",p:"Poids de corps",o:"Excentrique lent"},
-{n:"Calf Raise",s:"4×20",p:"~115 lb",o:"Base S3 — plus de reps"}
+{n:"Romanian DL",s:"4×10",p:"~165 lb",o:"Base S3 — excentrique 3s",prevK:"3-C-0-1-"},
+{n:"Bulgarian Split Squat",s:"3×10",p:"~33 lb DB",o:"Base S3 — plus de reps",prevK:"3-C-0-2-"},
+{n:"Nordic Curl",s:"3×8",p:"Poids de corps",o:"Excentrique lent",prevK:"3-C-0-3-"},
+{n:"Calf Raise",s:"4×20",p:"~115 lb",o:"Base S3 — plus de reps",prevK:"3-C-0-4-"}
 ]},
 ]},
 "5-D":{tag:"SAMEDI — S5",title:"Technique & Épaules + WOD",blocks:[
 {t:"TECHNIQUE HALTÉROPHILIE",e:"🏋️",wod:false,exs:[
-{n:"Snatch Balance",s:"4×2",p:"~87 lb",o:"⚡ En 1er — fraîche, base S3 +2 lb"},
-{n:"Squat Clean Thruster",s:"3×2",p:"~125 lb",o:"Base S3 — technique"}
+{n:"Snatch Balance",s:"4×2",p:"~87 lb",o:"⚡ En 1er — fraîche, base S3 +2 lb",prevK:"3-D-1-0-"},
+{n:"Squat Clean Thruster",s:"3×2",p:"~125 lb",o:"Base S3 — technique",prevK:"3-D-1-1-"}
 ]},
 {t:"ÉPAULES",e:"🎯",wod:false,exs:[
-{n:"Shoulder Press",s:"5×4",p:"~112 lb",o:"83% — strict"},
-{n:"Push Jerk",s:"4×3",p:"~120 lb",o:"84% — dip-drive explosif"},
-{n:"Lateral Raise",s:"4×12",p:"~18 lb DB",o:"Délié après décharge"},
-{n:"Face Pull / Band Pull-Apart",s:"4×15",p:"~55 lb",o:"Rotateurs"}
+{n:"Shoulder Press",s:"5×4",p:"~112 lb",o:"83% — strict",prevK:"3-D-0-0-"},
+{n:"Push Jerk",s:"4×3",p:"~120 lb",o:"84% — dip-drive explosif",prevK:"3-D-0-1-"},
+{n:"Lateral Raise",s:"4×12",p:"~18 lb DB",o:"Délié après décharge",prevK:"3-D-0-2-"},
+{n:"Face Pull / Band Pull-Apart",s:"4×15",p:"~55 lb",o:"Rotateurs",prevK:"3-D-0-3-"}
 ]},
 {t:"WOD",e:"⚡",wod:true,wi:{type:"AMRAP",dur:"12 min",tag:"MEDIUM"},exs:[
 {n:"AMRAP 12 min"},
@@ -841,10 +841,11 @@ const nK=`${sk}-${bi}-${ei}-n`;
 const showLog=!block.wod&&ex.p&&!ex.p.startsWith("60→");
 const isTest=ex.test;const incOn=!!logs[iK];
 
-const prevW=prevSk?(logs[`${prevSk}-${bi}-${ei}-w`]||''):'';
-const prevR=prevSk?(logs[`${prevSk}-${bi}-${ei}-r`]||''):'';
-const prevN=prevSk?(logs[`${prevSk}-${bi}-${ei}-n`]||''):'';
-const prevInc=prevSk?!!logs[`${prevSk}-${bi}-${ei}-inc`]:false;
+const prevBase=ex.prevK||(prevSk?`${prevSk}-${bi}-${ei}-`:null);
+const prevW=prevBase?(logs[prevBase+'w']||''):'';
+const prevR=prevBase?(logs[prevBase+'r']||''):'';
+const prevN=prevBase?(logs[prevBase+'n']||''):'';
+const prevInc=prevBase?!!logs[prevBase+'inc']:false;
 const hasPrev=!!(prevW||prevR||prevN);
 
 h+=`<div class="ex-row">
