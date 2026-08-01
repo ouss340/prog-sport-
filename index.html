@@ -164,12 +164,11 @@ const sb = window.supabase.createClient(SB_URL, SB_KEY, {
 });
 
 async function sbLoad(){
-try{
-const {data,error}=await sb.from(SB_TABLE).select("data").eq("store_key",STORE_KEY).maybeSingle();
-if(error||!data)return null;
-const d=data.data;
-return d&&Object.keys(d).length>0?d:null;
-}catch{return null;}
+  try{
+    const { data, error } = await sb.from(SB_TABLE).select("data").eq("store_key", STORE_KEY).maybeSingle();
+    if(error) return { ok:false, data:null };            // erreur reseau / projet en pause
+    return { ok:true, data:(data && data.data) ? data.data : {} };  // ok:true meme si la ligne n'existe pas encore
+  }catch(e){ return { ok:false, data:null }; }
 }
 async function sbSave(data){
 try{
@@ -210,13 +209,13 @@ async function initData(){
   render();
   setSyncStatus("syncing");
   const localCount = Object.keys(logs).length;
-  const cloud = await sbLoad();
-  if(!cloud){ setSyncStatus("offline"); return; }
-  logs = Object.assign({}, cloud, logs);
+  const res = await sbLoad();
+  if(!res.ok){ setSyncStatus("offline"); return; }
+  logs = Object.assign({}, res.data, logs);   // union ; le local gagne sur les cles communes
   saveLocal();
   render();
   setSyncStatus("ok");
-  if(localCount > 0) sbSave(logs);
+  if(localCount > 0) sbSave(logs);            // pousse le local et cree la ligne si absente
 }
 function saveLocal(){try{localStorage.setItem(STORE_KEY,JSON.stringify(logs));}catch{}}
 function save(){
