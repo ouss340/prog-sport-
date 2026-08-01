@@ -150,7 +150,18 @@ const SB_URL = "https://cyczhlsugdbguahbfbuz.supabase.co";
 const SB_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN5Y3pobHN1Z2RiZ3VhaGJmYnV6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg2MTAzNzgsImV4cCI6MjA5NDE4NjM3OH0.bRNltAnc7QGf2o6B2IwsvOS_KHWUj0ejlvjfrRHIt2M";
 const SB_TABLE = "training_logs";
 const STORE_KEY = "prog_logs_v4";
-const sb = window.supabase.createClient(SB_URL, SB_KEY);
+const NET_TIMEOUT = 8000; // 8s max par requete reseau
+function fetchWithTimeout(input, init){
+  init = init || {};
+  const ctrl = new AbortController();
+  const t = setTimeout(function(){ ctrl.abort(); }, NET_TIMEOUT);
+  return fetch(input, Object.assign({}, init, { signal: ctrl.signal, cache: "no-store" }))
+    .finally(function(){ clearTimeout(t); });
+}
+const sb = window.supabase.createClient(SB_URL, SB_KEY, {
+  auth: { persistSession: false, autoRefreshToken: false },
+  global: { fetch: fetchWithTimeout }
+});
 
 async function sbLoad(){
 try{
@@ -175,34 +186,44 @@ else if(s==="syncing"){el.textContent="⏳ Sync…";el.style.color="#F59E0B";}
 else if(s==="offline"){el.textContent="📵 Hors ligne — local";el.style.color="#888";}
 else if(s==="error"){el.textContent="⚠️ Erreur sync";el.style.color="#FF4500";}
 }
-async function syncNow(){
-setSyncStatus("syncing");
-const ok=await sbSave(logs);
-setSyncStatus(ok?"ok":"error");
-if(ok)toast("☁️ Synchronisé !");
-else toast("⚠️ Hors ligne — données locales OK","error");
+let __syncing = false;
+async function syncNow(silent){
+  if(__syncing) return;
+  __syncing = true;
+  setSyncStatus("syncing");
+  try{
+    const ok = await sbSave(logs);
+    setSyncStatus(ok ? "ok" : "offline");
+    if(!silent) toast(ok ? "☁️ Synchronisé" : "📵 Hors ligne — données locales OK");
+  }catch(e){ setSyncStatus("offline"); }
+  finally{ __syncing = false; }
 }
+window.addEventListener("online", function(){ syncNow(true); });
+document.addEventListener("visibilitychange", function(){ if(!document.hidden) syncNow(true); });
+window.addEventListener("pageshow", function(e){ if(e.persisted) syncNow(true); });
 
 let state={week:1,session:null};
 let logs={};
 
 async function initData(){
-setSyncStatus("syncing");
-const cloud=await sbLoad();
-if(cloud&&Object.keys(cloud).length>0){
-logs=cloud;saveLocal();render();setSyncStatus("ok");return;
-}
-try{const r=localStorage.getItem(STORE_KEY);if(r)logs=JSON.parse(r);}catch{}
-render();
-if(Object.keys(logs).length>0){
-const ok=await sbSave(logs);setSyncStatus(ok?"ok":"offline");
-}else{setSyncStatus("offline");}
+  try{ logs = JSON.parse(localStorage.getItem(STORE_KEY) || "{}"); }catch(e){ logs = {}; }
+  render();
+  setSyncStatus("syncing");
+  const localCount = Object.keys(logs).length;
+  const cloud = await sbLoad();
+  if(!cloud){ setSyncStatus("offline"); return; }
+  logs = Object.assign({}, cloud, logs);
+  saveLocal();
+  render();
+  setSyncStatus("ok");
+  if(localCount > 0) sbSave(logs);
 }
 function saveLocal(){try{localStorage.setItem(STORE_KEY,JSON.stringify(logs));}catch{}}
 function save(){
-saveLocal();
-clearTimeout(syncTimer);setSyncStatus("syncing");
-syncTimer=setTimeout(async()=>{const ok=await sbSave(logs);setSyncStatus(ok?"ok":"offline");},500);
+  saveLocal();
+  clearTimeout(syncTimer);
+  setSyncStatus("syncing");
+  syncTimer = setTimeout(function(){ syncNow(true); }, 800);
 }
 function toast(msg,type){
 const t=document.getElementById("toast");
