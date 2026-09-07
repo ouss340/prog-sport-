@@ -6,18 +6,18 @@
 <meta name="theme-color" content="#0b0e14">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>Bloc 3 — Invictus Poids de corps</title>
+<title>Bloc 4 — Muscu / Haltéro / Poids de corps</title>
 <style>
 :root{
   --bg:#0b0e14; --panel:#141924; --panel2:#1b2230; --line:#28303f;
-  --txt:#e8edf5; --dim:#8b97ab; --acc:#ff6b35; --acc2:#4ade80; --blue:#38bdf8; --warn:#fbbf24;
+  --txt:#e8edf5; --dim:#8b97ab; --acc:#ff6b35; --acc2:#4ade80; --blue:#38bdf8; --warn:#fbbf24; --purple:#a78bfa;
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{margin:0;padding:0;background:var(--bg);color:var(--txt);
   font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
   font-size:15px;line-height:1.45;padding-bottom:env(safe-area-inset-bottom)}
 header{position:sticky;top:0;z-index:50;background:rgba(11,14,20,.94);backdrop-filter:blur(12px);
-  border-bottom:1px solid var(--line);padding:10px 14px calc(10px + env(safe-area-inset-top)) 14px;padding-top:calc(10px + env(safe-area-inset-top))}
+  border-bottom:1px solid var(--line);padding:10px 14px;padding-top:calc(10px + env(safe-area-inset-top))}
 .hrow{display:flex;align-items:center;gap:10px;justify-content:space-between}
 h1{font-size:15px;margin:0;letter-spacing:.4px;font-weight:700}
 h1 span{color:var(--acc)}
@@ -26,34 +26,41 @@ h1 span{color:var(--acc)}
 nav{display:flex;gap:6px;margin-top:10px;overflow-x:auto;scrollbar-width:none}
 nav::-webkit-scrollbar{display:none}
 nav button{flex:0 0 auto;background:var(--panel);border:1px solid var(--line);color:var(--dim);
-  padding:7px 13px;border-radius:99px;font-size:13px;font-weight:600;cursor:pointer}
+  padding:7px 13px;border-radius:99px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit}
 nav button.on{background:var(--acc);border-color:var(--acc);color:#0b0e14}
 main{padding:14px 14px 90px}
 .weeknote{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--acc);
   padding:11px 13px;border-radius:10px;font-size:13px;color:var(--dim);margin-bottom:14px}
 .weeknote b{color:var(--txt)}
+.prog-bar{display:flex;gap:3px;margin:10px 0 14px}
+.pdot{flex:1;height:6px;border-radius:3px;background:var(--panel2);border:1px solid var(--line)}
+.pdot.ok{background:var(--acc2);border-color:var(--acc2)}
+.pdot.cur{background:var(--acc);border-color:var(--acc)}
 .sess{background:var(--panel);border:1px solid var(--line);border-radius:14px;margin-bottom:12px;overflow:hidden}
+.sess.isdone{opacity:.75;border-color:#4ade8033}
+.sess.iscur{border-color:var(--acc);box-shadow:0 0 0 1px var(--acc)}
 .shead{display:flex;align-items:center;gap:10px;padding:13px 14px;cursor:pointer}
 .sid{background:var(--panel2);border:1px solid var(--line);border-radius:8px;font-size:11px;
   font-weight:800;padding:4px 8px;color:var(--acc);flex:0 0 auto}
+.sess.isdone .sid{color:var(--acc2)}
 .stitle{flex:1;min-width:0}
 .stitle b{display:block;font-size:14px;font-weight:700}
 .stitle small{color:var(--dim);font-size:11.5px}
 .tag{font-size:9.5px;font-weight:800;letter-spacing:.6px;padding:3px 7px;border-radius:6px;flex:0 0 auto}
+.tag.MUSCU{background:#ff6b3522;color:var(--acc)}
+.tag.HALTERO{background:#fbbf2422;color:var(--warn)}
+.tag.PDC{background:#4ade8022;color:var(--acc2)}
 .tag.TEST{background:#38bdf822;color:var(--blue)}
-.tag.FORCE{background:#ff6b3522;color:var(--acc)}
-.tag.WOD{background:#f8717122;color:#f87171}
-.tag.CARDIO{background:#4ade8022;color:var(--acc2)}
-.tag.PUISSANCE{background:#fbbf2422;color:var(--warn)}
-.tag.DECHARGE{background:#8b97ab22;color:var(--dim)}
 .chev{color:var(--dim);font-size:12px;flex:0 0 auto}
 .sbody{display:none;padding:0 14px 14px;border-top:1px solid var(--line)}
 .sess.open .sbody{display:block}
-.intro{font-size:12.5px;color:var(--dim);margin:12px 0;padding:10px;background:var(--panel2);border-radius:9px}
-.verb{font-size:13px;line-height:1.6;background:var(--panel2);border:1px solid var(--line);
-  border-left:3px solid var(--acc);border-radius:9px;padding:12px;margin-bottom:6px;white-space:normal}
-.verb b{color:var(--txt)} .verb u{color:var(--acc);text-decoration:none;font-weight:700;font-size:11.5px;letter-spacing:.4px}
-.src{font-size:11px;color:#5f6b7f;margin-top:-6px;margin-bottom:10px;font-style:italic}
+.meta{display:flex;gap:6px;flex-wrap:wrap;margin:12px 0}
+.chip{font-size:11px;color:var(--dim);background:var(--panel2);border:1px solid var(--line);
+  border-radius:99px;padding:4px 10px}
+.chip.hi{color:var(--blue);border-color:#38bdf844}
+.focus{font-size:12.5px;color:var(--dim);margin:0 0 12px;padding:10px;background:var(--panel2);
+  border-radius:9px;border-left:3px solid var(--blue)}
+.focus b{color:var(--txt)}
 .bt{font-size:11px;font-weight:800;letter-spacing:.8px;color:var(--acc);margin:16px 0 8px;text-transform:uppercase}
 .ex{background:var(--panel2);border:1px solid var(--line);border-radius:11px;padding:11px;margin-bottom:9px}
 .ex.done{border-color:#4ade8055;background:#4ade800d}
@@ -61,23 +68,30 @@ main{padding:14px 14px 90px}
 .exh b{flex:1;font-size:13.5px;font-weight:700}
 .presc{font-size:12px;color:var(--dim);margin:3px 0 8px}
 .target{font-size:11px;color:var(--blue);margin-bottom:8px}
-.reps{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}
-.reps input{width:52px;background:var(--bg);border:1px solid var(--line);color:var(--txt);
-  border-radius:8px;padding:8px 4px;text-align:center;font-size:15px;font-weight:600;font-family:inherit}
-.reps input:focus{outline:none;border-color:var(--acc)}
-.lest{display:flex;align-items:center;gap:6px;margin-bottom:8px;font-size:12px;color:var(--dim)}
-.lest input{width:80px;background:var(--bg);border:1px solid var(--line);color:var(--txt);
-  border-radius:8px;padding:7px;text-align:center;font-size:14px;font-family:inherit}
+.hist{font-size:11.5px;color:var(--purple);background:#a78bfa14;border:1px solid #a78bfa33;
+  border-radius:8px;padding:6px 9px;margin-bottom:8px}
+.hist b{color:#c4b5fd}
+.grid{display:grid;gap:5px;margin-bottom:8px;overflow-x:auto}
+.glabel{font-size:10px;color:var(--dim);text-transform:uppercase;letter-spacing:.5px;
+  display:flex;align-items:center;justify-content:flex-end;padding-right:4px}
+.grid input{background:var(--bg);border:1px solid var(--line);color:var(--txt);
+  border-radius:8px;padding:8px 3px;text-align:center;font-size:15px;font-weight:600;
+  font-family:inherit;width:100%;min-width:0}
+.grid input:focus{outline:none;border-color:var(--acc)}
+.grid input.wgt{border-color:#fbbf2444;color:var(--warn)}
 .score input{width:100%;background:var(--bg);border:1px solid var(--acc);color:var(--txt);
   border-radius:9px;padding:11px;font-size:16px;font-weight:700;font-family:inherit;text-align:center}
 .note{width:100%;background:var(--bg);border:1px solid var(--line);color:var(--txt);
   border-radius:8px;padding:8px;font-size:13px;font-family:inherit;resize:vertical;min-height:34px}
 .row2{display:flex;gap:8px;align-items:center;margin-top:8px}
 .up{flex:0 0 auto;background:var(--bg);border:1px solid var(--line);color:var(--dim);
-  border-radius:8px;padding:8px 11px;font-size:13px;cursor:pointer;font-weight:700}
+  border-radius:8px;padding:8px 11px;font-size:13px;cursor:pointer;font-weight:700;font-family:inherit}
 .up.on{background:var(--acc2);border-color:var(--acc2);color:#0b0e14}
 .rpe{flex:0 0 auto;background:var(--bg);border:1px solid var(--line);color:var(--txt);
   border-radius:8px;padding:8px;font-size:13px;font-family:inherit}
+.finish{width:100%;margin-top:16px;padding:14px;border-radius:11px;font-size:14px;font-weight:800;
+  cursor:pointer;font-family:inherit;background:var(--acc2);border:1px solid var(--acc2);color:#0b0e14}
+.finish.re{background:var(--panel2);border-color:var(--line);color:var(--dim)}
 .bar{position:fixed;left:0;right:0;bottom:0;z-index:60;display:flex;gap:8px;padding:10px 14px;
   padding-bottom:calc(10px + env(safe-area-inset-bottom));background:rgba(11,14,20,.96);
   backdrop-filter:blur(12px);border-top:1px solid var(--line)}
@@ -97,14 +111,14 @@ main{padding:14px 14px 90px}
 .prog td.d{font-weight:700}
 .prog td.d.pos{color:var(--acc2)} .prog td.d.neg{color:#f87171}
 .pill{display:inline-block;font-size:11px;color:var(--dim);background:var(--panel2);
-  border:1px solid var(--line);border-radius:99px;padding:3px 9px;margin-right:6px}
-.hidden{display:none}
+  border:1px solid var(--line);border-radius:99px;padding:3px 9px;margin:0 6px 5px 0}
+.hline{border:0;border-top:1px solid var(--line);margin:14px 0}
 </style>
 </head>
 <body>
 <header>
   <div class="hrow">
-    <h1>BLOC 3 — <span>INVICTUS</span></h1>
+    <h1>BLOC 4 — <span>10 JOURS</span></h1>
     <div class="sync" id="sync">…</div>
   </div>
   <nav id="nav"></nav>
@@ -128,302 +142,247 @@ main{padding:14px 14px 90px}
 </div>
 
 <script>
-/* BLOC 3 — INVICTUS « Course et poids de corps » (Manuel 6.1)
-   14 TRAININGS repris tels quels, 1 jour sur 2 sur 4 semaines. */
+/* =========================================================================
+   BLOC 4 — 10 jours · rotation MUSCU → HALTÉRO+WOD → POIDS DE CORPS
+   Salle CrossFit sans machines (barre olympique, rack, haltères, KB,
+   anneaux, barre de traction, box, corde, rameur, ski erg, air bike, tapis).
+   Charges en LIVRES (lb), comme au Bloc 2.
+   ========================================================================= */
+
 const PROGRAM = {
-  store: "prog_logs_v5",
-  bloc: "BLOC 3 — INVICTUS COURSE & POIDS DE CORPS",
-  weeks: [
-    { n: 1, title: "Semaine 1 — Jours 1 à 4", note: "Jour 1 = batterie de tests. Tout est repris tel quel du livre. Matériel : barre de traction + barres parallèles.",
-      sessions: [
-        {
-          id: "J1", day: "JOUR 1", name: "WOD UNITÉS D'ÉLITE – POLICE", tag: "TEST",
-          src: "TRAINING 87 – 20 octobre 2017",
-          verbatim: [
-            "<b>- FOR TIME – WOD UNITÉS D'ÉLITE - POLICE</b>",
-            "- TEST COOPER - PARCOURIR LA PLUS GRANDE DISTANCE POSSIBLE en 12'00''",
-            "REPOS : 5'00''",
-            "PUIS Effectuer :",
-            "MAX en Tractions strictes",
-            "MAX en Pompes",
-            "2 Montées de corde de 5m",
-            "Max en DIPS",
-            "Max en STRICT TOES TO BAR",
-            "REPOS : 2'00'' entre les exercices",
-            "<u>CONSIGNES ET PÉNALITÉS</u>",
-            "- TEST COOPER : distance minimale 3100m. Si vous ne réalisez pas cette distance : 50 Burpees de Pénalité (à effectuer à la fin du WOD)",
-            "- TRACTIONS : Marquer un temps d'arrêt (1 seconde) en position basse (bras tendus). Si vous êtes inférieurs à 17 Tractions : 25 Burpees de Pénalités",
-            "- POMPES : La poitrine touche le sol, les bras doivent être déverrouillés. Si vous êtes inférieurs à 55 Pompes : 25 Burpees de Pénalités",
-            "- 2 MONTÉES DE CORDE de 5m : Bras seuls ! un appui au sol et vous repartez pour la seconde corde. <b>Substitution (pas de corde) : MAX de Tractions supination — prise biceps.</b> Le livre classe les tractions supination juste après la traction stricte dans la liste Pull/Dorsaux. Objectif : 15 d'affilée, sinon 25 Burpees de Pénalité",
-            "- DIPS : Bras déverrouillés en position haute - les épaules descendent en dessous des coudes. Si vous êtes inférieurs à 20 DIPS : 25 Burpees de Pénalités",
-            "- STRICT TOES TO BAR : ne pas utiliser le balancier - les pieds touchent la barre. Si vous êtes inférieurs à 18 Strict T2B : 25 Burpees de Pénalités"
-          ],
-          blocks: [{ title: "À NOTER", items: [
-            { id: "cooper", name: "Test Cooper 12'00''", presc: "Distance parcourue", sets: 1, unit: "m", target: "Minimum 3100 m" },
-            { id: "maxpu", name: "Max tractions strictes", presc: "", sets: 1, unit: "reps", target: "Minimum 17" },
-            { id: "maxpush", name: "Max pompes", presc: "", sets: 1, unit: "reps", target: "Minimum 55" },
-            { id: "corde", name: "Max tractions supination", presc: "Prise supination ou neutre — substitution des 2 montées de corde", sets: 1, unit: "reps", target: "Objectif 15 d'affilée" },
-            { id: "maxdips", name: "Max dips", presc: "", sets: 1, unit: "reps", target: "Minimum 20" },
-            { id: "maxt2b", name: "Max strict toes-to-bar", presc: "", sets: 1, unit: "reps", target: "Minimum 18" },
-            { id: "pen", name: "Burpees de pénalité", presc: "Total à effectuer en fin de séance", sets: 1, unit: "reps" }
-          ]}]
-        },
-        {
-          id: "J2", day: "JOUR 2", name: "AMRAP ÉVOLUTIF 30'00''", tag: "WOD",
-          src: "TRAINING 1 – 14 mars 2014",
-          verbatim: [
-            "<b>- AMRAP évolutif 30'00'' - Effectuer LE PLUS DE ROUNDS en 30'00'' :</b>",
-            "1ère série : 1 Pull up – 1 Push up",
-            "2ème série : 2 Pull ups – 2 Push ups",
-            "3ème série : 3 Pull ups – 3 Push ups",
-            "Etc."
-          ],
-          blocks: [{ title: "SCORE", wod: true, items: [
-            { id: "wod", name: "Série atteinte en 30'00''", presc: "Note la dernière série complétée (+ reps entamées)", score: "ex : 19 + 12" }
-          ]}]
-        },
-        {
-          id: "J3", day: "JOUR 3", name: "AMÉLIORER SON MAX EN POMPE", tag: "FORCE",
-          src: "TRAINING 57 – 20 novembre 2016",
-          verbatim: [
-            "<b>- AMÉLIORER SON MAX EN POMPE</b>",
-            "Pieds surélevés, effectuer 8 séries de 15 Push ups",
-            "Entre chaque série, rester en position gainage pompes pendant 30''",
-            "Si possible : ne pas décoller une main pendant le gainage",
-            "15 Push ups - 30'' Gainage bras tendus - 15 Push ups - 30'' Gainage bras tendus - 15 Push ups - 30'' Gainage bras tendus - 15 Push ups - 30'' Gainage bras tendus - 15 Push ups - 30'' Gainage bras tendus - 15 Push ups - 30'' Gainage bras tendus - 15 Push ups - 30'' Gainage bras tendus - 15 Push ups",
-            "Soit 120 Pompes - 3'30'' de Gainage bras tendus."
-          ],
-          blocks: [{ title: "À NOTER", items: [
-            { id: "a1", name: "Pompes pieds surélevés", presc: "8 séries de 15 — 30'' de gainage bras tendus entre chaque", sets: 8, unit: "reps" },
-            { id: "a2", name: "Gainage tenu sans casser", presc: "Nombre de gainages de 30'' tenus complets (sur 7)", sets: 1, unit: "/7" }
-          ]}]
-        },
-        {
-          id: "J4", day: "JOUR 4", name: "FOR TIME — 500m & 50 RÉPÉTITIONS", tag: "CARDIO",
-          src: "TRAINING 20 – 26 avril 2015",
-          verbatim: [
-            "<b>- FOR TIME – Effectuer LE PLUS VITE POSSIBLE :</b>",
-            "500m de course", "50 Push ups",
-            "500m de course", "50 Sit ups",
-            "500m de course", "50 Air squats",
-            "500m de course", "50 Mountain climbers – de chaque côté",
-            "500m de course", "50 Jumping Jacks",
-            "500m de course", "50 Burpees",
-            "500m de course", "50 Fentes - 25 de chaque côté",
-            "500m de course", "50 Toes touches",
-            "500m de course", "50 Fentes latérales - 25 de chaque côté",
-            "500m de course"
-          ],
-          blocks: [{ title: "SCORE", wod: true, items: [
-            { id: "wod", name: "Temps total", presc: "5 km de course + 450 répétitions", score: "ex : 52:30" }
-          ]}]
-        }
+  store: "prog_logs_v6",
+  bloc: "BLOC 4 — MUSCU / HALTÉRO / POIDS DE CORPS (10 jours)",
+  sessions: [
+
+  /* ---------------------------------------------------------------- J1 */
+  {
+    id:"J1", day:"JOUR 1", name:"MUSCU A — Jambes & tirage", tag:"MUSCU", dur:"~55 min",
+    focus:"<b>Objectif :</b> reconstruire la base de force sur le bas du corps après 4 semaines sans barre. On repart 10 % sous tes charges de fin de Bloc 2 pour laisser la technique revenir, puis on remonte. Le gainage bras tendus est ajouté partout : tu n'as tenu que 3 gainages sur 7 au Bloc 3.",
+    blocks:[
+      { title:"FORCE", items:[
+        { id:"bs", ex:"back_squat", name:"Back Squat", presc:"5 séries de 5 — repos 2'30''", sets:5, unit:"reps", w:1,
+          ref:"Bloc 2 : 170 lb", target:"Départ 145-150 lb. Si les 5×5 passent en RPE 8, +10 lb au J4 du prochain bloc." },
+        { id:"bul", ex:"bulgare", name:"Fentes bulgares haltères", presc:"3 séries de 10 par jambe — repos 90''", sets:3, unit:"reps/jbe", w:1,
+          target:"Charge par haltère. Pied arrière sur un box." },
+        { id:"sdt", ex:"rdl", name:"Soulevé de terre roumain", presc:"3 séries de 10 — repos 90''", sets:3, unit:"reps", w:1,
+          target:"Jambes quasi tendues, dos plat, on sent les ischios." }
       ]},
-    { n: 2, title: "Semaine 2 — Jours 5 à 7", note: "Le volume de dips monte fort au Jour 5 (110 dips). Fractionne dès la première série.",
-      sessions: [
-        {
-          id: "J5", day: "JOUR 5", name: "FOR TIME — PULL UPS / DIPS 1→10→1", tag: "WOD",
-          src: "TRAINING 25 – 07 juillet 2015",
-          verbatim: [
-            "<b>- FOR TIME – Effectuer LE PLUS VITE POSSIBLE le nombre demandé de répétitions :</b>",
-            "1 – 2 – 3 – 4 – 5 – 6 – 7 – 8 – 9 – 10 – 10 – 9 – 8 – 7 – 6 – 5 – 4 – 3 – 2 – 1 en :",
-            "Pull up",
-            "Dips",
-            "Doubler le nombre de répétitions en dips",
-            "1ère série : 1 Pull up - 2 Dips",
-            "2ème série : 2 Pull ups - 4 Dips",
-            "3ème série : 3 Pull ups - 6 Dips",
-            "Etc."
-          ],
-          blocks: [{ title: "SCORE", wod: true, items: [
-            { id: "wod", name: "Temps", presc: "110 tractions – 220 dips", score: "ex : 34:15" }
-          ]}]
-        },
-        {
-          id: "J6", day: "JOUR 6", name: "AMÉLIORER SON MAX EN TRACTION", tag: "FORCE",
-          src: "TRAINING 58 – 22 novembre 2016",
-          verbatim: [
-            "<b>- AMÉLIORER SON MAX EN TRACTION</b>",
-            "<u>1ère Méthode :</u>",
-            "Bloquer 3 secondes en haut, milieu et bas du mouvement sur 3 répétitions + 7 tractions strictes.",
-            "Effectuer 5 séries de (3 + 7) tractions",
-            "REPOS : 1'00'' - 1'30'' entre chaque série",
-            "<u>2ème Méthode :</u>",
-            "Effectuer 5 séries de 10 (1 Traction stricte + 10'' d'isométrie bras tendus (HOLD)*10)",
-            "REPOS : 2'00'' entre chaque série"
-          ],
-          blocks: [{ title: "À NOTER", items: [
-            { id: "a1", name: "Méthode 1 — 5 × (3 + 7)", presc: "Reps totales réalisées par série (objectif 10)", sets: 5, unit: "reps" },
-            { id: "a2", name: "Méthode 2 — 5 × 10 (1 traction + 10'' hold)", presc: "Nombre de cycles réalisés par série (objectif 10)", sets: 5, unit: "cycles" }
-          ]}]
-        },
-        {
-          id: "J7", day: "JOUR 7", name: "WOD RUN BABY RUN 2", tag: "CARDIO",
-          src: "TRAINING 72 – 27 mai 2017",
-          verbatim: [
-            "<b>- FOR TIME – WOD RUN BABY RUN 2 – Effectuer 10 ROUNDS LE PLUS VITE POSSIBLE de :</b>",
-            "400m de course",
-            "10 Burpees",
-            "20 Air squats",
-            "30 Push ups"
-          ],
-          blocks: [{ title: "SCORE", wod: true, items: [
-            { id: "wod", name: "Temps", presc: "4 km + 100 burpees + 200 squats + 300 pompes", score: "ex : 58:00" }
-          ]}]
-        }
+      { title:"TIRAGE", items:[
+        { id:"tl", ex:"trac_lest", name:"Tractions lestées strictes", presc:"4 séries de 6 — repos 2'", sets:4, unit:"reps", w:1,
+          ref:"Bloc 2 : 22 lb × 6 · Bloc 3 : 21 tractions strictes à vide",
+          target:"Ton point fort. Charge = lest en lb. Vise 25 lb × 6." },
+        { id:"row", ex:"row_hal", name:"Rowing haltère 1 bras", presc:"3 séries de 12 par bras — repos 75''", sets:3, unit:"reps/bras", w:1 }
       ]},
-    { n: 3, title: "Semaine 3 — Jours 8 à 11", note: "Semaine la plus dense : deux AMRAP évolutifs longs et un EMOM de 30'00''.",
-      sessions: [
-        {
-          id: "J8", day: "JOUR 8", name: "WOD ARMAGEDDON", tag: "WOD",
-          src: "TRAINING 15 – 16 décembre 2014",
-          verbatim: [
-            "<b>- AMRAP évolutif 30'00'' – WOD ARMAGEDDON - Effectuer LE PLUS DE ROUNDS en 30'00'' :</b>",
-            "1ère série : 1 Dips – 1 Pull up – 1 Push up – 1 Toes-to-bar",
-            "2ème série : 2 Dips – 2 Pull ups – 2 Push ups – 2 Toes-to-bar",
-            "3ème série : 3 Dips – 3 Pull ups – 3 Push ups – 3 Toes-to-bar",
-            "Etc."
-          ],
-          blocks: [{ title: "SCORE", wod: true, items: [
-            { id: "wod", name: "Série atteinte en 30'00''", presc: "", score: "ex : 14 + 8" }
-          ]}]
-        },
-        {
-          id: "J9", day: "JOUR 9", name: "EMOM 30'00''", tag: "WOD",
-          src: "TRAINING 16 – 13 mars 2015",
-          verbatim: [
-            "<b>- EMOM 30'00'' – Départ toutes les 1'00'' - Effectuer pendant 30'00'' :</b>",
-            "Minute 1 : 10 Pull ups – 10 Push ups",
-            "Minute 2 : 10 Pull ups – 10 Push ups",
-            "Minute 3 : 10 Pull ups – 10 Push ups",
-            "Etc.",
-            "Vous devez d'abord effectuer les tractions avant les pompes.",
-            "Vous pouvez également couper la série de tractions et de pompes.",
-            "<u>CONSIGNES :</u>",
-            "Tractions : bras tendus menton minimum à la barre, en stricte ou en kipping.",
-            "Pompes : bras déverrouillés - poitrine au sol."
-          ],
-          blocks: [{ title: "SCORE", wod: true, items: [
-            { id: "wod", name: "Minutes complétées", presc: "Sur 30 — note la minute où tu décroches", score: "ex : 18/30" }
-          ]}]
-        },
-        {
-          id: "J10", day: "JOUR 10", name: "WOD BARBARA", tag: "WOD",
-          src: "TRAINING 88 – 08 novembre 2017",
-          verbatim: [
-            "<b>- FOR TIME – WOD BARBARA – Effectuer 5 ROUNDS LE PLUS VITE POSSIBLE :</b>",
-            "20 Pull ups",
-            "30 Push ups",
-            "40 Sit ups",
-            "50 Air squats"
-          ],
-          blocks: [
-            { title: "TEMPS PAR ROUND", items: [
-              { id: "r", name: "Round 1 à 5", presc: "Temps cumulé à la fin de chaque round (en secondes ou min:sec)", sets: 5, unit: "min" }
-            ]},
-            { title: "SCORE", wod: true, items: [
-              { id: "wod", name: "Temps total", presc: "100 tractions – 150 pompes – 200 sit-ups – 250 air squats", score: "ex : 31:45" }
-            ]}
-          ]
-        },
-        {
-          id: "J11", day: "JOUR 11", name: "AMRAP ÉVOLUTIF 35'00'' — PRÉPARATION TESTS", tag: "WOD",
-          src: "TRAINING 106 – 22 mars 2018",
-          verbatim: [
-            "<b>- AMRAP évolutif 35'00'' – PRÉPARATION TESTS - Effectuer LE PLUS DE ROUNDS POSSIBLE pendant 35'00'' :</b>",
-            "1 Burpees / 2 Tractions / 3 Dips",
-            "2 Burpees / 4 Tractions / 6 Dips",
-            "3 Burpees / 6 Tractions / 9 Dips",
-            "4 Burpees / 8 Tractions / 12 Dips",
-            "Etc."
-          ],
-          blocks: [{ title: "SCORE", wod: true, items: [
-            { id: "wod", name: "Série atteinte en 35'00''", presc: "", score: "ex : 9 + 4 tractions" }
-          ]}]
-        }
-      ]},
-    { n: 4, title: "Semaine 4 — Jours 12 à 14", note: "Jour 14 = exactement le même protocole que le Jour 1. L'onglet Progression calcule les écarts.",
-      sessions: [
-        {
-          id: "J12", day: "JOUR 12", name: "3000m + CIRCUIT TRAINING PYRAMIDE", tag: "CARDIO",
-          src: "TRAINING 62 – 26 décembre 2016",
-          verbatim: [
-            "<b>- FOR TIME – Courir LE PLUS VITE POSSIBLE : 3000m</b>",
-            "REPOS : 5'00''",
-            "<b>- CIRCUIT TRAINING — 8 exercices</b>",
-            "Principe : 30'' d'efforts maximaux par exercice. Effectuer LE PLUS POSSIBLE de répétitions en 30''.",
-            "REPOS : 1'00'' entre chaque série",
-            "<u>CONSIGNE :</u> Faire exo 1 pendant 30'' – 1'00'' de repos – (exo 1 + exo 2) – 1'00'' de repos – (exo 1 + exo 2 + exo 3) – 1'00'' de repos – … – (exo 1 à exo 8) – 1'00'' de repos – (exo 1 à exo 7) – 1'00'' de repos – etc.",
-            "Aller de l'exercice 1 à l'exercice 8 puis redescendre à l'exercice 1.",
-            "1er exercice : Traction",
-            "2ème exercice : Pompe",
-            "3ème exercice : Air squat",
-            "4ème exercice : Burpees",
-            "5ème exercice : Toes-to-bar",
-            "6ème exercice : HSPU ou DIPS",
-            "7ème exercice : Gainage araignée",
-            "8ème exercice : Mountain climber",
-            "→ 15 séries au total (montée 1→8 puis descente 8→1)."
-          ],
-          blocks: [
-            { title: "À NOTER", items: [
-              { id: "run", name: "3000m", presc: "Temps", sets: 1, unit: "min" },
-              { id: "tot", name: "Total répétitions du circuit", presc: "Tous exercices confondus", sets: 1, unit: "reps" }
-            ]},
-            { title: "SCORE", wod: true, items: [
-              { id: "wod", name: "Séries complétées", presc: "Sur 15 — note si tu as tenu la pyramide entière", score: "ex : 15/15" }
-            ]}
-          ]
-        },
-        {
-          id: "J13", day: "JOUR 13", name: "WOD ESCADRON 12/6 LODÈVE", tag: "WOD",
-          src: "TRAINING 51 – 22 juin 2016",
-          verbatim: [
-            "<b>- FOR TIME – WOD \"escadron 12/6 Lodève\" - Effectuer LE PLUS VITE POSSIBLE :</b>",
-            "25 Pull ups - 25 Push ups - 5 Toes-to-bar",
-            "20 Pull ups - 20 Push ups - 5 Toes-to-bar",
-            "15 Pull ups - 15 Push ups - 5 Toes-to-bar",
-            "10 Pull ups - 10 Push ups - 5 Toes-to-bar",
-            "5 Pull ups - 5 Push ups - 5 Toes-to-bar",
-            "5 Pull ups - 5 Push ups - 5 Toes-to-bar",
-            "10 Pull ups - 10 Push ups - 5 Toes-to-bar",
-            "15 Pull ups - 15 Push ups - 5 Toes-to-bar",
-            "20 Pull ups - 20 Push ups - 5 Toes-to-bar",
-            "25 Pull ups - 25 Push ups - 5 Toes-to-bar"
-          ],
-          blocks: [{ title: "SCORE", wod: true, items: [
-            { id: "wod", name: "Temps", presc: "150 tractions – 150 pompes – 50 toes-to-bar", score: "ex : 38:20" }
-          ]}]
-        },
-        {
-          id: "J14", day: "JOUR 14", name: "RETEST — WOD UNITÉS D'ÉLITE – POLICE", tag: "TEST",
-          src: "TRAINING 87 – 20 octobre 2017 (identique au Jour 1)",
-          verbatim: [
-            "<b>- FOR TIME – WOD UNITÉS D'ÉLITE - POLICE</b>",
-            "- TEST COOPER - PARCOURIR LA PLUS GRANDE DISTANCE POSSIBLE en 12'00''",
-            "REPOS : 5'00''",
-            "PUIS Effectuer :",
-            "MAX en Tractions strictes",
-            "MAX en Pompes",
-            "2 Montées de corde de 5m → substitution : MAX de Tractions supination (prise biceps)",
-            "Max en DIPS",
-            "Max en STRICT TOES TO BAR",
-            "REPOS : 2'00'' entre les exercices",
-            "<u>BARÈMES :</u> Cooper 3100m · 17 Tractions · 55 Pompes · 20 Dips · 18 Strict T2B · 15 Tractions supination"
-          ],
-          blocks: [{ title: "À NOTER", items: [
-            { id: "cooper", name: "Test Cooper 12'00''", presc: "Distance parcourue", sets: 1, unit: "m", target: "Minimum 3100 m" },
-            { id: "maxpu", name: "Max tractions strictes", presc: "", sets: 1, unit: "reps", target: "Minimum 17" },
-            { id: "maxpush", name: "Max pompes", presc: "", sets: 1, unit: "reps", target: "Minimum 55" },
-            { id: "corde", name: "Max tractions supination", presc: "Prise supination ou neutre — substitution des 2 montées de corde", sets: 1, unit: "reps", target: "Objectif 15 d'affilée" },
-            { id: "maxdips", name: "Max dips", presc: "", sets: 1, unit: "reps", target: "Minimum 20" },
-            { id: "maxt2b", name: "Max strict toes-to-bar", presc: "", sets: 1, unit: "reps", target: "Minimum 18" },
-            { id: "pen", name: "Burpees de pénalité", presc: "Total à effectuer en fin de séance", sets: 1, unit: "reps" }
-          ]}]
-        }
+      { title:"GAINAGE", items:[
+        { id:"gain", ex:"gain_bt", name:"Gainage bras tendus", presc:"4 × 45'' — repos 30''", sets:4, unit:"sec",
+          ref:"Bloc 3 : 3 gainages de 30'' tenus sur 7",
+          target:"Note les secondes réellement tenues sans casser." }
       ]}
+    ]
+  },
+
+  /* ---------------------------------------------------------------- J2 */
+  {
+    id:"J2", day:"JOUR 2", name:"HALTÉRO A — Clean & Jerk + WOD", tag:"HALTERO", dur:"~55 min",
+    focus:"<b>Objectif :</b> remettre le C&J en place à charge modérée avant de chercher lourd. Ton C&J est passé de 95 à 140 lb au Bloc 2 : c'est ta meilleure progression, on la relance. Le WOD (Grace allégée) travaille le C&J en fatigue.",
+    blocks:[
+      { title:"TECHNIQUE", items:[
+        { id:"pc", ex:"power_clean", name:"Power clean", presc:"5 séries de 3 — repos 2'", sets:5, unit:"reps", w:1,
+          ref:"Bloc 2 : C&J max 140 lb", target:"70-75 % du max : 95-105 lb. Vitesse sous la barre, pas la charge." },
+        { id:"jerk", ex:"split_jerk", name:"Split jerk", presc:"5 séries de 2 — repos 2'", sets:5, unit:"reps", w:1,
+          target:"Fente franche, bras verrouillés avant de recevoir." }
+      ]},
+      { title:"MONTÉE EN CHARGE", items:[
+        { id:"cj", ex:"cj_max", name:"Clean & Jerk — 5 singles montants", presc:"1 rep par série, on monte à chaque série", sets:5, unit:"reps", w:1,
+          ref:"Bloc 2 : 140 lb", target:"Dernière série = lourd du jour, pas un max. Arrête si la technique casse." }
+      ]},
+      { title:"WOD — GRACE ALLÉGÉE", wod:true, items:[
+        { id:"wod", ex:"wod_grace", name:"30 Clean & Jerk @ 95 lb — for time", presc:"Barre au sol à chaque rep. Découpe en séries de 5 dès que ça brûle.", score:"ex : 6'40" }
+      ]}
+    ]
+  },
+
+  /* ---------------------------------------------------------------- J3 */
+  {
+    id:"J3", day:"JOUR 3", name:"POIDS DE CORPS A — Poussée", tag:"PDC", dur:"45-50 min",
+    focus:"<b>Ton point faible n°1.</b> Bloc 3 : 33 pompes et 11 dips en max, contre 55 et 20 attendus — alors que tu as encaissé 120 pompes en volume fractionné et 150 sur Barbara. Tu tiens le volume, tu plafonnes sur la série max. Donc ici : séries courtes et lourdes en qualité, pas du volume en plus.",
+    blocks:[
+      { title:"FORCE — DIPS", items:[
+        { id:"dip", ex:"dips_force", name:"Dips stricts", presc:"6 séries de 4 — repos 2' — élastique ou négatives 5'' si échec", sets:6, unit:"reps",
+          ref:"Bloc 3 : 11 dips max", target:"4 reps propres et explosives. Si tu passes les 6×4, ajoute du lest au bloc suivant." },
+        { id:"pdia", ex:"pompe_dia", name:"Pompes diamant", presc:"4 séries de 8 — repos 90''", sets:4, unit:"reps",
+          target:"Coudes au corps, poitrine au sol." }
+      ]},
+      { title:"AMRAP 12'00''", wod:true, items:[
+        { id:"amrap", ex:"amrap_push", name:"AMRAP 12' — 5 dips / 10 pompes / 15 air squats", presc:"Le plus de tours possible en 12 minutes.", score:"ex : 9 tours + 5" }
+      ]},
+      { title:"GAINAGE", items:[
+        { id:"gain", ex:"gain_bt", name:"Gainage bras tendus", presc:"5 × 45'' — repos 30''", sets:5, unit:"sec",
+          ref:"Bloc 3 : 3/7 tenus", target:"Sans décoller de main. Note les secondes tenues." }
+      ]}
+    ]
+  },
+
+  /* ---------------------------------------------------------------- J4 */
+  {
+    id:"J4", day:"JOUR 4", name:"MUSCU B — Poussée haut du corps", tag:"MUSCU", dur:"~55 min",
+    focus:"<b>Correction du Bloc 2 :</b> le 4×10 à 155 lb au développé couché n'était pas tenable, et ton shoulder press régressait en reps. On repasse en 5×5 lourd (force) plutôt qu'en séries longues — c'est le schéma qui débloque un plateau de poussée.",
+    blocks:[
+      { title:"FORCE", items:[
+        { id:"dc", ex:"bench", name:"Développé couché", presc:"5 séries de 5 — repos 2'30''", sets:5, unit:"reps", w:1,
+          ref:"Bloc 2 : 4×10 à 155 lb non tenu", target:"Départ 145-155 lb sur 5 reps. Monte de 5 lb quand les 5×5 passent." },
+        { id:"dm", ex:"ohp", name:"Développé militaire barre (strict)", presc:"4 séries de 8 — repos 2'", sets:4, unit:"reps", w:1,
+          target:"Debout, sans élan de jambes. Gainage serré." },
+        { id:"dipl", ex:"dips_lest", name:"Dips lestés", presc:"4 séries de 6 — repos 2'", sets:4, unit:"reps", w:1,
+          ref:"Bloc 3 : 11 dips à vide", target:"Charge = lest. Si 6 reps à vide sont dures, reste à vide et note 0." }
+      ]},
+      { title:"ACCESSOIRES", items:[
+        { id:"dinc", ex:"dev_incl", name:"Développé incliné haltères", presc:"3 séries de 12 — repos 75''", sets:3, unit:"reps", w:1 },
+        { id:"elev", ex:"elev_lat", name:"Élévations latérales", presc:"3 séries de 15 — repos 60''", sets:3, unit:"reps", w:1 },
+        { id:"skull", ex:"skull", name:"Barre au front (skull crusher)", presc:"3 séries de 12 — repos 60''", sets:3, unit:"reps", w:1 }
+      ]}
+    ]
+  },
+
+  /* ---------------------------------------------------------------- J5 */
+  {
+    id:"J5", day:"JOUR 5", name:"HALTÉRO B — Arraché + WOD", tag:"HALTERO", dur:"~55 min",
+    focus:"<b>Mobilité épaules et poignets</b> — l'autre point faible relevé au Bloc 2 (« dur pour les poignets » sur l'OHS, « monte peu » au front squat). L'overhead squat en début de séance sert autant de mobilité que de force.",
+    blocks:[
+      { title:"MOBILITÉ & FORCE", items:[
+        { id:"ohs", ex:"ohs", name:"Overhead squat", presc:"5 séries de 5 — repos 2' — barre à vide puis charge légère", sets:5, unit:"reps", w:1,
+          ref:"Bloc 2 : gênant pour les poignets", target:"Descends aussi bas que la mobilité le permet, pas plus. Priorité : bras verrouillés." },
+        { id:"ps", ex:"power_snatch", name:"Power snatch", presc:"6 séries de 2 — repos 2'", sets:6, unit:"reps", w:1,
+          target:"65-70 % : reste léger, cherche le placement." }
+      ]},
+      { title:"MONTÉE EN CHARGE", items:[
+        { id:"sn", ex:"snatch_max", name:"Arraché — 5 singles montants", presc:"1 rep par série, on monte à chaque série", sets:5, unit:"reps", w:1,
+          target:"Lourd du jour, technique intacte." }
+      ]},
+      { title:"WOD — ISABEL ALLÉGÉE", wod:true, items:[
+        { id:"wod", ex:"wod_isabel", name:"30 arrachés @ 75 lb — for time", presc:"Power snatch autorisé. Barre au sol à chaque rep.", score:"ex : 5'10" }
+      ]}
+    ]
+  },
+
+  /* ---------------------------------------------------------------- J6 */
+  {
+    id:"J6", day:"JOUR 6", name:"POIDS DE CORPS B — Tirage & gainage", tag:"PDC", dur:"45-50 min",
+    focus:"<b>Exploiter ton point fort.</b> 21 tractions strictes au Bloc 3, seul objectif Invictus dépassé (seuil 17). En face, tes toes-to-bar stricts plafonnent à 10 pour 18 attendus : c'est le déficit de gainage, pas de dos. D'où le travail strict de T2B ici.",
+    blocks:[
+      { title:"FORCE — TIRAGE", items:[
+        { id:"tr", ex:"trac_str", name:"Tractions strictes lestées", presc:"6 séries de 4 — repos 2'", sets:6, unit:"reps", w:1,
+          ref:"Bloc 3 : 21 max à vide · Bloc 2 : 22 lb × 6", target:"Charge = lest en lb. Temps d'arrêt 1'' bras tendus en bas." },
+        { id:"sup", ex:"trac_sup", name:"Tractions supination", presc:"4 séries de 8 — repos 90''", sets:4, unit:"reps",
+          ref:"Bloc 3 : 10 max", target:"Objectif Invictus : 15 d'affilée. Lest si les 4×8 passent." }
+      ]},
+      { title:"GAINAGE SPÉCIFIQUE", items:[
+        { id:"t2b", ex:"t2b", name:"Toes-to-bar stricts", presc:"6 séries de 5 — repos 90'' — sans balancier", sets:6, unit:"reps",
+          ref:"Bloc 3 : 10 max", target:"Si 5 stricts sont impossibles : genoux-poitrine stricts, même volume." },
+        { id:"lat", ex:"gain_lat", name:"Gainage latéral", presc:"4 × 40'' par côté — repos 30''", sets:4, unit:"sec/côté" }
+      ]},
+      { title:"AMRAP 12'00''", wod:true, items:[
+        { id:"amrap", ex:"amrap_pull", name:"AMRAP 12' — 3 tractions / 6 T2B / 9 burpees", presc:"Le plus de tours possible en 12 minutes.", score:"ex : 7 tours + 3" }
+      ]}
+    ]
+  },
+
+  /* ---------------------------------------------------------------- J7 */
+  {
+    id:"J7", day:"JOUR 7", name:"MUSCU C — Chaîne postérieure", tag:"MUSCU", dur:"~55 min",
+    focus:"<b>Le soulevé de terre est ton mouvement le plus lourd</b> (235 → 275 lb au Bloc 2). On repart à 85 % pour un travail en séries de 3, plus sûr après une coupure, et on ajoute du volume fessiers/ischios que le Bloc 3 n'a pas pu solliciter.",
+    blocks:[
+      { title:"FORCE", items:[
+        { id:"dl", ex:"deadlift", name:"Soulevé de terre", presc:"5 séries de 3 — repos 3'", sets:5, unit:"reps", w:1,
+          ref:"Bloc 2 : 275 lb", target:"Départ 230-240 lb. Dos verrouillé, on ne cherche pas le max ce bloc." },
+        { id:"ht", ex:"hip_thrust", name:"Hip thrust barre", presc:"4 séries de 10 — repos 90''", sets:4, unit:"reps", w:1 },
+        { id:"gm", ex:"good_morning", name:"Good morning", presc:"3 séries de 12 — repos 90'' — charge légère", sets:3, unit:"reps", w:1 }
+      ]},
+      { title:"DOS & BRAS", items:[
+        { id:"rowb", ex:"row_barre", name:"Rowing barre penché", presc:"4 séries de 8 — repos 90''", sets:4, unit:"reps", w:1 },
+        { id:"curl", ex:"curl", name:"Curl haltères", presc:"3 séries de 12 — repos 60''", sets:3, unit:"reps", w:1 }
+      ]},
+      { title:"FINISHER", items:[
+        { id:"farm", ex:"farmer", name:"Farmer walk", presc:"4 × 40 m — repos 90''", sets:4, unit:"m", w:1,
+          target:"Charge = poids par main. Épaules basses, gainage serré." }
+      ]}
+    ]
+  },
+
+  /* ---------------------------------------------------------------- J8 */
+  {
+    id:"J8", day:"JOUR 8", name:"HALTÉRO C — Front squat / Thruster + WOD", tag:"HALTERO", dur:"~55 min",
+    focus:"<b>Front rack.</b> Tes notes du Bloc 2 disaient « monte peu » sur front squat et thruster : c'est une limite de position, pas de jambes. Front squat lourd puis Fran pour l'appliquer en fatigue.",
+    blocks:[
+      { title:"FORCE", items:[
+        { id:"fs", ex:"front_squat", name:"Front squat", presc:"5 séries de 5 — repos 2'30''", sets:5, unit:"reps", w:1,
+          ref:"Bloc 2 : position inconfortable", target:"Coudes hauts. Si les poignets bloquent : prise 2 doigts ou sangles." },
+        { id:"pp", ex:"push_press", name:"Push press", presc:"5 séries de 3 — repos 2'", sets:5, unit:"reps", w:1 },
+        { id:"thr", ex:"thruster", name:"Thruster", presc:"4 séries de 6 — repos 2'", sets:4, unit:"reps", w:1,
+          target:"Un seul mouvement fluide du squat au verrouillage." }
+      ]},
+      { title:"WOD — FRAN", wod:true, items:[
+        { id:"wod", ex:"wod_fran", name:"21-15-9 — Thrusters @ 95 lb + Tractions — for time", presc:"Le benchmark le plus connu. Note aussi si tu as scalé la charge.", score:"ex : 8'15" }
+      ]}
+    ]
+  },
+
+  /* ---------------------------------------------------------------- J9 */
+  {
+    id:"J9", day:"JOUR 9", name:"POIDS DE CORPS C — Base aérobie", tag:"PDC", dur:"45-50 min",
+    focus:"<b>Ton plus gros écart.</b> Cooper à 2570 m contre 3100 m demandés : environ 12,8 km/h de moyenne au lieu de 15,5. Tu as maintenant rameur, ski erg et air bike : intervalles longs à allure soutenue, c'est ce qui déplace le plus vite un Cooper.",
+    blocks:[
+      { title:"INTERVALLES LONGS", items:[
+        { id:"int", ex:"interv", name:"5 × 4'00'' — rameur / ski erg / air bike", presc:"1'00'' de repos entre chaque. Note la distance en mètres par intervalle.", sets:5, unit:"m",
+          ref:"Bloc 3 : Cooper 2570 m", target:"Allure tenable mais inconfortable. Les 5 distances doivent rester dans un écart de 5 %." },
+        { id:"mach", ex:"machine", name:"Machine utilisée", presc:"Note dans le champ ci-dessous : rameur, ski erg, air bike ou tapis.", sets:1, unit:"—" }
+      ]},
+      { title:"CIRCUIT — 3 TOURS", wod:true, items:[
+        { id:"wod", ex:"circuit_full", name:"3 tours — 10 burpees / 20 air squats / 30 mountain climbers", presc:"For time, sans repos imposé.", score:"ex : 9'30" }
+      ]},
+      { title:"GAINAGE", items:[
+        { id:"gain", ex:"gain_bt", name:"Gainage bras tendus", presc:"4 × 60'' — repos 30''", sets:4, unit:"sec",
+          ref:"Bloc 3 : 3/7 tenus à 30''", target:"On passe à 60''. Note les secondes réellement tenues." }
+      ]}
+    ]
+  },
+
+  /* --------------------------------------------------------------- J10 */
+  {
+    id:"J10", day:"JOUR 10", name:"TEST — Retest & full body", tag:"TEST", dur:"~60 min",
+    focus:"<b>Fin de bloc.</b> On refait les tests du Jour 1 du Bloc 3, dans le même ordre et avec les mêmes consignes, pour mesurer les 10 séances. Cooper sur tapis. Pas de burpees de pénalité cette fois : c'est une mesure, pas un WOD. L'onglet Progression calcule les écarts automatiquement.",
+    blocks:[
+      { title:"RETEST — MÊME PROTOCOLE QU'AU BLOC 3", items:[
+        { id:"cooper", ex:"t_cooper", name:"Test Cooper 12'00''", presc:"Distance maximale en 12 minutes — tapis ou piste", sets:1, unit:"m",
+          ref:"Bloc 3 : 2570 m", target:"Repère Invictus : 3100 m" },
+        { id:"maxpu", ex:"t_pu", name:"Max tractions strictes", presc:"1'' d'arrêt bras tendus en bas", sets:1, unit:"reps",
+          ref:"Bloc 3 : 21", target:"Repère Invictus : 17 — déjà dépassé, vise 24" },
+        { id:"maxpush", ex:"t_push", name:"Max pompes", presc:"Poitrine au sol, bras déverrouillés", sets:1, unit:"reps",
+          ref:"Bloc 3 : 33", target:"Repère Invictus : 55" },
+        { id:"corde", ex:"t_sup", name:"Max tractions supination", presc:"Prise supination ou neutre", sets:1, unit:"reps",
+          ref:"Bloc 3 : 10", target:"Repère Invictus : 15" },
+        { id:"maxdips", ex:"t_dips", name:"Max dips", presc:"Épaules sous les coudes en bas", sets:1, unit:"reps",
+          ref:"Bloc 3 : 11", target:"Repère Invictus : 20" },
+        { id:"maxt2b", ex:"t_t2b", name:"Max strict toes-to-bar", presc:"Sans balancier, pieds à la barre", sets:1, unit:"reps",
+          ref:"Bloc 3 : 10", target:"Repère Invictus : 18" }
+      ]},
+      { title:"FULL BODY LÉGER", items:[
+        { id:"sq", ex:"back_squat", name:"Back Squat", presc:"3 séries de 8 — charge modérée", sets:3, unit:"reps", w:1 },
+        { id:"bp", ex:"bench", name:"Développé couché", presc:"3 séries de 8 — charge modérée", sets:3, unit:"reps", w:1 },
+        { id:"rw", ex:"row_barre", name:"Rowing barre penché", presc:"3 séries de 10", sets:3, unit:"reps", w:1 }
+      ]}
+    ]
+  }
+
   ]
 };
+
+/* Références Bloc 3 pour l'onglet Progression (J1 du bloc précédent) */
+const REF_B3 = { cooper:2570, maxpu:21, maxpush:33, corde:10, maxdips:11, maxt2b:10 };
+const TESTS = [
+  ["cooper","Cooper 12'","m"], ["maxpu","Max tractions strictes","reps"], ["maxpush","Max pompes","reps"],
+  ["corde","Max tractions supination","reps"], ["maxdips","Max dips","reps"], ["maxt2b","Max T2B strictes","reps"]
+];
 
 /* ---------- CONFIG SUPABASE ---------- */
 const SUPA_URL = "https://cyczhlsugdbguahbfbuz.supabase.co";
@@ -431,280 +390,434 @@ const SUPA_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsI
 const STORE = PROGRAM.store;
 
 /* ---------- ÉTAT ---------- */
-let DATA = {};          // clé -> {reps:[], lest, note, rpe, up, score}
-let curWeek = 1;
+let DATA = {};
+let view = "today";          // "today" | "all" | "hist" | "guide"
+let openId = null;           // séance ouverte en vue "all"
 let saveTimer = null;
 let lastCloud = 0;
 
-const K = (s, b, i) => s + "|" + b + "|" + i;
-const get = k => (DATA[k] = DATA[k] || { reps: [], lest: "", note: "", rpe: "", up: false, score: "" });
-const esc = s => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const SESS = PROGRAM.sessions;
+const K = (s,b,i) => s + "|" + b + "|" + i;
+const get = k => (DATA[k] = DATA[k] || { reps:[], poids:[], note:"", rpe:"", up:false, score:"" });
+const esc = s => String(s==null?"":s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+function meta(){ if(!DATA.__meta || typeof DATA.__meta!=="object") DATA.__meta={done:{}}; if(!DATA.__meta.done) DATA.__meta.done={}; return DATA.__meta; }
 
 /* ---------- RÉSEAU ---------- */
-function fetchTimeout(url, opts, ms) {
+function fetchTimeout(url, opts, ms){
   const ctl = new AbortController();
   const t = setTimeout(() => ctl.abort(), ms || 8000);
   return fetch(url, Object.assign({}, opts, { signal: ctl.signal })).finally(() => clearTimeout(t));
 }
-function setSync(txt, cls) {
+function setSync(txt, cls){
   const e = document.getElementById("sync");
   e.textContent = txt; e.className = "sync " + (cls || "");
 }
 
 /* ---------- PERSISTANCE ---------- */
-function saveLocal() {
-  try { localStorage.setItem(STORE, JSON.stringify(DATA)); } catch (e) {}
+function saveLocal(){ try{ localStorage.setItem(STORE, JSON.stringify(DATA)); }catch(e){} }
+function scheduleSave(){
+  saveLocal(); setSync("● local","");
+  clearTimeout(saveTimer); saveTimer = setTimeout(pushCloud, 1200);
 }
-function scheduleSave() {
-  saveLocal();
-  setSync("● local", "");
-  clearTimeout(saveTimer);
-  saveTimer = setTimeout(pushCloud, 1200);
-}
-function pushCloud() {
-  setSync("↻ sync…", "");
+function pushCloud(){
+  setSync("↻ sync…","");
   fetchTimeout(SUPA_URL + "/rest/v1/training_logs?on_conflict=store_key", {
-    method: "POST",
-    headers: {
-      "apikey": SUPA_KEY, "Authorization": "Bearer " + SUPA_KEY,
-      "Content-Type": "application/json", "Prefer": "resolution=merge-duplicates,return=minimal"
-    },
-    body: JSON.stringify({ store_key: STORE, data: DATA, updated_at: new Date().toISOString() })
+    method:"POST",
+    headers:{ "apikey":SUPA_KEY, "Authorization":"Bearer "+SUPA_KEY,
+      "Content-Type":"application/json", "Prefer":"resolution=merge-duplicates,return=minimal" },
+    body: JSON.stringify({ store_key:STORE, data:DATA, updated_at:new Date().toISOString() })
   }, 8000)
-    .then(r => { if (!r.ok) throw new Error(r.status); lastCloud = Date.now(); setSync("☁︎ synchronisé", "ok"); })
-    .catch(() => setSync("⚠︎ hors ligne (local OK)", "err"));
+  .then(r => { if(!r.ok) throw new Error(r.status); lastCloud = Date.now(); setSync("☁︎ synchronisé","ok"); })
+  .catch(() => setSync("⚠︎ hors ligne (local OK)","err"));
 }
-function pullCloud() {
+function pullCloud(){
   return fetchTimeout(SUPA_URL + "/rest/v1/training_logs?store_key=eq." + STORE + "&select=data,updated_at", {
-    headers: { "apikey": SUPA_KEY, "Authorization": "Bearer " + SUPA_KEY }
+    headers:{ "apikey":SUPA_KEY, "Authorization":"Bearer "+SUPA_KEY }
   }, 8000)
-    .then(r => r.ok ? r.json() : Promise.reject(r.status))
-    .then(rows => {
-      if (rows && rows[0] && rows[0].data) {
-        const cloud = rows[0].data;
-        const localCount = Object.keys(DATA).length;
-        const cloudCount = Object.keys(cloud).length;
-        // le cloud ne remplace le local que s'il est au moins aussi rempli
-        if (cloudCount >= localCount) { DATA = cloud; saveLocal(); render(); }
+  .then(r => r.ok ? r.json() : Promise.reject(r.status))
+  .then(rows => {
+    if(rows && rows[0] && rows[0].data){
+      const cloud = rows[0].data;
+      if(Object.keys(cloud).length >= Object.keys(DATA).length){ DATA = cloud; saveLocal(); render(); }
+    }
+    setSync("☁︎ synchronisé","ok");
+  })
+  .catch(() => setSync("⚠︎ hors ligne (local OK)","err"));
+}
+
+/* ---------- ÉTAT DES SÉANCES ---------- */
+function isDone(s){ return !!meta().done[s.id]; }
+function doneDate(s){ return meta().done[s.id] || ""; }
+function filledCount(s){
+  let tot=0, ok=0;
+  s.blocks.forEach((b,bi) => b.items.forEach(it => {
+    tot++;
+    const d = DATA[K(s.id,bi,it.id)];
+    if(d && (b.wod ? d.score : ((d.reps||[]).some(x=>x!==""&&x!=null) || (d.poids||[]).some(x=>x!==""&&x!=null) || d.note))) ok++;
+  }));
+  return [ok,tot];
+}
+function curIndex(){
+  for(let i=0;i<SESS.length;i++) if(!isDone(SESS[i])) return i;
+  return SESS.length - 1;   // bloc terminé : on reste sur la dernière
+}
+function blocFini(){ return SESS.every(isDone); }
+function finishSession(id){
+  const s = SESS.find(x=>x.id===id); if(!s) return;
+  const [ok,tot] = filledCount(s);
+  if(ok===0 && !confirm("Aucune perf notée sur cette séance. La marquer quand même comme faite ?")) return;
+  meta().done[id] = new Date().toISOString().slice(0,10);
+  openId = null; view = "today"; scheduleSave(); render(); window.scrollTo(0,0);
+}
+function reopenSession(id){
+  delete meta().done[id];
+  openId = id; scheduleSave(); render(); window.scrollTo(0,0);
+}
+
+/* ---------- HISTORIQUE D'UN EXERCICE ---------- */
+/* Cherche la dernière fois que cet exercice a été renseigné, avant la séance courante. */
+function prevPerf(exSlug, curIdx){
+  if(!exSlug) return null;
+  for(let i=curIdx-1;i>=0;i--){
+    const s = SESS[i];
+    for(let bi=0;bi<s.blocks.length;bi++){
+      for(const it of s.blocks[bi].items){
+        if(it.ex !== exSlug) continue;
+        const d = DATA[K(s.id,bi,it.id)];
+        if(!d) continue;
+        const r = (d.reps||[]).filter(x=>x!==""&&x!=null);
+        const p = (d.poids||[]).filter(x=>x!==""&&x!=null);
+        if(r.length || p.length || d.score) return { sess:s, reps:r, poids:p, score:d.score, unit:it.unit };
       }
-      setSync("☁︎ synchronisé", "ok");
-    })
-    .catch(() => setSync("⚠︎ hors ligne (local OK)", "err"));
+    }
+  }
+  return null;
+}
+function histLine(it, curIdx){
+  const p = prevPerf(it.ex, curIdx);
+  if(p){
+    let txt = "<b>" + esc(p.sess.day.replace("JOUR ","J")) + "</b> · ";
+    if(p.poids.length) txt += "<b>" + p.poids.join(" / ") + " lb</b> — ";
+    if(p.reps.length) txt += p.reps.join(", ") + " " + esc(p.unit||"");
+    else if(p.score) txt += esc(p.score);
+    return '<div class="hist">↩︎ Dernière fois : ' + txt + "</div>";
+  }
+  if(it.ref) return '<div class="hist">↩︎ Référence : ' + esc(it.ref) + "</div>";
+  return "";
 }
 
 /* ---------- RENDU ---------- */
-function render() {
+function render(){
   const nav = document.getElementById("nav");
-  nav.innerHTML = PROGRAM.weeks.map(w =>
-    '<button class="' + (w.n === curWeek ? "on" : "") + '" onclick="curWeek=' + w.n + ';render();window.scrollTo(0,0)">SEM ' + w.n + "</button>"
-  ).join("") + '<button class="' + (curWeek === 0 ? "on" : "") + '" onclick="curWeek=0;render();window.scrollTo(0,0)">📖 Guide</button>';
+  const tabs = [["today","▶︎ AUJOURD'HUI"],["all","📋 TOUTES"],["hist","📊 HISTORIQUE"],["guide","📖 GUIDE"]];
+  nav.innerHTML = tabs.map(t =>
+    '<button class="' + (view===t[0]?"on":"") + '" onclick="view=\'' + t[0] + '\';render();window.scrollTo(0,0)">' + t[1] + "</button>"
+  ).join("");
 
   const main = document.getElementById("main");
-  if (curWeek === 0) { main.innerHTML = guideHTML(); return; }
+  if(view==="guide"){ main.innerHTML = guideHTML(); return; }
+  if(view==="hist"){ main.innerHTML = histHTML(); return; }
 
-  const w = PROGRAM.weeks.find(x => x.n === curWeek);
-  let h = '<div class="weeknote"><b>' + esc(w.title) + "</b><br>" + esc(w.note) + "</div>";
+  const ci = curIndex();
+  const doneN = SESS.filter(isDone).length;
 
-  w.sessions.forEach(s => {
-    const open = localStorage.getItem("open_" + s.id) === "1";
-    const tagCls = s.tag === "DÉCHARGE" ? "DECHARGE" : s.tag;
-    h += '<div class="sess' + (open ? " open" : "") + '" id="sess_' + s.id + '">'
-      + '<div class="shead" onclick="toggle(\'' + s.id + '\')">'
-      + '<div class="sid">' + esc(s.day.replace("JOUR ", "J")) + "</div>"
-      + '<div class="stitle"><b>' + esc(s.day) + " — " + esc(s.name) + "</b><small>" + esc(s.src) + " · " + doneCount(s) + "</small></div>"
-      + '<div class="tag ' + tagCls + '">' + esc(s.tag) + "</div>"
-      + '<div class="chev">' + (open ? "▲" : "▼") + "</div></div>"
-      + '<div class="sbody">'
-      + '<div class="src">Livre Invictus — ' + esc(s.src) + "</div>"
-      + '<div class="verb">' + (s.verbatim || []).join("<br>") + "</div>";
-
-    s.blocks.forEach((b, bi) => {
-      h += '<div class="bt">' + esc(b.title) + "</div>";
-      b.items.forEach(it => {
-        const k = K(s.id, bi, it.id), d = get(k);
-        const filled = b.wod ? !!d.score : (d.reps || []).some(x => x !== "" && x != null);
-        h += '<div class="ex' + (filled ? " done" : "") + '" id="ex_' + k.replace(/\|/g, "_") + '">'
-          + '<div class="exh"><b>' + esc(it.name) + "</b></div>"
-          + '<div class="presc">' + esc(it.presc) + "</div>"
-          + (it.target ? '<div class="target">🎯 ' + esc(it.target) + "</div>" : "");
-
-        if (b.wod) {
-          h += '<div class="score"><input type="text" inputmode="text" placeholder="' + esc(it.score) + '" value="' + esc(d.score) + '" oninput="setF(\'' + k + "','score',this.value)\"></div>";
-        } else {
-          if (it.lest) {
-            h += '<div class="lest">Lest (kg) <input type="number" inputmode="decimal" value="' + esc(d.lest) + '" oninput="setF(\'' + k + "','lest',this.value)\"></div>";
-          }
-          h += '<div class="reps">';
-          for (let i = 0; i < it.sets; i++) {
-            h += '<input type="number" inputmode="numeric" placeholder="' + esc(it.unit) + '" value="' + esc((d.reps || [])[i] == null ? "" : d.reps[i]) + '" oninput="setRep(\'' + k + "'," + i + ',this.value)">';
-          }
-          h += "</div>";
-        }
-        h += '<textarea class="note" placeholder="Note / ressenti" oninput="setF(\'' + k + "','note',this.value)\">" + esc(d.note) + "</textarea>"
-          + '<div class="row2">'
-          + '<button class="up' + (d.up ? " on" : "") + '" onclick="toggleUp(\'' + k + "')\">↑ Peut monter</button>"
-          + '<select class="rpe" onchange="setF(\'' + k + "','rpe',this.value)\">"
-          + ["", "6", "7", "8", "9", "10"].map(v => '<option value="' + v + '"' + (String(d.rpe) === v ? " selected" : "") + ">" + (v ? "RPE " + v : "RPE –") + "</option>").join("")
-          + "</select></div></div>";
-      });
-    });
-    h += "</div></div>";
-  });
+  let h = "";
+  if(view==="today"){
+    if(blocFini()){
+      h += '<div class="weeknote"><b>Bloc 4 terminé — 10 séances sur 10 ✓</b><br>'
+        + "Ouvre 🤖 Résumé en bas, copie tout et colle-le dans le projet Claude pour construire le Bloc 5.</div>";
+    } else {
+      h += '<div class="weeknote"><b>Séance ' + (ci+1) + " sur 10 — " + esc(SESS[ci].name) + "</b><br>"
+        + doneN + " séance" + (doneN>1?"s":"") + " faite" + (doneN>1?"s":"") + " · il en reste " + (10-doneN)
+        + ". Rotation : muscu → haltéro+WOD → poids de corps.</div>";
+    }
+    h += progBar(ci);
+    h += sessionHTML(SESS[ci], ci, true);
+    if(ci>0)  h += '<button class="up" style="width:100%;padding:12px;margin-top:4px" onclick="view=\'all\';openId=\'' + SESS[ci-1].id + '\';render()">↩︎ Revoir la séance précédente (' + esc(SESS[ci-1].day) + ")</button>";
+  } else {
+    h += '<div class="weeknote"><b>Les 10 séances du bloc</b><br>'
+      + "Touche une séance pour l'ouvrir. Les séances vertes sont terminées — tu peux toujours les rouvrir pour corriger une perf.</div>";
+    h += progBar(ci);
+    SESS.forEach((s,i) => { h += sessionHTML(s, i, openId===s.id); });
+  }
   main.innerHTML = h;
 }
 
-function doneCount(s) {
-  let tot = 0, ok = 0;
-  s.blocks.forEach((b, bi) => b.items.forEach(it => {
-    tot++;
-    const d = DATA[K(s.id, bi, it.id)];
-    if (d && (b.wod ? d.score : (d.reps || []).some(x => x !== "" && x != null))) ok++;
-  }));
-  return ok + "/" + tot + " renseigné" + (ok > 1 ? "s" : "");
+function progBar(ci){
+  return '<div class="prog-bar">' + SESS.map((s,i) =>
+    '<div class="pdot ' + (isDone(s) ? "ok" : (i===ci ? "cur" : "")) + '"></div>'
+  ).join("") + "</div>";
 }
 
-function toggle(id) {
-  const el = document.getElementById("sess_" + id);
-  const now = !el.classList.contains("open");
-  el.classList.toggle("open", now);
-  localStorage.setItem("open_" + id, now ? "1" : "0");
-  el.querySelector(".chev").textContent = now ? "▲" : "▼";
+function sessionHTML(s, idx, open){
+  const [ok,tot] = filledCount(s);
+  const done = isDone(s);
+  const ci = curIndex();
+  let h = '<div class="sess' + (open?" open":"") + (done?" isdone":"") + (!done && idx===ci ? " iscur":"") + '" id="sess_' + s.id + '">'
+    + '<div class="shead" onclick="toggleSess(\'' + s.id + '\')">'
+    + '<div class="sid">' + (done ? "✓" : esc(s.day.replace("JOUR ","J"))) + "</div>"
+    + '<div class="stitle"><b>' + esc(s.day) + " — " + esc(s.name) + "</b><small>"
+    + (done ? "Fait le " + esc(doneDate(s)) : ok + "/" + tot + " renseigné" + (ok>1?"s":"")) + " · " + esc(s.dur) + "</small></div>"
+    + '<div class="tag ' + s.tag + '">' + esc(s.tag) + "</div>"
+    + '<div class="chev">' + (open?"▲":"▼") + "</div></div>"
+    + '<div class="sbody">'
+    + '<div class="focus">' + s.focus + "</div>";
+
+  s.blocks.forEach((b,bi) => {
+    h += '<div class="bt">' + esc(b.title) + "</div>";
+    b.items.forEach(it => {
+      const k = K(s.id,bi,it.id), d = get(k);
+      const filled = b.wod ? !!d.score : ((d.reps||[]).some(x=>x!==""&&x!=null) || (d.poids||[]).some(x=>x!==""&&x!=null));
+      h += '<div class="ex' + (filled?" done":"") + '" id="ex_' + k.replace(/\|/g,"_") + '">'
+        + '<div class="exh"><b>' + esc(it.name) + "</b></div>"
+        + '<div class="presc">' + esc(it.presc) + "</div>"
+        + (it.target ? '<div class="target">🎯 ' + esc(it.target) + "</div>" : "")
+        + histLine(it, idx);
+
+      if(b.wod){
+        h += '<div class="score"><input type="text" inputmode="text" placeholder="' + esc(it.score)
+          + '" value="' + esc(d.score) + '" oninput="setF(\'' + k + "','score',this.value)\"></div>";
+      } else {
+        const n = it.sets;
+        h += '<div class="grid" style="grid-template-columns:46px repeat(' + n + ',minmax(48px,1fr))">';
+        if(it.w){
+          h += '<div class="glabel">lb</div>';
+          for(let i=0;i<n;i++)
+            h += '<input class="wgt" type="number" inputmode="decimal" placeholder="—" value="'
+              + esc((d.poids||[])[i]==null?"":d.poids[i]) + '" oninput="setPoids(\'' + k + "'," + i + ',this.value)">';
+        }
+        h += '<div class="glabel">' + esc(it.unit) + "</div>";
+        for(let i=0;i<n;i++)
+          h += '<input type="text" inputmode="numeric" placeholder="—" value="'
+            + esc((d.reps||[])[i]==null?"":d.reps[i]) + '" oninput="setRep(\'' + k + "'," + i + ',this.value)">';
+        h += "</div>";
+      }
+      h += '<textarea class="note" placeholder="Note / ressenti" oninput="setF(\'' + k + "','note',this.value)\">" + esc(d.note) + "</textarea>"
+        + '<div class="row2">'
+        + '<button class="up' + (d.up?" on":"") + '" onclick="toggleUp(\'' + k + "')\">↑ Peut monter</button>"
+        + '<select class="rpe" onchange="setF(\'' + k + "','rpe',this.value)\">"
+        + ["","6","7","8","9","10"].map(v => '<option value="'+v+'"'+(String(d.rpe)===v?" selected":"")+">"+(v?"RPE "+v:"RPE –")+"</option>").join("")
+        + "</select></div></div>";
+    });
+  });
+
+  h += done
+    ? '<button class="finish re" onclick="reopenSession(\'' + s.id + '\')">↩︎ Rouvrir cette séance</button>'
+    : '<button class="finish" onclick="finishSession(\'' + s.id + '\')">✓ Séance terminée</button>';
+  h += "</div></div>";
+  return h;
 }
-function setRep(k, i, v) { const d = get(k); d.reps = d.reps || []; d.reps[i] = v; scheduleSave(); markDone(k); }
-function setF(k, f, v) { get(k)[f] = v; scheduleSave(); markDone(k); }
-function toggleUp(k) { const d = get(k); d.up = !d.up; scheduleSave(); render(); }
-function markDone(k) {
-  const el = document.getElementById("ex_" + k.replace(/\|/g, "_"));
-  if (!el) return;
+
+function toggleSess(id){
+  if(view==="today") return;              // en vue du jour la séance reste ouverte
+  openId = (openId===id) ? null : id;
+  render();
+}
+function setRep(k,i,v){ const d=get(k); d.reps=d.reps||[]; d.reps[i]=v; scheduleSave(); markDone(k); }
+function setPoids(k,i,v){ const d=get(k); d.poids=d.poids||[]; d.poids[i]=v; scheduleSave(); markDone(k); }
+function setF(k,f,v){ get(k)[f]=v; scheduleSave(); markDone(k); }
+function toggleUp(k){ const d=get(k); d.up=!d.up; scheduleSave(); render(); }
+function markDone(k){
+  const el = document.getElementById("ex_" + k.replace(/\|/g,"_"));
+  if(!el) return;
   const d = DATA[k];
-  const f = d && (d.score || (d.reps || []).some(x => x !== "" && x != null));
+  const f = d && (d.score || (d.reps||[]).some(x=>x!==""&&x!=null) || (d.poids||[]).some(x=>x!==""&&x!=null));
   el.classList.toggle("done", !!f);
 }
 
+/* ---------- HISTORIQUE ---------- */
+function histHTML(){
+  const done = SESS.filter(isDone);
+  let h = '<div class="weeknote"><b>Historique du bloc</b><br>'
+    + "Toutes les charges et perfs déjà notées, séance par séance. Pour corriger quelque chose, passe par l'onglet <b>Toutes</b>.</div>";
+  if(!done.length) return h + '<div class="ex"><div class="presc">Aucune séance terminée pour l\'instant.</div></div>';
+
+  done.forEach((s,si) => {
+    const idx = SESS.indexOf(s);
+    let body = "";
+    s.blocks.forEach((b,bi) => b.items.forEach(it => {
+      const d = DATA[K(s.id,bi,it.id)];
+      if(!d) return;
+      const r = (d.reps||[]).filter(x=>x!==""&&x!=null);
+      const p = (d.poids||[]).filter(x=>x!==""&&x!=null);
+      if(!r.length && !p.length && !d.score && !d.note) return;
+      let line = "<b>" + esc(it.name) + "</b> — ";
+      if(p.length) line += '<span style="color:var(--warn)">' + esc(p.join(" / ")) + " lb</span> · ";
+      if(r.length) line += esc(r.join(", ")) + " " + esc(it.unit||"");
+      else if(d.score) line += esc(d.score);
+      if(d.rpe) line += ' <span class="pill">RPE ' + esc(d.rpe) + "</span>";
+      if(d.up) line += ' <span class="pill" style="color:var(--acc2)">↑ peut monter</span>';
+      if(d.note) line += '<div class="presc" style="margin:4px 0 0">' + esc(d.note) + "</div>";
+      body += '<div class="ex" style="margin-bottom:6px"><div style="font-size:12.5px">' + line + "</div></div>";
+    }));
+    h += '<div class="sess open"><div class="shead"><div class="sid">✓</div>'
+      + '<div class="stitle"><b>' + esc(s.day) + " — " + esc(s.name) + "</b><small>Fait le " + esc(doneDate(s)) + "</small></div>"
+      + '<div class="tag ' + s.tag + '">' + esc(s.tag) + "</div></div>"
+      + '<div class="sbody" style="display:block;padding-top:12px">'
+      + (body || '<div class="presc">Séance marquée faite, sans perf notée.</div>') + "</div></div>";
+  });
+  return h;
+}
+
 /* ---------- GUIDE ---------- */
-function guideHTML() {
-  return '<div class="weeknote"><b>Comment lire ce bloc</b><br>'
-    + "14 séances reprises <b>telles quelles</b> du manuel Invictus « Course et poids de corps », 1 jour sur 2 sur 28 jours. "
-    + "Le texte affiché dans chaque jour est celui du livre. Tu notes tes perfs en dessous.</div>"
-    + '<div class="sess open"><div class="shead"><div class="sid">?</div><div class="stitle"><b>Directives du livre</b></div></div><div class="sbody">'
-    + '<div class="bt">Échauffement</div><div class="ex"><div class="presc">Commencez vos entraînements par un échauffement progressif de 10\'00\'\' à 15\'00\'\'. Libre à vous de choisir votre échauffement.</div></div>'
-    + '<div class="bt">Retour au calme</div><div class="ex"><div class="presc">Terminez votre séance par un retour au calme et 5\'00\'\' d\'étirements légers. Attendez deux heures avant d\'effectuer des étirements plus poussés.</div></div>'
-    + '<div class="bt">Hydratation</div><div class="ex"><div class="presc">Minimum 3,7 litres d\'eau par jour pour les hommes, et boire tout au long de la séance par petites gorgées.</div></div>'
-    + '<div class="bt">Scalage — exercices de substitution</div>'
-    + '<div class="ex"><div class="presc">« Si vous rencontrez des difficultés à faire un exercice, remplacez-le par l\'exercice suivant qui est plus simple OU vous pouvez simplement vous délester avec un élastique. »<br><br>'
-    + "<b>Press / Pectoraux</b> (du plus dur au plus simple) : Deficit HSPU · HSPU · Dips anneaux · Dips barres parallèles · Pompes pieds surélevés · Burpees · Pompes diamant · Hand release push ups · Pompes · Gainage commando · Pompes mains surélevées · Pompes genoux.<br><br>"
-    + "<b>Pull / Dorsaux</b> : Rings muscle up · Bar muscle up · Burpees-MU · Tractions serviette · Tractions commando · Burpees-C2B · Butterfly C2B · Strict C2B · Kipping C2B · Burpees-pull ups · Butterfly pull up · Strict pull up · Kipping pull up · Tractions supination/neutre · Tractions horizontales.</div></div>"
-    + '<div class="bt">Matériel manquant</div><div class="ex"><div class="presc">Pas de corde de 5 m ni de serviette : les 2 montées de corde sont remplacées par un <b>max de tractions supination</b> (prise biceps ou neutre). Le livre place les tractions supination juste sous la traction stricte dans sa liste Pull/Dorsaux, et laisse le choix entre prise supination et neutre. Objectif : 15 répétitions d\'affilée.</div></div>'
-    + '<div class="bt">Nutrition — OMAD</div><div class="ex"><div class="presc">Volume métabolique très élevé sur ce bloc. Sur un repas unique : vise <b>2 g/kg de protéines</b>, sale ton repas, et place-le après la séance quand c\'est possible.</div></div>'
+function guideHTML(){
+  return '<div class="weeknote"><b>Comment fonctionne ce bloc</b><br>'
+    + "10 séances numérotées, en rotation <b>muscu → haltéro+WOD → poids de corps</b>. Tu les fais dans l'ordre, à ton rythme. "
+    + "L'app s'ouvre toujours sur la première séance non terminée : tu n'as rien à chercher en arrivant à la salle.</div>"
+
+    + '<div class="sess open"><div class="shead"><div class="sid">?</div><div class="stitle"><b>Repères d\'utilisation</b></div></div><div class="sbody" style="display:block;padding-top:12px">'
+    + '<div class="bt">Les deux lignes de cases</div><div class="ex"><div class="presc">'
+    + "La ligne <b style=\"color:var(--warn)\">lb</b> = la charge de chaque série. La ligne du dessous = les reps (ou secondes, ou mètres) réellement faites. "
+    + "Une série ratée se note telle quelle : c'est l'information utile pour construire le bloc suivant.</div></div>"
+
+    + '<div class="bt">« Dernière fois »</div><div class="ex"><div class="presc">'
+    + "Le bandeau violet sous chaque exercice rappelle la charge et les reps de la dernière fois que tu l'as fait dans ce bloc. "
+    + "Tant que l'exercice n'a jamais été noté, il affiche ta référence du Bloc 2 ou du Bloc 3.</div></div>"
+
+    + '<div class="bt">« ✓ Séance terminée »</div><div class="ex"><div class="presc">'
+    + "Le bouton en bas de chaque séance. Il enregistre la date et fait passer l'app à la séance suivante. "
+    + "Tu peux toujours rouvrir une séance terminée depuis l'onglet <b>Toutes</b> pour corriger une valeur.</div></div>"
+
+    + '<div class="bt">Foot et boxe</div><div class="ex"><div class="presc">'
+    + "Tes 1 à 2 séances de foot ou boxe s'intercalent librement. Évite juste de les coller la veille d'un jour haltéro : "
+    + "les WOD Grace, Isabel et Fran demandent des jambes fraîches.</div></div>"
+
+    + '<div class="bt">Échauffement et retour au calme</div><div class="ex"><div class="presc">'
+    + "10 à 15 minutes d'échauffement progressif avant chaque séance, 5 minutes d'étirements légers après. "
+    + "Sur les jours haltéro, ajoute 5 minutes de mobilité épaules/poignets avant la barre — c'est ton point faible identifié.</div></div>"
+
+    + '<div class="bt">Nutrition — OMAD</div><div class="ex"><div class="presc">'
+    + "Le volume de ce bloc est plus élevé qu'au Bloc 3 (barre + WOD). Sur un repas unique : vise <b>2 g/kg de protéines</b>, "
+    + "sale correctement, et place le repas après la séance quand l'organisation le permet.</div></div>"
+
+    + '<div class="bt">Progression d\'un bloc à l\'autre</div><div class="ex"><div class="presc">'
+    + "Règle simple : si les séries prescrites passent toutes en RPE 8 ou moins, <b>+5 lb</b> au haut du corps et <b>+10 lb</b> au bas du corps "
+    + "pour le bloc suivant. Si une série casse, on garde la charge. Le bouton <b>↑ Peut monter</b> sert exactement à ça.</div></div>"
     + "</div></div>";
 }
 
 /* ---------- PROGRESSION ---------- */
-const TESTS = [
-  ["cooper", "Cooper 12'", "m", 1], ["maxpu", "Max tractions", "reps", 1], ["maxpush", "Max pompes", "reps", 1],
-  ["maxdips", "Max dips", "reps", 1], ["maxt2b", "Max T2B strictes", "reps", 1],
-  ["corde", "Max tractions supination", "reps", 1]
-];
-function showProg() {
+function showProg(){
   let rows = TESTS.map(t => {
-    const a = parseFloat((get(K("J1", 0, t[0])).reps || [])[0]);
-    const b = parseFloat((get(K("J14", 0, t[0])).reps || [])[0]);
+    const a = REF_B3[t[0]];
+    const b = parseFloat((get(K("J10",0,t[0])).reps||[])[0]);
     let d = "—", cls = "";
-    if (!isNaN(a) && !isNaN(b)) {
-      const diff = b - a, pct = a ? Math.round(diff / a * 1000) / 10 : 0;
-      d = (diff > 0 ? "+" : "") + Math.round(diff * 10) / 10 + " " + t[2] + " (" + (pct > 0 ? "+" : "") + pct + "%)";
-      cls = diff > 0 ? "pos" : (diff < 0 ? "neg" : "");
+    if(!isNaN(a) && !isNaN(b)){
+      const diff = b - a, pct = a ? Math.round(diff/a*1000)/10 : 0;
+      d = (diff>0?"+":"") + Math.round(diff*10)/10 + " " + t[2] + " (" + (pct>0?"+":"") + pct + "%)";
+      cls = diff>0 ? "pos" : (diff<0 ? "neg" : "");
     }
-    return "<tr><td>" + t[1] + "</td><td>" + (isNaN(a) ? "—" : a) + "</td><td>" + (isNaN(b) ? "—" : b) + '</td><td class="d ' + cls + '">' + d + "</td></tr>";
+    return "<tr><td>" + t[1] + "</td><td>" + a + "</td><td>" + (isNaN(b)?"—":b) + '</td><td class="d ' + cls + '">' + d + "</td></tr>";
   }).join("");
 
-  let ups = [], wods = [];
-  PROGRAM.weeks.forEach(w => w.sessions.forEach(s => s.blocks.forEach((b, bi) => b.items.forEach(it => {
-    const d = DATA[K(s.id, bi, it.id)];
-    if (!d) return;
-    if (d.up) ups.push(s.id + " · " + it.name);
-    if (b.wod && d.score) wods.push(s.id + " · " + it.name + " → <b>" + esc(d.score) + "</b>");
-  }))));
+  /* meilleures charges du bloc, par exercice */
+  const best = {};
+  SESS.forEach((s,i) => s.blocks.forEach((b,bi) => b.items.forEach(it => {
+    if(!it.w || !it.ex) return;
+    const d = DATA[K(s.id,bi,it.id)];
+    if(!d) return;
+    (d.poids||[]).forEach(v => {
+      const n = parseFloat(v);
+      if(isNaN(n)) return;
+      if(!best[it.ex] || n > best[it.ex].v) best[it.ex] = { v:n, name:it.name, sess:s.day.replace("JOUR ","J") };
+    });
+  })));
+  const bestRows = Object.keys(best).map(k =>
+    "<tr><td>" + esc(best[k].name) + "</td><td colspan=2><b>" + best[k].v + " lb</b></td><td>" + esc(best[k].sess) + "</td></tr>"
+  ).join("");
 
-  open_("📈 Progression", '<div class="prog"><table><tr><th>Test</th><th>Jour 1</th><th>Jour 14</th><th>Δ</th></tr>' + rows + "</table>"
-    + '<div class="bt">Scores WOD</div>' + (wods.length ? wods.map(x => '<div class="pill" style="display:block;margin-bottom:5px">' + x + "</div>").join("") : '<div class="presc">Aucun score enregistré.</div>')
-    + '<div class="bt">Marqués ↑ (à durcir au Bloc 4)</div>' + (ups.length ? ups.map(x => '<span class="pill">' + esc(x) + "</span>").join("") : '<div class="presc">Rien pour l\'instant.</div>')
+  let ups = [], wods = [];
+  SESS.forEach(s => s.blocks.forEach((b,bi) => b.items.forEach(it => {
+    const d = DATA[K(s.id,bi,it.id)];
+    if(!d) return;
+    if(d.up) ups.push(s.day.replace("JOUR ","J") + " · " + it.name);
+    if(b.wod && d.score) wods.push(s.day.replace("JOUR ","J") + " · " + it.name + " → <b>" + esc(d.score) + "</b>");
+  })));
+
+  open_("📈 Progression",
+    '<div class="prog"><div class="bt">Retest — Bloc 3 J1 vs Bloc 4 J10</div>'
+    + "<table><tr><th>Test</th><th>Bloc 3</th><th>J10</th><th>Δ</th></tr>" + rows + "</table>"
+    + '<div class="bt">Charges les plus lourdes du bloc</div>'
+    + (bestRows ? "<table>" + bestRows + "</table>" : '<div class="presc">Aucune charge notée pour l\'instant.</div>')
+    + '<div class="bt">Scores WOD</div>'
+    + (wods.length ? wods.map(x => '<div class="pill" style="display:block;margin-bottom:5px">' + x + "</div>").join("") : '<div class="presc">Aucun score enregistré.</div>')
+    + '<div class="bt">Marqués ↑ (à durcir au Bloc 5)</div>'
+    + (ups.length ? ups.map(x => '<span class="pill">' + esc(x) + "</span>").join("") : '<div class="presc">Rien pour l\'instant.</div>')
     + "</div>");
 }
 
 /* ---------- EXPORT / RÉSUMÉ ---------- */
-function doExport() {
-  const blob = new Blob([JSON.stringify({ store: STORE, bloc: PROGRAM.bloc, date: new Date().toISOString(), data: DATA }, null, 2)], { type: "application/json" });
+function doExport(){
+  const blob = new Blob([JSON.stringify({ store:STORE, bloc:PROGRAM.bloc, date:new Date().toISOString(), data:DATA }, null, 2)], { type:"application/json" });
   const a = document.createElement("a");
   a.href = URL.createObjectURL(blob);
-  a.download = "bloc3-bodyweight-" + new Date().toISOString().slice(0, 10) + ".json";
+  a.download = "bloc4-" + new Date().toISOString().slice(0,10) + ".json";
   a.click();
   setTimeout(() => URL.revokeObjectURL(a.href), 3000);
 }
 
-function buildResume() {
-  let out = "=== MON BILAN — BLOC 3 INVICTUS POIDS DE CORPS ===\nDate : " + new Date().toLocaleDateString("fr-FR") + "\n";
-  PROGRAM.weeks.forEach(w => {
-    let wtxt = "";
-    w.sessions.forEach(s => {
-      let stxt = "";
-      s.blocks.forEach((b, bi) => b.items.forEach(it => {
-        const d = DATA[K(s.id, bi, it.id)];
-        if (!d) return;
-        if (b.wod) {
-          if (!d.score) return;
-          stxt += " • " + it.name + " → " + d.score + (d.up ? " ↑" : "") + "\n";
-        } else {
-          const r = (d.reps || []).filter(x => x !== "" && x != null);
-          if (!r.length && !d.note) return;
-          stxt += " • " + it.name + (d.lest ? " [lest " + d.lest + "kg]" : "")
-            + (r.length ? " → [" + r.join(",") + "] " + it.unit : "")
-            + (d.rpe ? " RPE" + d.rpe : "") + (d.up ? " ↑" : "") + "\n";
-        }
-        if (d.note) stxt += "   Note : " + d.note + "\n";
-      }));
-      if (stxt) wtxt += " " + s.id + " — " + s.name + "\n" + stxt;
-    });
-    if (wtxt) out += "\n── SEMAINE " + w.n + " ──\n" + wtxt;
+function buildResume(){
+  let out = "=== MON BILAN — BLOC 4 (MUSCU / HALTÉRO / POIDS DE CORPS) ===\n"
+    + "Date : " + new Date().toLocaleDateString("fr-FR") + "\n"
+    + "Séances terminées : " + SESS.filter(isDone).length + "/10\n";
+  SESS.forEach(s => {
+    let stxt = "";
+    s.blocks.forEach((b,bi) => b.items.forEach(it => {
+      const d = DATA[K(s.id,bi,it.id)];
+      if(!d) return;
+      if(b.wod){
+        if(!d.score) return;
+        stxt += " • " + it.name + " → " + d.score + (d.up?" ↑":"") + "\n";
+      } else {
+        const r = (d.reps||[]).filter(x=>x!==""&&x!=null);
+        const p = (d.poids||[]).filter(x=>x!==""&&x!=null);
+        if(!r.length && !p.length && !d.note) return;
+        stxt += " • " + it.name
+          + (p.length ? " [" + p.join("/") + " lb]" : "")
+          + (r.length ? " → [" + r.join(",") + "] " + it.unit : "")
+          + (d.rpe ? " RPE" + d.rpe : "") + (d.up?" ↑":"") + "\n";
+      }
+      if(d.note) stxt += "   Note : " + d.note + "\n";
+    }));
+    if(stxt || isDone(s))
+      out += "\n── " + s.day + " — " + s.name + (isDone(s) ? " (fait le " + doneDate(s) + ")" : " (non terminée)") + " ──\n" + stxt;
   });
-  out += "\n=== DEMANDE ===\nVoici mon bilan Bloc 3 (poids de corps). Analyse mes progressions et crée mon Bloc 4.\n";
+  out += "\n=== DEMANDE ===\nVoici mon bilan Bloc 4. Analyse mes progressions et crée mon Bloc 5 (10 jours, même rotation).\n";
   return out;
 }
-function showResume() {
-  open_("🤖 Résumé à coller dans Claude", '<textarea id="box" readonly>' + esc(buildResume()) + "</textarea>");
-}
-function open_(t, html) {
+function showResume(){ open_("🤖 Résumé à coller dans Claude", '<textarea id="box" readonly>' + esc(buildResume()) + "</textarea>"); }
+function open_(t, html){
   document.getElementById("mtitle").textContent = t;
   document.getElementById("mcontent").innerHTML = html;
   document.getElementById("modal").classList.add("on");
 }
-function closeModal() { document.getElementById("modal").classList.remove("on"); }
-function copyBox() {
+function closeModal(){ document.getElementById("modal").classList.remove("on"); }
+function copyBox(){
   const b = document.getElementById("box");
   const txt = b ? b.value : document.getElementById("mcontent").innerText;
-  if (navigator.clipboard) navigator.clipboard.writeText(txt).then(() => alert("Copié ✓"), () => fallbackCopy(txt));
+  if(navigator.clipboard) navigator.clipboard.writeText(txt).then(()=>alert("Copié ✓"), ()=>fallbackCopy(txt));
   else fallbackCopy(txt);
 }
-function fallbackCopy(txt) {
+function fallbackCopy(txt){
   const ta = document.createElement("textarea");
   ta.value = txt; document.body.appendChild(ta); ta.select();
-  try { document.execCommand("copy"); alert("Copié ✓"); } catch (e) { alert("Copie manuelle nécessaire"); }
+  try{ document.execCommand("copy"); alert("Copié ✓"); }catch(e){ alert("Copie manuelle nécessaire"); }
   document.body.removeChild(ta);
 }
 
 /* ---------- INIT ---------- */
-function initData() {
-  try { DATA = JSON.parse(localStorage.getItem(STORE) || "{}"); } catch (e) { DATA = {}; }
-  render();                       // on rend TOUT DE SUITE depuis le local
-  setSync("↻ sync…", "");
-  pullCloud();                    // puis on tente le cloud, sans bloquer l'affichage
+function initData(){
+  try{ DATA = JSON.parse(localStorage.getItem(STORE) || "{}"); }catch(e){ DATA = {}; }
+  meta();
+  render();                       // rendu immédiat depuis le local
+  setSync("↻ sync…","");
+  pullCloud();                    // puis le cloud, sans bloquer l'affichage
 }
 window.addEventListener("online", () => { pullCloud(); pushCloud(); });
-document.addEventListener("visibilitychange", () => { if (!document.hidden && Date.now() - lastCloud > 30000) pullCloud(); });
-window.addEventListener("pageshow", () => { if (Date.now() - lastCloud > 30000) pullCloud(); });
+document.addEventListener("visibilitychange", () => { if(!document.hidden && Date.now()-lastCloud > 30000) pullCloud(); });
+window.addEventListener("pageshow", () => { if(Date.now()-lastCloud > 30000) pullCloud(); });
 window.addEventListener("beforeunload", saveLocal);
 initData();
-
 </script>
 </body>
 </html>
