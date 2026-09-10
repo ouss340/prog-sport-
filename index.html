@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#0b0e14">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>Bloc 4 — Muscu / Haltéro / Poids de corps</title>
+<title>Bloc 5 — Muscu / Haltéro + WOD</title>
 <style>
 :root{
   --bg:#0b0e14; --panel:#141924; --panel2:#1b2230; --line:#28303f;
@@ -51,16 +51,23 @@ main{padding:14px 14px 90px}
 .tag.HALTERO{background:#fbbf2422;color:var(--warn)}
 .tag.PDC{background:#4ade8022;color:var(--acc2)}
 .tag.TEST{background:#38bdf822;color:var(--blue)}
+.tag.WOD{background:#a78bfa22;color:var(--purple)}
+.tag.FORCE{background:#ff6b3522;color:var(--acc)}
+.tag.CARDIO{background:#38bdf822;color:var(--blue)}
 .chev{color:var(--dim);font-size:12px;flex:0 0 auto}
 .sbody{display:none;padding:0 14px 14px;border-top:1px solid var(--line)}
 .sess.open .sbody{display:block}
 .meta{display:flex;gap:6px;flex-wrap:wrap;margin:12px 0}
 .chip{font-size:11px;color:var(--dim);background:var(--panel2);border:1px solid var(--line);
   border-radius:99px;padding:4px 10px}
-.chip.hi{color:var(--blue);border-color:#38bdf844}
-.focus{font-size:12.5px;color:var(--dim);margin:0 0 12px;padding:10px;background:var(--panel2);
+.focus{font-size:12.5px;color:var(--dim);margin:12px 0;padding:10px;background:var(--panel2);
   border-radius:9px;border-left:3px solid var(--blue)}
 .focus b{color:var(--txt)}
+.verb{background:var(--panel2);border:1px solid var(--line);border-left:3px solid var(--acc2);
+  border-radius:9px;padding:11px 12px;margin:12px 0;font-size:12.5px;line-height:1.55}
+.verb div{margin-bottom:3px}
+.verb b{color:var(--txt)} .verb u{color:var(--blue);text-decoration:none;font-weight:700;font-size:11px;letter-spacing:.4px}
+.src{font-size:10.5px;color:var(--dim);letter-spacing:.3px;margin-top:6px;font-style:italic}
 .bt{font-size:11px;font-weight:800;letter-spacing:.8px;color:var(--acc);margin:16px 0 8px;text-transform:uppercase}
 .ex{background:var(--panel2);border:1px solid var(--line);border-radius:11px;padding:11px;margin-bottom:9px}
 .ex.done{border-color:#4ade8055;background:#4ade800d}
@@ -92,6 +99,10 @@ main{padding:14px 14px 90px}
 .finish{width:100%;margin-top:16px;padding:14px;border-radius:11px;font-size:14px;font-weight:800;
   cursor:pointer;font-family:inherit;background:var(--acc2);border:1px solid var(--acc2);color:#0b0e14}
 .finish.re{background:var(--panel2);border-color:var(--line);color:var(--dim)}
+.finish.pdc{background:var(--blue);border-color:var(--blue)}
+.attempts{background:#38bdf80d;border:1px solid #38bdf833;border-radius:9px;padding:9px 11px;margin:12px 0;font-size:12px;color:var(--dim)}
+.attempts b{color:var(--blue)}
+.attempts div{margin-top:4px}
 .bar{position:fixed;left:0;right:0;bottom:0;z-index:60;display:flex;gap:8px;padding:10px 14px;
   padding-bottom:calc(10px + env(safe-area-inset-bottom));background:rgba(11,14,20,.96);
   backdrop-filter:blur(12px);border-top:1px solid var(--line)}
@@ -112,13 +123,12 @@ main{padding:14px 14px 90px}
 .prog td.d.pos{color:var(--acc2)} .prog td.d.neg{color:#f87171}
 .pill{display:inline-block;font-size:11px;color:var(--dim);background:var(--panel2);
   border:1px solid var(--line);border-radius:99px;padding:3px 9px;margin:0 6px 5px 0}
-.hline{border:0;border-top:1px solid var(--line);margin:14px 0}
 </style>
 </head>
 <body>
 <header>
   <div class="hrow">
-    <h1>BLOC 4 — <span>10 JOURS</span></h1>
+    <h1>BLOC 5 — <span>12 SÉANCES</span></h1>
     <div class="sync" id="sync">…</div>
   </div>
   <nav id="nav"></nav>
@@ -143,52 +153,56 @@ main{padding:14px 14px 90px}
 
 <script>
 /* =========================================================================
-   BLOC 4 — 10 jours · rotation MUSCU → HALTÉRO+WOD → POIDS DE CORPS
-   Salle CrossFit sans machines (barre olympique, rack, haltères, KB,
-   anneaux, barre de traction, box, corde, rameur, ski erg, air bike, tapis).
-   Charges en LIVRES (lb), comme au Bloc 2.
+   BLOC 5 — 12 séances · alternance MUSCU (complète) → HALTÉRO + WOD
+   + onglet séparé POIDS DE CORPS (séances du livre, à faire quand tu veux)
+   Salle CrossFit sans machines. Charges en LIVRES (lb).
    ========================================================================= */
 
 const PROGRAM = {
-  store: "prog_logs_v6",
-  bloc: "BLOC 4 — MUSCU / HALTÉRO / POIDS DE CORPS (10 jours)",
+  store: "prog_logs_v7",
+  bloc: "BLOC 5 — MUSCU COMPLÈTE / HALTÉRO + WOD (12 séances)",
   sessions: [
 
-  /* ---------------------------------------------------------------- J1 */
+  /* ================================================== CYCLE 1 — J1 à J6 */
   {
-    id:"J1", day:"JOUR 1", name:"MUSCU A — Jambes & tirage", tag:"MUSCU", dur:"~55 min",
-    focus:"<b>Objectif :</b> reconstruire la base de force sur le bas du corps après 4 semaines sans barre. On repart 10 % sous tes charges de fin de Bloc 2 pour laisser la technique revenir, puis on remonte. Le gainage bras tendus est ajouté partout : tu n'as tenu que 3 gainages sur 7 au Bloc 3.",
+    id:"J1", day:"JOUR 1", name:"MUSCU A — Jambes & tirage", tag:"MUSCU", dur:"65-70 min",
+    focus:"<b>Séance complète bas du corps + dos.</b> Tu as passé les 5×5 à 145 lb au Bloc 4 mais en notant « difficilement ». On monte de 5 lb seulement et on ajoute du volume jambes derrière : c'est le volume, pas la charge maximale, qui fait grossir le muscle.",
     blocks:[
       { title:"FORCE", items:[
         { id:"bs", ex:"back_squat", name:"Back Squat", presc:"5 séries de 5 — repos 2'30''", sets:5, unit:"reps", w:1,
-          ref:"Bloc 2 : 170 lb", target:"Départ 145-150 lb. Si les 5×5 passent en RPE 8, +10 lb au J4 du prochain bloc." },
+          ref:"Bloc 4 : 145 lb × 5,5,5,5,5 (« difficilement »)", target:"150 lb. Si les 5 séries passent en RPE ≤ 8, +10 lb au J7." },
         { id:"bul", ex:"bulgare", name:"Fentes bulgares haltères", presc:"3 séries de 10 par jambe — repos 90''", sets:3, unit:"reps/jbe", w:1,
-          target:"Charge par haltère. Pied arrière sur un box." },
-        { id:"sdt", ex:"rdl", name:"Soulevé de terre roumain", presc:"3 séries de 10 — repos 90''", sets:3, unit:"reps", w:1,
-          target:"Jambes quasi tendues, dos plat, on sent les ischios." }
+          ref:"Bloc 4 : 22 lb × 10,10,10", target:"24 lb par haltère. Pied arrière sur un box." },
+        { id:"rdl", ex:"rdl", name:"Soulevé de terre roumain", presc:"3 séries de 10 — repos 90''", sets:3, unit:"reps", w:1,
+          ref:"Bloc 4 : 145 lb × 10,10,7", target:"Reste à 145 lb tant que les 3×10 ne sont pas complètes." }
+      ]},
+      { title:"VOLUME JAMBES", items:[
+        { id:"fm", ex:"fentes_march", name:"Fentes marchées haltères", presc:"3 séries de 12 pas par jambe — repos 75''", sets:3, unit:"reps/jbe", w:1,
+          target:"Charge par haltère. Grand pas, genou arrière proche du sol." },
+        { id:"mol", ex:"mollets", name:"Mollets debout (barre ou haltères)", presc:"4 séries de 15 — repos 45''", sets:4, unit:"reps", w:1,
+          target:"Amplitude complète, 1'' de pause en haut." }
       ]},
       { title:"TIRAGE", items:[
-        { id:"tl", ex:"trac_lest", name:"Tractions lestées strictes", presc:"4 séries de 6 — repos 2'", sets:4, unit:"reps", w:1,
-          ref:"Bloc 2 : 22 lb × 6 · Bloc 3 : 21 tractions strictes à vide",
-          target:"Ton point fort. Charge = lest en lb. Vise 25 lb × 6." },
-        { id:"row", ex:"row_hal", name:"Rowing haltère 1 bras", presc:"3 séries de 12 par bras — repos 75''", sets:3, unit:"reps/bras", w:1 }
+        { id:"tl", ex:"trac_lest", name:"Tractions lestées strictes", presc:"4 séries de 5 — repos 2'", sets:4, unit:"reps", w:1,
+          ref:"Bloc 4 : 35 lb × 6,6,6,6 (marqué ↑)", target:"40 lb. Charge = lest en lb. 1'' d'arrêt bras tendus en bas." },
+        { id:"row", ex:"row_hal", name:"Rowing haltère 1 bras", presc:"3 séries de 12 par bras — repos 75''", sets:3, unit:"reps/bras", w:1,
+          ref:"Bloc 4 : 44 lb × 12,12,12 (marqué ↑)", target:"48 lb." }
       ]},
-      { title:"GAINAGE", items:[
-        { id:"gain", ex:"gain_bt", name:"Gainage bras tendus", presc:"4 × 45'' — repos 30''", sets:4, unit:"sec",
-          ref:"Bloc 3 : 3 gainages de 30'' tenus sur 7",
-          target:"Note les secondes réellement tenues sans casser." }
+      { title:"BRAS & GAINAGE", items:[
+        { id:"curl", ex:"curl_mart", name:"Curl marteau haltères", presc:"3 séries de 12 — repos 60''", sets:3, unit:"reps", w:1 },
+        { id:"gain", ex:"gain_bt", name:"Gainage bras tendus", presc:"4 × 50'' — repos 30''", sets:4, unit:"sec",
+          ref:"Bloc 4 : 45'' × 4 (marqué ↑)", target:"Note les secondes réellement tenues sans casser." }
       ]}
     ]
   },
 
-  /* ---------------------------------------------------------------- J2 */
   {
-    id:"J2", day:"JOUR 2", name:"HALTÉRO A — Clean & Jerk + WOD", tag:"HALTERO", dur:"~55 min",
-    focus:"<b>Objectif :</b> remettre le C&J en place à charge modérée avant de chercher lourd. Ton C&J est passé de 95 à 140 lb au Bloc 2 : c'est ta meilleure progression, on la relance. Le WOD (Grace allégée) travaille le C&J en fatigue.",
+    id:"J2", day:"JOUR 2", name:"HALTÉRO A — Clean & Jerk + Grace", tag:"HALTERO", dur:"60-65 min",
+    focus:"<b>Technique d'abord, WOD ensuite, muscle à la fin.</b> Le C&J est ta meilleure progression historique (95 → 140 lb). Le WOD Grace donne un chrono de référence qu'on retestera au J8, à la même charge, pour mesurer le bloc.",
     blocks:[
       { title:"TECHNIQUE", items:[
         { id:"pc", ex:"power_clean", name:"Power clean", presc:"5 séries de 3 — repos 2'", sets:5, unit:"reps", w:1,
-          ref:"Bloc 2 : C&J max 140 lb", target:"70-75 % du max : 95-105 lb. Vitesse sous la barre, pas la charge." },
+          ref:"Bloc 2 : C&J max 140 lb", target:"100-110 lb. Vitesse sous la barre, pas la charge." },
         { id:"jerk", ex:"split_jerk", name:"Split jerk", presc:"5 séries de 2 — repos 2'", sets:5, unit:"reps", w:1,
           target:"Fente franche, bras verrouillés avant de recevoir." }
       ]},
@@ -197,61 +211,50 @@ const PROGRAM = {
           ref:"Bloc 2 : 140 lb", target:"Dernière série = lourd du jour, pas un max. Arrête si la technique casse." }
       ]},
       { title:"WOD — GRACE ALLÉGÉE", wod:true, items:[
-        { id:"wod", ex:"wod_grace", name:"30 Clean & Jerk @ 95 lb — for time", presc:"Barre au sol à chaque rep. Découpe en séries de 5 dès que ça brûle.", score:"ex : 6'40" }
+        { id:"wod", ex:"wod_grace", name:"30 Clean & Jerk @ 95 lb — for time", presc:"Barre au sol à chaque rep. Découpe en séries de 5 dès que ça brûle. Chrono de référence : on refait exactement le même au J8.", score:"ex : 6'40" }
+      ]},
+      { title:"FINITION MUSCULAIRE", items:[
+        { id:"rowb", ex:"row_barre", name:"Rowing barre penché", presc:"3 séries de 10 — repos 90''", sets:3, unit:"reps", w:1,
+          target:"Dos plat, barre au nombril." },
+        { id:"dip", ex:"dips_force", name:"Dips stricts", presc:"3 séries au maximum de reps — repos 2'", sets:3, unit:"reps",
+          ref:"Bloc 3 : 11 dips max", target:"Ton point faible. Séries courtes et propres, négatives de 5'' si échec." }
       ]}
     ]
   },
 
-  /* ---------------------------------------------------------------- J3 */
   {
-    id:"J3", day:"JOUR 3", name:"POIDS DE CORPS A — Poussée", tag:"PDC", dur:"45-50 min",
-    focus:"<b>Ton point faible n°1.</b> Bloc 3 : 33 pompes et 11 dips en max, contre 55 et 20 attendus — alors que tu as encaissé 120 pompes en volume fractionné et 150 sur Barbara. Tu tiens le volume, tu plafonnes sur la série max. Donc ici : séries courtes et lourdes en qualité, pas du volume en plus.",
-    blocks:[
-      { title:"FORCE — DIPS", items:[
-        { id:"dip", ex:"dips_force", name:"Dips stricts", presc:"6 séries de 4 — repos 2' — élastique ou négatives 5'' si échec", sets:6, unit:"reps",
-          ref:"Bloc 3 : 11 dips max", target:"4 reps propres et explosives. Si tu passes les 6×4, ajoute du lest au bloc suivant." },
-        { id:"pdia", ex:"pompe_dia", name:"Pompes diamant", presc:"4 séries de 8 — repos 90''", sets:4, unit:"reps",
-          target:"Coudes au corps, poitrine au sol." }
-      ]},
-      { title:"AMRAP 12'00''", wod:true, items:[
-        { id:"amrap", ex:"amrap_push", name:"AMRAP 12' — 5 dips / 10 pompes / 15 air squats", presc:"Le plus de tours possible en 12 minutes.", score:"ex : 9 tours + 5" }
-      ]},
-      { title:"GAINAGE", items:[
-        { id:"gain", ex:"gain_bt", name:"Gainage bras tendus", presc:"5 × 45'' — repos 30''", sets:5, unit:"sec",
-          ref:"Bloc 3 : 3/7 tenus", target:"Sans décoller de main. Note les secondes tenues." }
-      ]}
-    ]
-  },
-
-  /* ---------------------------------------------------------------- J4 */
-  {
-    id:"J4", day:"JOUR 4", name:"MUSCU B — Poussée haut du corps", tag:"MUSCU", dur:"~55 min",
-    focus:"<b>Correction du Bloc 2 :</b> le 4×10 à 155 lb au développé couché n'était pas tenable, et ton shoulder press régressait en reps. On repasse en 5×5 lourd (force) plutôt qu'en séries longues — c'est le schéma qui débloque un plateau de poussée.",
+    id:"J3", day:"JOUR 3", name:"MUSCU B — Poussée haut du corps", tag:"MUSCU", dur:"65-70 min",
+    focus:"<b>Force puis hypertrophie sur la même séance.</b> Les 3 premiers exercices sont lourds en séries courtes (c'est ce qui débloque ton plateau de poussée : 33 pompes et 11 dips en max). Les 4 suivants sont en séries longues pour la masse.",
     blocks:[
       { title:"FORCE", items:[
         { id:"dc", ex:"bench", name:"Développé couché", presc:"5 séries de 5 — repos 2'30''", sets:5, unit:"reps", w:1,
-          ref:"Bloc 2 : 4×10 à 155 lb non tenu", target:"Départ 145-155 lb sur 5 reps. Monte de 5 lb quand les 5×5 passent." },
+          ref:"Bloc 2 : 4×10 à 155 lb non tenu", target:"Départ 150 lb sur 5 reps. +5 lb quand les 5×5 passent." },
         { id:"dm", ex:"ohp", name:"Développé militaire barre (strict)", presc:"4 séries de 8 — repos 2'", sets:4, unit:"reps", w:1,
           target:"Debout, sans élan de jambes. Gainage serré." },
         { id:"dipl", ex:"dips_lest", name:"Dips lestés", presc:"4 séries de 6 — repos 2'", sets:4, unit:"reps", w:1,
           ref:"Bloc 3 : 11 dips à vide", target:"Charge = lest. Si 6 reps à vide sont dures, reste à vide et note 0." }
       ]},
-      { title:"ACCESSOIRES", items:[
-        { id:"dinc", ex:"dev_incl", name:"Développé incliné haltères", presc:"3 séries de 12 — repos 75''", sets:3, unit:"reps", w:1 },
-        { id:"elev", ex:"elev_lat", name:"Élévations latérales", presc:"3 séries de 15 — repos 60''", sets:3, unit:"reps", w:1 },
-        { id:"skull", ex:"skull", name:"Barre au front (skull crusher)", presc:"3 séries de 12 — repos 60''", sets:3, unit:"reps", w:1 }
+      { title:"VOLUME — MASSE", items:[
+        { id:"dinc", ex:"dev_incl", name:"Développé incliné haltères", presc:"4 séries de 12 — repos 75''", sets:4, unit:"reps", w:1 },
+        { id:"ecart", ex:"ecarte", name:"Écartés haltères sur banc", presc:"3 séries de 15 — repos 60''", sets:3, unit:"reps", w:1,
+          target:"Charge légère, amplitude maximale, on étire." },
+        { id:"elev", ex:"elev_lat", name:"Élévations latérales", presc:"4 séries de 15 — repos 60''", sets:4, unit:"reps", w:1 },
+        { id:"skull", ex:"skull", name:"Barre au front (skull crusher)", presc:"3 séries de 12 — repos 60''", sets:3, unit:"reps", w:1 },
+        { id:"ext", ex:"ext_nuque", name:"Extension nuque haltère", presc:"3 séries de 12 — repos 60''", sets:3, unit:"reps", w:1 }
+      ]},
+      { title:"GAINAGE", items:[
+        { id:"lat", ex:"gain_lat", name:"Gainage latéral", presc:"4 × 40'' par côté — repos 30''", sets:4, unit:"sec/côté" }
       ]}
     ]
   },
 
-  /* ---------------------------------------------------------------- J5 */
   {
-    id:"J5", day:"JOUR 5", name:"HALTÉRO B — Arraché + WOD", tag:"HALTERO", dur:"~55 min",
-    focus:"<b>Mobilité épaules et poignets</b> — l'autre point faible relevé au Bloc 2 (« dur pour les poignets » sur l'OHS, « monte peu » au front squat). L'overhead squat en début de séance sert autant de mobilité que de force.",
+    id:"J4", day:"JOUR 4", name:"HALTÉRO B — Arraché + Isabel", tag:"HALTERO", dur:"60-65 min",
+    focus:"<b>Mobilité épaules et poignets.</b> Ton point faible relevé au Bloc 2 (« dur pour les poignets » sur l'OHS). L'overhead squat en début de séance sert autant de mobilité que de force. Isabel donne le chrono de référence, retesté au J10.",
     blocks:[
       { title:"MOBILITÉ & FORCE", items:[
         { id:"ohs", ex:"ohs", name:"Overhead squat", presc:"5 séries de 5 — repos 2' — barre à vide puis charge légère", sets:5, unit:"reps", w:1,
-          ref:"Bloc 2 : gênant pour les poignets", target:"Descends aussi bas que la mobilité le permet, pas plus. Priorité : bras verrouillés." },
+          ref:"Bloc 2 : gênant pour les poignets", target:"Descends aussi bas que la mobilité le permet. Priorité : bras verrouillés." },
         { id:"ps", ex:"power_snatch", name:"Power snatch", presc:"6 séries de 2 — repos 2'", sets:6, unit:"reps", w:1,
           target:"65-70 % : reste léger, cherche le placement." }
       ]},
@@ -260,59 +263,44 @@ const PROGRAM = {
           target:"Lourd du jour, technique intacte." }
       ]},
       { title:"WOD — ISABEL ALLÉGÉE", wod:true, items:[
-        { id:"wod", ex:"wod_isabel", name:"30 arrachés @ 75 lb — for time", presc:"Power snatch autorisé. Barre au sol à chaque rep.", score:"ex : 5'10" }
+        { id:"wod", ex:"wod_isabel", name:"30 arrachés @ 75 lb — for time", presc:"Power snatch autorisé. Barre au sol à chaque rep. Même WOD au J10 pour comparer.", score:"ex : 5'10" }
+      ]},
+      { title:"FINITION MUSCULAIRE", items:[
+        { id:"tr", ex:"trac_str", name:"Tractions strictes", presc:"3 séries au maximum de reps — repos 2'", sets:3, unit:"reps",
+          ref:"Bloc 3 : 21 tractions strictes max", target:"Ton point fort : exploite-le, sans lest ici." },
+        { id:"gain", ex:"gain_bt", name:"Gainage bras tendus", presc:"3 × 50'' — repos 30''", sets:3, unit:"sec" }
       ]}
     ]
   },
 
-  /* ---------------------------------------------------------------- J6 */
   {
-    id:"J6", day:"JOUR 6", name:"POIDS DE CORPS B — Tirage & gainage", tag:"PDC", dur:"45-50 min",
-    focus:"<b>Exploiter ton point fort.</b> 21 tractions strictes au Bloc 3, seul objectif Invictus dépassé (seuil 17). En face, tes toes-to-bar stricts plafonnent à 10 pour 18 attendus : c'est le déficit de gainage, pas de dos. D'où le travail strict de T2B ici.",
-    blocks:[
-      { title:"FORCE — TIRAGE", items:[
-        { id:"tr", ex:"trac_str", name:"Tractions strictes lestées", presc:"6 séries de 4 — repos 2'", sets:6, unit:"reps", w:1,
-          ref:"Bloc 3 : 21 max à vide · Bloc 2 : 22 lb × 6", target:"Charge = lest en lb. Temps d'arrêt 1'' bras tendus en bas." },
-        { id:"sup", ex:"trac_sup", name:"Tractions supination", presc:"4 séries de 8 — repos 90''", sets:4, unit:"reps",
-          ref:"Bloc 3 : 10 max", target:"Objectif Invictus : 15 d'affilée. Lest si les 4×8 passent." }
-      ]},
-      { title:"GAINAGE SPÉCIFIQUE", items:[
-        { id:"t2b", ex:"t2b", name:"Toes-to-bar stricts", presc:"6 séries de 5 — repos 90'' — sans balancier", sets:6, unit:"reps",
-          ref:"Bloc 3 : 10 max", target:"Si 5 stricts sont impossibles : genoux-poitrine stricts, même volume." },
-        { id:"lat", ex:"gain_lat", name:"Gainage latéral", presc:"4 × 40'' par côté — repos 30''", sets:4, unit:"sec/côté" }
-      ]},
-      { title:"AMRAP 12'00''", wod:true, items:[
-        { id:"amrap", ex:"amrap_pull", name:"AMRAP 12' — 3 tractions / 6 T2B / 9 burpees", presc:"Le plus de tours possible en 12 minutes.", score:"ex : 7 tours + 3" }
-      ]}
-    ]
-  },
-
-  /* ---------------------------------------------------------------- J7 */
-  {
-    id:"J7", day:"JOUR 7", name:"MUSCU C — Chaîne postérieure", tag:"MUSCU", dur:"~55 min",
-    focus:"<b>Le soulevé de terre est ton mouvement le plus lourd</b> (235 → 275 lb au Bloc 2). On repart à 85 % pour un travail en séries de 3, plus sûr après une coupure, et on ajoute du volume fessiers/ischios que le Bloc 3 n'a pas pu solliciter.",
+    id:"J5", day:"JOUR 5", name:"MUSCU C — Chaîne postérieure & dos", tag:"MUSCU", dur:"65-70 min",
+    focus:"<b>Le soulevé de terre est ton mouvement le plus lourd</b> (235 → 275 lb au Bloc 2). Séries de 3, plus sûres, puis beaucoup de volume fessiers / ischios / dos. C'est la séance qui apporte le plus de masse sur l'ensemble du corps.",
     blocks:[
       { title:"FORCE", items:[
         { id:"dl", ex:"deadlift", name:"Soulevé de terre", presc:"5 séries de 3 — repos 3'", sets:5, unit:"reps", w:1,
-          ref:"Bloc 2 : 275 lb", target:"Départ 230-240 lb. Dos verrouillé, on ne cherche pas le max ce bloc." },
-        { id:"ht", ex:"hip_thrust", name:"Hip thrust barre", presc:"4 séries de 10 — repos 90''", sets:4, unit:"reps", w:1 },
+          ref:"Bloc 2 : 275 lb", target:"Départ 240 lb. Dos verrouillé, on ne cherche pas le max ce bloc." },
+        { id:"ht", ex:"hip_thrust", name:"Hip thrust barre", presc:"4 séries de 10 — repos 90''", sets:4, unit:"reps", w:1,
+          target:"1'' de contraction en haut, menton rentré." },
         { id:"gm", ex:"good_morning", name:"Good morning", presc:"3 séries de 12 — repos 90'' — charge légère", sets:3, unit:"reps", w:1 }
       ]},
-      { title:"DOS & BRAS", items:[
+      { title:"DOS", items:[
         { id:"rowb", ex:"row_barre", name:"Rowing barre penché", presc:"4 séries de 8 — repos 90''", sets:4, unit:"reps", w:1 },
-        { id:"curl", ex:"curl", name:"Curl haltères", presc:"3 séries de 12 — repos 60''", sets:3, unit:"reps", w:1 }
+        { id:"sup", ex:"trac_sup", name:"Tractions supination", presc:"4 séries de 8 — repos 90''", sets:4, unit:"reps",
+          ref:"Bloc 3 : 10 max", target:"Objectif du livre : 15 d'affilée. Lest si les 4×8 passent." },
+        { id:"shrug", ex:"shrug", name:"Shrugs barre", presc:"3 séries de 15 — repos 60''", sets:3, unit:"reps", w:1 }
       ]},
-      { title:"FINISHER", items:[
+      { title:"BRAS & FINISHER", items:[
+        { id:"curl", ex:"curl_barre", name:"Curl barre", presc:"3 séries de 12 — repos 60''", sets:3, unit:"reps", w:1 },
         { id:"farm", ex:"farmer", name:"Farmer walk", presc:"4 × 40 m — repos 90''", sets:4, unit:"m", w:1,
           target:"Charge = poids par main. Épaules basses, gainage serré." }
       ]}
     ]
   },
 
-  /* ---------------------------------------------------------------- J8 */
   {
-    id:"J8", day:"JOUR 8", name:"HALTÉRO C — Front squat / Thruster + WOD", tag:"HALTERO", dur:"~55 min",
-    focus:"<b>Front rack.</b> Tes notes du Bloc 2 disaient « monte peu » sur front squat et thruster : c'est une limite de position, pas de jambes. Front squat lourd puis Fran pour l'appliquer en fatigue.",
+    id:"J6", day:"JOUR 6", name:"HALTÉRO C — Front squat / Thruster + Fran", tag:"HALTERO", dur:"60-65 min",
+    focus:"<b>Front rack.</b> Tes notes du Bloc 2 disaient « monte peu » sur front squat et thruster : c'est une limite de position, pas de jambes. Front squat lourd, puis Fran pour l'appliquer en fatigue. Retest au J12.",
     blocks:[
       { title:"FORCE", items:[
         { id:"fs", ex:"front_squat", name:"Front squat", presc:"5 séries de 5 — repos 2'30''", sets:5, unit:"reps", w:1,
@@ -322,54 +310,152 @@ const PROGRAM = {
           target:"Un seul mouvement fluide du squat au verrouillage." }
       ]},
       { title:"WOD — FRAN", wod:true, items:[
-        { id:"wod", ex:"wod_fran", name:"21-15-9 — Thrusters @ 95 lb + Tractions — for time", presc:"Le benchmark le plus connu. Note aussi si tu as scalé la charge.", score:"ex : 8'15" }
+        { id:"wod", ex:"wod_fran", name:"21-15-9 — Thrusters @ 95 lb + Tractions — for time", presc:"Le benchmark le plus connu. Note si tu as scalé la charge. Même WOD au J12.", score:"ex : 8'15" }
+      ]},
+      { title:"FINITION MUSCULAIRE", items:[
+        { id:"bul", ex:"bulgare", name:"Fentes bulgares haltères", presc:"3 séries de 10 par jambe — repos 75''", sets:3, unit:"reps/jbe", w:1 },
+        { id:"gain", ex:"gain_bt", name:"Gainage bras tendus", presc:"3 × 50'' — repos 30''", sets:3, unit:"sec" }
       ]}
     ]
   },
 
-  /* ---------------------------------------------------------------- J9 */
+  /* ================================================= CYCLE 2 — J7 à J12 */
   {
-    id:"J9", day:"JOUR 9", name:"POIDS DE CORPS C — Base aérobie", tag:"PDC", dur:"45-50 min",
-    focus:"<b>Ton plus gros écart.</b> Cooper à 2570 m contre 3100 m demandés : environ 12,8 km/h de moyenne au lieu de 15,5. Tu as maintenant rameur, ski erg et air bike : intervalles longs à allure soutenue, c'est ce qui déplace le plus vite un Cooper.",
+    id:"J7", day:"JOUR 7", name:"MUSCU A2 — Jambes & tirage (lourd)", tag:"MUSCU", dur:"65-70 min",
+    focus:"<b>Deuxième tour, mêmes mouvements, charges plus hautes.</b> Le bandeau violet « Dernière fois » te rappelle automatiquement ce que tu as fait au J1 : ajoute +10 lb au bas du corps et +5 lb au haut si tout est passé en RPE ≤ 8. Le RDL passe en séries de 8, plus lourdes.",
     blocks:[
-      { title:"INTERVALLES LONGS", items:[
-        { id:"int", ex:"interv", name:"5 × 4'00'' — rameur / ski erg / air bike", presc:"1'00'' de repos entre chaque. Note la distance en mètres par intervalle.", sets:5, unit:"m",
-          ref:"Bloc 3 : Cooper 2570 m", target:"Allure tenable mais inconfortable. Les 5 distances doivent rester dans un écart de 5 %." },
-        { id:"mach", ex:"machine", name:"Machine utilisée", presc:"Note dans le champ ci-dessous : rameur, ski erg, air bike ou tapis.", sets:1, unit:"—" }
+      { title:"FORCE", items:[
+        { id:"bs", ex:"back_squat", name:"Back Squat", presc:"5 séries de 5 — repos 2'30''", sets:5, unit:"reps", w:1,
+          target:"+10 lb par rapport au J1 si les 5 séries y sont passées." },
+        { id:"bul", ex:"bulgare", name:"Fentes bulgares haltères", presc:"3 séries de 10 par jambe — repos 90''", sets:3, unit:"reps/jbe", w:1 },
+        { id:"rdl", ex:"rdl", name:"Soulevé de terre roumain", presc:"4 séries de 8 — repos 90''", sets:4, unit:"reps", w:1,
+          target:"Séries plus courtes qu'au J1 → tu peux mettre plus lourd." }
       ]},
-      { title:"CIRCUIT — 3 TOURS", wod:true, items:[
-        { id:"wod", ex:"circuit_full", name:"3 tours — 10 burpees / 20 air squats / 30 mountain climbers", presc:"For time, sans repos imposé.", score:"ex : 9'30" }
+      { title:"VOLUME JAMBES", items:[
+        { id:"fm", ex:"fentes_march", name:"Fentes marchées haltères", presc:"3 séries de 12 pas par jambe — repos 75''", sets:3, unit:"reps/jbe", w:1 },
+        { id:"mol", ex:"mollets", name:"Mollets debout", presc:"4 séries de 15 — repos 45''", sets:4, unit:"reps", w:1 }
+      ]},
+      { title:"TIRAGE", items:[
+        { id:"tl", ex:"trac_lest", name:"Tractions lestées strictes", presc:"5 séries de 5 — repos 2'", sets:5, unit:"reps", w:1,
+          target:"Une série de plus qu'au J1. Charge = lest en lb." },
+        { id:"row", ex:"row_hal", name:"Rowing haltère 1 bras", presc:"4 séries de 12 par bras — repos 75''", sets:4, unit:"reps/bras", w:1 }
+      ]},
+      { title:"BRAS & GAINAGE", items:[
+        { id:"curl", ex:"curl_mart", name:"Curl marteau haltères", presc:"3 séries de 12 — repos 60''", sets:3, unit:"reps", w:1 },
+        { id:"gain", ex:"gain_bt", name:"Gainage bras tendus", presc:"4 × 60'' — repos 30''", sets:4, unit:"sec",
+          target:"On passe à 60''. Note les secondes réellement tenues." }
+      ]}
+    ]
+  },
+
+  {
+    id:"J8", day:"JOUR 8", name:"HALTÉRO A2 — Clean & Jerk + Grace (retest)", tag:"HALTERO", dur:"60-65 min",
+    focus:"<b>Retest de Grace, exactement comme au J2 : 30 C&J à 95 lb.</b> Même charge, même consigne — l'écart de chrono mesure ce que le bloc t'a apporté. L'onglet Progression le calcule tout seul.",
+    blocks:[
+      { title:"TECHNIQUE", items:[
+        { id:"pc", ex:"power_clean", name:"Power clean", presc:"5 séries de 3 — repos 2'", sets:5, unit:"reps", w:1 },
+        { id:"jerk", ex:"split_jerk", name:"Split jerk", presc:"5 séries de 2 — repos 2'", sets:5, unit:"reps", w:1 }
+      ]},
+      { title:"MONTÉE EN CHARGE", items:[
+        { id:"cj", ex:"cj_max", name:"Clean & Jerk — 5 singles montants", presc:"1 rep par série, on monte à chaque série", sets:5, unit:"reps", w:1,
+          target:"Vise plus haut qu'au J2. Objectif du bloc : retoucher 140 lb." }
+      ]},
+      { title:"WOD — GRACE (RETEST)", wod:true, items:[
+        { id:"wod", ex:"wod_grace", name:"30 Clean & Jerk @ 95 lb — for time", presc:"Retest à l'identique du J2. Ne change pas la charge, c'est la mesure.", score:"ex : 6'40" }
+      ]},
+      { title:"FINITION MUSCULAIRE", items:[
+        { id:"rowb", ex:"row_barre", name:"Rowing barre penché", presc:"3 séries de 10 — repos 90''", sets:3, unit:"reps", w:1 },
+        { id:"dip", ex:"dips_force", name:"Dips stricts", presc:"3 séries au maximum de reps — repos 2'", sets:3, unit:"reps",
+          target:"Compare au J2 : c'est ton indicateur de poussée." }
+      ]}
+    ]
+  },
+
+  {
+    id:"J9", day:"JOUR 9", name:"MUSCU B2 — Poussée haut du corps (lourd)", tag:"MUSCU", dur:"65-70 min",
+    focus:"<b>Deuxième passage sur la poussée.</b> Le développé couché passe en 6×4 : encore plus lourd, encore plus court. C'est le schéma qui casse un plateau de force. Le volume d'hypertrophie reste derrière, inchangé.",
+    blocks:[
+      { title:"FORCE", items:[
+        { id:"dc", ex:"bench", name:"Développé couché", presc:"6 séries de 4 — repos 2'30''", sets:6, unit:"reps", w:1,
+          target:"+5 à +10 lb par rapport au J3 (séries plus courtes)." },
+        { id:"dm", ex:"ohp", name:"Développé militaire barre (strict)", presc:"5 séries de 6 — repos 2'", sets:5, unit:"reps", w:1 },
+        { id:"dipl", ex:"dips_lest", name:"Dips lestés", presc:"5 séries de 5 — repos 2'", sets:5, unit:"reps", w:1,
+          target:"Ajoute du lest si les 4×6 du J3 sont passées." }
+      ]},
+      { title:"VOLUME — MASSE", items:[
+        { id:"dinc", ex:"dev_incl", name:"Développé incliné haltères", presc:"4 séries de 12 — repos 75''", sets:4, unit:"reps", w:1 },
+        { id:"ecart", ex:"ecarte", name:"Écartés haltères sur banc", presc:"3 séries de 15 — repos 60''", sets:3, unit:"reps", w:1 },
+        { id:"elev", ex:"elev_lat", name:"Élévations latérales", presc:"4 séries de 15 — repos 60''", sets:4, unit:"reps", w:1 },
+        { id:"skull", ex:"skull", name:"Barre au front (skull crusher)", presc:"3 séries de 12 — repos 60''", sets:3, unit:"reps", w:1 },
+        { id:"ext", ex:"ext_nuque", name:"Extension nuque haltère", presc:"3 séries de 12 — repos 60''", sets:3, unit:"reps", w:1 }
       ]},
       { title:"GAINAGE", items:[
-        { id:"gain", ex:"gain_bt", name:"Gainage bras tendus", presc:"4 × 60'' — repos 30''", sets:4, unit:"sec",
-          ref:"Bloc 3 : 3/7 tenus à 30''", target:"On passe à 60''. Note les secondes réellement tenues." }
+        { id:"lat", ex:"gain_lat", name:"Gainage latéral", presc:"4 × 50'' par côté — repos 30''", sets:4, unit:"sec/côté" }
       ]}
     ]
   },
 
-  /* --------------------------------------------------------------- J10 */
   {
-    id:"J10", day:"JOUR 10", name:"TEST — Retest & full body", tag:"TEST", dur:"~60 min",
-    focus:"<b>Fin de bloc.</b> On refait les tests du Jour 1 du Bloc 3, dans le même ordre et avec les mêmes consignes, pour mesurer les 10 séances. Cooper sur tapis. Pas de burpees de pénalité cette fois : c'est une mesure, pas un WOD. L'onglet Progression calcule les écarts automatiquement.",
+    id:"J10", day:"JOUR 10", name:"HALTÉRO B2 — Arraché + Isabel (retest)", tag:"HALTERO", dur:"60-65 min",
+    focus:"<b>Retest d'Isabel : 30 arrachés à 75 lb.</b> Sur ce WOD, le chrono dépend surtout de la technique — si tu gagnes du temps ici, c'est que le placement s'est installé, pas seulement que tu es plus fort.",
     blocks:[
-      { title:"RETEST — MÊME PROTOCOLE QU'AU BLOC 3", items:[
-        { id:"cooper", ex:"t_cooper", name:"Test Cooper 12'00''", presc:"Distance maximale en 12 minutes — tapis ou piste", sets:1, unit:"m",
-          ref:"Bloc 3 : 2570 m", target:"Repère Invictus : 3100 m" },
-        { id:"maxpu", ex:"t_pu", name:"Max tractions strictes", presc:"1'' d'arrêt bras tendus en bas", sets:1, unit:"reps",
-          ref:"Bloc 3 : 21", target:"Repère Invictus : 17 — déjà dépassé, vise 24" },
-        { id:"maxpush", ex:"t_push", name:"Max pompes", presc:"Poitrine au sol, bras déverrouillés", sets:1, unit:"reps",
-          ref:"Bloc 3 : 33", target:"Repère Invictus : 55" },
-        { id:"corde", ex:"t_sup", name:"Max tractions supination", presc:"Prise supination ou neutre", sets:1, unit:"reps",
-          ref:"Bloc 3 : 10", target:"Repère Invictus : 15" },
-        { id:"maxdips", ex:"t_dips", name:"Max dips", presc:"Épaules sous les coudes en bas", sets:1, unit:"reps",
-          ref:"Bloc 3 : 11", target:"Repère Invictus : 20" },
-        { id:"maxt2b", ex:"t_t2b", name:"Max strict toes-to-bar", presc:"Sans balancier, pieds à la barre", sets:1, unit:"reps",
-          ref:"Bloc 3 : 10", target:"Repère Invictus : 18" }
+      { title:"MOBILITÉ & FORCE", items:[
+        { id:"ohs", ex:"ohs", name:"Overhead squat", presc:"5 séries de 5 — repos 2'", sets:5, unit:"reps", w:1,
+          target:"Compare la charge au J4 : c'est ton marqueur de mobilité." },
+        { id:"ps", ex:"power_snatch", name:"Power snatch", presc:"6 séries de 2 — repos 2'", sets:6, unit:"reps", w:1 }
       ]},
-      { title:"FULL BODY LÉGER", items:[
-        { id:"sq", ex:"back_squat", name:"Back Squat", presc:"3 séries de 8 — charge modérée", sets:3, unit:"reps", w:1 },
-        { id:"bp", ex:"bench", name:"Développé couché", presc:"3 séries de 8 — charge modérée", sets:3, unit:"reps", w:1 },
-        { id:"rw", ex:"row_barre", name:"Rowing barre penché", presc:"3 séries de 10", sets:3, unit:"reps", w:1 }
+      { title:"MONTÉE EN CHARGE", items:[
+        { id:"sn", ex:"snatch_max", name:"Arraché — 5 singles montants", presc:"1 rep par série, on monte à chaque série", sets:5, unit:"reps", w:1 }
+      ]},
+      { title:"WOD — ISABEL (RETEST)", wod:true, items:[
+        { id:"wod", ex:"wod_isabel", name:"30 arrachés @ 75 lb — for time", presc:"Retest à l'identique du J4.", score:"ex : 5'10" }
+      ]},
+      { title:"FINITION MUSCULAIRE", items:[
+        { id:"tr", ex:"trac_str", name:"Tractions strictes", presc:"3 séries au maximum de reps — repos 2'", sets:3, unit:"reps" },
+        { id:"gain", ex:"gain_bt", name:"Gainage bras tendus", presc:"3 × 60'' — repos 30''", sets:3, unit:"sec" }
+      ]}
+    ]
+  },
+
+  {
+    id:"J11", day:"JOUR 11", name:"MUSCU C2 — Chaîne postérieure & dos (lourd)", tag:"MUSCU", dur:"65-70 min",
+    focus:"<b>Dernière séance de force du bloc.</b> Le soulevé de terre passe en 5×2 : c'est là que tu peux aller chercher une charge proche de tes 275 lb du Bloc 2, en sécurité, sans faire un vrai max.",
+    blocks:[
+      { title:"FORCE", items:[
+        { id:"dl", ex:"deadlift", name:"Soulevé de terre", presc:"5 séries de 2 — repos 3'", sets:5, unit:"reps", w:1,
+          target:"+20 lb sur le J5 si les 5×3 étaient propres. Stop dès que le dos s'arrondit." },
+        { id:"ht", ex:"hip_thrust", name:"Hip thrust barre", presc:"4 séries de 10 — repos 90''", sets:4, unit:"reps", w:1 },
+        { id:"gm", ex:"good_morning", name:"Good morning", presc:"3 séries de 12 — repos 90''", sets:3, unit:"reps", w:1 }
+      ]},
+      { title:"DOS", items:[
+        { id:"rowb", ex:"row_barre", name:"Rowing barre penché", presc:"4 séries de 8 — repos 90''", sets:4, unit:"reps", w:1 },
+        { id:"sup", ex:"trac_sup", name:"Tractions supination", presc:"4 séries de 8 — repos 90''", sets:4, unit:"reps",
+          target:"Lest si les 4×8 du J5 sont passées." },
+        { id:"shrug", ex:"shrug", name:"Shrugs barre", presc:"3 séries de 15 — repos 60''", sets:3, unit:"reps", w:1 }
+      ]},
+      { title:"BRAS & FINISHER", items:[
+        { id:"curl", ex:"curl_barre", name:"Curl barre", presc:"3 séries de 12 — repos 60''", sets:3, unit:"reps", w:1 },
+        { id:"farm", ex:"farmer", name:"Farmer walk", presc:"4 × 40 m — repos 90''", sets:4, unit:"m", w:1 }
+      ]}
+    ]
+  },
+
+  {
+    id:"J12", day:"JOUR 12", name:"HALTÉRO C2 — Front squat / Thruster + Fran (retest)", tag:"HALTERO", dur:"60-65 min",
+    focus:"<b>Dernière séance du bloc.</b> Front squat lourd puis retest de Fran, à l'identique du J6. Quand c'est fini : ouvre 🤖 Résumé, copie tout, colle-le dans le projet Claude — je construis le Bloc 6 à partir de là.",
+    blocks:[
+      { title:"FORCE", items:[
+        { id:"fs", ex:"front_squat", name:"Front squat", presc:"5 séries de 5 — repos 2'30''", sets:5, unit:"reps", w:1,
+          target:"+10 lb sur le J6 si les 5×5 étaient propres." },
+        { id:"pp", ex:"push_press", name:"Push press", presc:"5 séries de 3 — repos 2'", sets:5, unit:"reps", w:1 },
+        { id:"thr", ex:"thruster", name:"Thruster", presc:"4 séries de 6 — repos 2'", sets:4, unit:"reps", w:1 }
+      ]},
+      { title:"WOD — FRAN (RETEST)", wod:true, items:[
+        { id:"wod", ex:"wod_fran", name:"21-15-9 — Thrusters @ 95 lb + Tractions — for time", presc:"Retest à l'identique du J6. Même charge.", score:"ex : 8'15" }
+      ]},
+      { title:"FINITION MUSCULAIRE", items:[
+        { id:"bul", ex:"bulgare", name:"Fentes bulgares haltères", presc:"3 séries de 10 par jambe — repos 75''", sets:3, unit:"reps/jbe", w:1 },
+        { id:"gain", ex:"gain_bt", name:"Gainage bras tendus", presc:"3 × 60'' — repos 30''", sets:3, unit:"sec" }
       ]}
     ]
   }
@@ -377,11 +463,256 @@ const PROGRAM = {
   ]
 };
 
-/* Références Bloc 3 pour l'onglet Progression (J1 du bloc précédent) */
-const REF_B3 = { cooper:2570, maxpu:21, maxpush:33, corde:10, maxdips:11, maxt2b:10 };
-const TESTS = [
-  ["cooper","Cooper 12'","m"], ["maxpu","Max tractions strictes","reps"], ["maxpush","Max pompes","reps"],
-  ["corde","Max tractions supination","reps"], ["maxdips","Max dips","reps"], ["maxt2b","Max T2B strictes","reps"]
+/* WOD retestés dans le bloc : [id du WOD au cycle 1, id au cycle 2, libellé] */
+const RETESTS = [
+  ["J2","J8","Grace — 30 C&J @ 95 lb"],
+  ["J4","J10","Isabel — 30 arrachés @ 75 lb"],
+  ["J6","J12","Fran — 21-15-9 thrusters + tractions"]
+];
+
+/* =========================================================================
+   POIDS DE CORPS — séances du livre, reprises telles quelles.
+   Hors rotation : à faire le week-end, en déplacement, ou quand la salle
+   n'est pas accessible. Chaque séance peut être refaite autant de fois
+   que tu veux : le bouton « Nouvel essai » archive la perf précédente.
+   ========================================================================= */
+
+const PDC = [
+  {
+    id:"P1", day:"PDC 1", name:"WOD UNITÉS D'ÉLITE — POLICE (test)", tag:"TEST", dur:"~45 min",
+    src:"TRAINING 87 – 20 octobre 2017",
+    verbatim:[
+      "<b>- FOR TIME – WOD UNITÉS D'ÉLITE - POLICE</b>",
+      "- TEST COOPER - PARCOURIR LA PLUS GRANDE DISTANCE POSSIBLE en 12'00''",
+      "REPOS : 5'00''",
+      "PUIS Effectuer :",
+      "MAX en Tractions strictes",
+      "MAX en Pompes",
+      "2 Montées de corde de 5m",
+      "Max en DIPS",
+      "Max en STRICT TOES TO BAR",
+      "REPOS : 2'00'' entre les exercices",
+      "<u>CONSIGNES ET PÉNALITÉS</u>",
+      "- TEST COOPER : distance minimale 3100m, sinon 50 Burpees de pénalité (en fin de WOD)",
+      "- TRACTIONS : temps d'arrêt d'1 seconde bras tendus en bas. Moins de 17 : 25 Burpees",
+      "- POMPES : poitrine au sol, bras déverrouillés. Moins de 55 : 25 Burpees",
+      "- 2 MONTÉES DE CORDE de 5m, bras seuls. <b>Substitution (pas de corde) : MAX de tractions supination.</b> Objectif 15 d'affilée, sinon 25 Burpees",
+      "- DIPS : épaules sous les coudes en bas. Moins de 20 : 25 Burpees",
+      "- STRICT TOES TO BAR : sans balancier, pieds à la barre. Moins de 18 : 25 Burpees"
+    ],
+    blocks:[{ title:"À NOTER", items:[
+      { id:"cooper", ex:"t_cooper", name:"Test Cooper 12'00''", presc:"Distance parcourue", sets:1, unit:"m", ref:"Bloc 3 : 2570 m", target:"Minimum 3100 m" },
+      { id:"maxpu", ex:"t_pu", name:"Max tractions strictes", presc:"", sets:1, unit:"reps", ref:"Bloc 3 : 21", target:"Minimum 17 — déjà dépassé" },
+      { id:"maxpush", ex:"t_push", name:"Max pompes", presc:"", sets:1, unit:"reps", ref:"Bloc 3 : 33", target:"Minimum 55" },
+      { id:"corde", ex:"t_sup", name:"Max tractions supination", presc:"Substitution des 2 montées de corde", sets:1, unit:"reps", ref:"Bloc 3 : 10", target:"Objectif 15" },
+      { id:"maxdips", ex:"t_dips", name:"Max dips", presc:"", sets:1, unit:"reps", ref:"Bloc 3 : 11", target:"Minimum 20" },
+      { id:"maxt2b", ex:"t_t2b", name:"Max strict toes-to-bar", presc:"", sets:1, unit:"reps", ref:"Bloc 3 : 10", target:"Minimum 18" },
+      { id:"pen", ex:"t_pen", name:"Burpees de pénalité", presc:"Total à effectuer en fin de séance", sets:1, unit:"reps" }
+    ]}]
+  },
+  {
+    id:"P2", day:"PDC 2", name:"AMRAP ÉVOLUTIF 30'00''", tag:"WOD", dur:"30 min",
+    src:"TRAINING 1 – 14 mars 2014",
+    verbatim:[
+      "<b>- AMRAP évolutif 30'00'' - Effectuer LE PLUS DE ROUNDS en 30'00'' :</b>",
+      "1ère série : 1 Pull up – 1 Push up",
+      "2ème série : 2 Pull ups – 2 Push ups",
+      "3ème série : 3 Pull ups – 3 Push ups",
+      "Etc."
+    ],
+    blocks:[{ title:"SCORE", wod:true, items:[
+      { id:"wod", ex:"p_amrap30", name:"Série atteinte en 30'00''", presc:"Note la dernière série complétée (+ reps entamées)", score:"ex : 19 + 12" }
+    ]}]
+  },
+  {
+    id:"P3", day:"PDC 3", name:"AMÉLIORER SON MAX EN POMPE", tag:"FORCE", dur:"~35 min",
+    src:"TRAINING 57 – 20 novembre 2016",
+    verbatim:[
+      "<b>- AMÉLIORER SON MAX EN POMPE</b>",
+      "Pieds surélevés, effectuer 8 séries de 15 Push ups",
+      "Entre chaque série, rester en position gainage pompes pendant 30''",
+      "Si possible : ne pas décoller une main pendant le gainage",
+      "Soit 120 Pompes - 3'30'' de Gainage bras tendus."
+    ],
+    blocks:[{ title:"À NOTER", items:[
+      { id:"a1", ex:"p_pompe_sur", name:"Pompes pieds surélevés", presc:"8 séries de 15 — 30'' de gainage entre chaque", sets:8, unit:"reps" },
+      { id:"a2", ex:"p_gain7", name:"Gainages de 30'' tenus complets", presc:"Sur 7", sets:1, unit:"/7", ref:"Bloc 3 : 3/7" }
+    ]}]
+  },
+  {
+    id:"P4", day:"PDC 4", name:"FOR TIME — 500m & 50 RÉPÉTITIONS", tag:"CARDIO", dur:"~50 min",
+    src:"TRAINING 20 – 26 avril 2015",
+    verbatim:[
+      "<b>- FOR TIME – Effectuer LE PLUS VITE POSSIBLE :</b>",
+      "500m de course – 50 Push ups",
+      "500m de course – 50 Sit ups",
+      "500m de course – 50 Air squats",
+      "500m de course – 50 Mountain climbers (de chaque côté)",
+      "500m de course – 50 Jumping Jacks",
+      "500m de course – 50 Burpees",
+      "500m de course – 50 Fentes (25 de chaque côté)",
+      "500m de course – 50 Toes touches",
+      "500m de course – 50 Fentes latérales (25 de chaque côté)",
+      "500m de course"
+    ],
+    blocks:[{ title:"SCORE", wod:true, items:[
+      { id:"wod", ex:"p_500_50", name:"Temps total", presc:"5 km de course + 450 répétitions", score:"ex : 52'30" }
+    ]}]
+  },
+  {
+    id:"P5", day:"PDC 5", name:"FOR TIME — PULL UPS / DIPS 1→10→1", tag:"WOD", dur:"~35 min",
+    src:"TRAINING 25 – 07 juillet 2015",
+    verbatim:[
+      "<b>- FOR TIME – Effectuer LE PLUS VITE POSSIBLE :</b>",
+      "1 – 2 – 3 – 4 – 5 – 6 – 7 – 8 – 9 – 10 – 10 – 9 – 8 – 7 – 6 – 5 – 4 – 3 – 2 – 1 en Pull up",
+      "Doubler le nombre de répétitions en Dips",
+      "1ère série : 1 Pull up - 2 Dips",
+      "2ème série : 2 Pull ups - 4 Dips",
+      "3ème série : 3 Pull ups - 6 Dips",
+      "Etc."
+    ],
+    blocks:[{ title:"SCORE", wod:true, items:[
+      { id:"wod", ex:"p_1101", name:"Temps", presc:"110 tractions – 220 dips", score:"ex : 34'15" }
+    ]}]
+  },
+  {
+    id:"P6", day:"PDC 6", name:"AMÉLIORER SON MAX EN TRACTION", tag:"FORCE", dur:"~40 min",
+    src:"TRAINING 58 – 22 novembre 2016",
+    verbatim:[
+      "<b>- AMÉLIORER SON MAX EN TRACTION</b>",
+      "<u>1ère Méthode :</u>",
+      "Bloquer 3 secondes en haut, milieu et bas du mouvement sur 3 répétitions + 7 tractions strictes.",
+      "Effectuer 5 séries de (3 + 7) tractions — REPOS : 1'00'' à 1'30''",
+      "<u>2ème Méthode :</u>",
+      "Effectuer 5 séries de 10 × (1 traction stricte + 10'' d'isométrie bras tendus)",
+      "REPOS : 2'00'' entre chaque série"
+    ],
+    blocks:[{ title:"À NOTER", items:[
+      { id:"a1", ex:"p_trac_m1", name:"Méthode 1 — 5 × (3 + 7)", presc:"Reps totales par série (objectif 10)", sets:5, unit:"reps", ref:"Bloc 3 : 45/50 reps" },
+      { id:"a2", ex:"p_trac_m2", name:"Méthode 2 — 5 × 10 (1 traction + 10'' hold)", presc:"Cycles réalisés par série (objectif 10)", sets:5, unit:"cycles" }
+    ]}]
+  },
+  {
+    id:"P7", day:"PDC 7", name:"WOD RUN BABY RUN 2", tag:"CARDIO", dur:"~55 min",
+    src:"TRAINING 72 – 27 mai 2017",
+    verbatim:[
+      "<b>- FOR TIME – WOD RUN BABY RUN 2 – Effectuer 10 ROUNDS LE PLUS VITE POSSIBLE :</b>",
+      "400m de course",
+      "10 Burpees",
+      "20 Air squats",
+      "30 Push ups"
+    ],
+    blocks:[{ title:"SCORE", wod:true, items:[
+      { id:"wod", ex:"p_rbr2", name:"Temps", presc:"4 km + 100 burpees + 200 squats + 300 pompes", score:"ex : 58'00" }
+    ]}]
+  },
+  {
+    id:"P8", day:"PDC 8", name:"WOD ARMAGEDDON", tag:"WOD", dur:"30 min",
+    src:"TRAINING 15 – 16 décembre 2014",
+    verbatim:[
+      "<b>- AMRAP évolutif 30'00'' – WOD ARMAGEDDON - Effectuer LE PLUS DE ROUNDS en 30'00'' :</b>",
+      "1ère série : 1 Dips – 1 Pull up – 1 Push up – 1 Toes-to-bar",
+      "2ème série : 2 Dips – 2 Pull ups – 2 Push ups – 2 Toes-to-bar",
+      "3ème série : 3 Dips – 3 Pull ups – 3 Push ups – 3 Toes-to-bar",
+      "Etc."
+    ],
+    blocks:[{ title:"SCORE", wod:true, items:[
+      { id:"wod", ex:"p_armag", name:"Série atteinte en 30'00''", presc:"", score:"ex : 14 + 8" }
+    ]}]
+  },
+  {
+    id:"P9", day:"PDC 9", name:"EMOM 30'00''", tag:"WOD", dur:"30 min",
+    src:"TRAINING 16 – 13 mars 2015",
+    verbatim:[
+      "<b>- EMOM 30'00'' – Départ toutes les 1'00'' :</b>",
+      "Chaque minute : 10 Pull ups – 10 Push ups",
+      "Les tractions d'abord, avant les pompes. Tu peux couper les séries.",
+      "<u>CONSIGNES :</u>",
+      "Tractions : bras tendus, menton minimum à la barre, strict ou kipping.",
+      "Pompes : bras déverrouillés, poitrine au sol."
+    ],
+    blocks:[{ title:"SCORE", wod:true, items:[
+      { id:"wod", ex:"p_emom30", name:"Minutes complétées", presc:"Sur 30 — note la minute où tu décroches", score:"ex : 18/30" }
+    ]}]
+  },
+  {
+    id:"P10", day:"PDC 10", name:"WOD BARBARA", tag:"WOD", dur:"~35 min",
+    src:"TRAINING 88 – 08 novembre 2017",
+    verbatim:[
+      "<b>- FOR TIME – WOD BARBARA – Effectuer 5 ROUNDS LE PLUS VITE POSSIBLE :</b>",
+      "20 Pull ups",
+      "30 Push ups",
+      "40 Sit ups",
+      "50 Air squats"
+    ],
+    blocks:[
+      { title:"TEMPS PAR ROUND", items:[
+        { id:"r", ex:"p_barb_rounds", name:"Round 1 à 5", presc:"Temps de chaque round — écris-le en clair, ex : 6'40", sets:5, unit:"min",
+          ref:"Bloc 3 : 4'26 / 6'37 / 7'25 / 7'22 / 7'40" }
+      ]},
+      { title:"SCORE", wod:true, items:[
+        { id:"wod", ex:"p_barbara", name:"Temps total", presc:"100 tractions – 150 pompes – 200 sit-ups – 250 air squats", score:"ex : 33'33", ref:"Bloc 3 : 33'33" }
+      ]}
+    ]
+  },
+  {
+    id:"P11", day:"PDC 11", name:"AMRAP ÉVOLUTIF 35'00'' — PRÉPARATION TESTS", tag:"WOD", dur:"35 min",
+    src:"TRAINING 106 – 22 mars 2018",
+    verbatim:[
+      "<b>- AMRAP évolutif 35'00'' – PRÉPARATION TESTS :</b>",
+      "1 Burpees / 2 Tractions / 3 Dips",
+      "2 Burpees / 4 Tractions / 6 Dips",
+      "3 Burpees / 6 Tractions / 9 Dips",
+      "4 Burpees / 8 Tractions / 12 Dips",
+      "Etc."
+    ],
+    blocks:[{ title:"SCORE", wod:true, items:[
+      { id:"wod", ex:"p_amrap35", name:"Série atteinte en 35'00''", presc:"", score:"ex : 9 + 4 tractions" }
+    ]}]
+  },
+  {
+    id:"P12", day:"PDC 12", name:"3000m + CIRCUIT TRAINING PYRAMIDE", tag:"CARDIO", dur:"~50 min",
+    src:"TRAINING 62 – 26 décembre 2016",
+    verbatim:[
+      "<b>- FOR TIME – Courir LE PLUS VITE POSSIBLE : 3000m</b>",
+      "REPOS : 5'00''",
+      "<b>- CIRCUIT TRAINING — 8 exercices</b>",
+      "30'' d'effort maximal par exercice, 1'00'' de repos entre chaque série.",
+      "<u>CONSIGNE :</u> exo 1 (30'') – repos – (exo 1 + exo 2) – repos – (exo 1 + 2 + 3) – … – (exo 1 à 8) – puis on redescend.",
+      "1. Traction · 2. Pompe · 3. Air squat · 4. Burpees",
+      "5. Toes-to-bar · 6. HSPU ou Dips · 7. Gainage araignée · 8. Mountain climber",
+      "→ 15 séries au total (montée 1→8 puis descente 8→1)."
+    ],
+    blocks:[
+      { title:"À NOTER", items:[
+        { id:"run", ex:"p_3000", name:"3000m", presc:"Temps — écris-le en clair, ex : 14'20", sets:1, unit:"min" },
+        { id:"tot", ex:"p_circ_tot", name:"Total répétitions du circuit", presc:"Tous exercices confondus", sets:1, unit:"reps" }
+      ]},
+      { title:"SCORE", wod:true, items:[
+        { id:"wod", ex:"p_circ", name:"Séries complétées", presc:"Sur 15", score:"ex : 15/15" }
+      ]}
+    ]
+  },
+  {
+    id:"P13", day:"PDC 13", name:"WOD ESCADRON 12/6 LODÈVE", tag:"WOD", dur:"~40 min",
+    src:"TRAINING 51 – 22 juin 2016",
+    verbatim:[
+      "<b>- FOR TIME – WOD « escadron 12/6 Lodève » :</b>",
+      "25 Pull ups - 25 Push ups - 5 Toes-to-bar",
+      "20 Pull ups - 20 Push ups - 5 Toes-to-bar",
+      "15 Pull ups - 15 Push ups - 5 Toes-to-bar",
+      "10 Pull ups - 10 Push ups - 5 Toes-to-bar",
+      "5 Pull ups - 5 Push ups - 5 Toes-to-bar",
+      "5 Pull ups - 5 Push ups - 5 Toes-to-bar",
+      "10 Pull ups - 10 Push ups - 5 Toes-to-bar",
+      "15 Pull ups - 15 Push ups - 5 Toes-to-bar",
+      "20 Pull ups - 20 Push ups - 5 Toes-to-bar",
+      "25 Pull ups - 25 Push ups - 5 Toes-to-bar"
+    ],
+    blocks:[{ title:"SCORE", wod:true, items:[
+      { id:"wod", ex:"p_lodeve", name:"Temps", presc:"150 tractions – 150 pompes – 50 toes-to-bar", score:"ex : 38'20" }
+    ]}]
+  }
 ];
 
 /* ---------- CONFIG SUPABASE ---------- */
@@ -391,16 +722,24 @@ const STORE = PROGRAM.store;
 
 /* ---------- ÉTAT ---------- */
 let DATA = {};
-let view = "today";          // "today" | "all" | "hist" | "guide"
-let openId = null;           // séance ouverte en vue "all"
+let view = "today";          // today | all | pdc | hist | guide
+let openId = null;
 let saveTimer = null;
 let lastCloud = 0;
 
 const SESS = PROGRAM.sessions;
+const N = SESS.length;
 const K = (s,b,i) => s + "|" + b + "|" + i;
 const get = k => (DATA[k] = DATA[k] || { reps:[], poids:[], note:"", rpe:"", up:false, score:"" });
 const esc = s => String(s==null?"":s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-function meta(){ if(!DATA.__meta || typeof DATA.__meta!=="object") DATA.__meta={done:{}}; if(!DATA.__meta.done) DATA.__meta.done={}; return DATA.__meta; }
+function meta(){
+  if(!DATA.__meta || typeof DATA.__meta!=="object") DATA.__meta = {};
+  if(!DATA.__meta.done) DATA.__meta.done = {};
+  if(!DATA.__meta.pdcDone) DATA.__meta.pdcDone = {};
+  if(!DATA.__meta.att) DATA.__meta.att = {};
+  return DATA.__meta;
+}
+const isPdc = s => s.id.charAt(0) === "P";
 
 /* ---------- RÉSEAU ---------- */
 function fetchTimeout(url, opts, ms){
@@ -438,7 +777,7 @@ function pullCloud(){
   .then(rows => {
     if(rows && rows[0] && rows[0].data){
       const cloud = rows[0].data;
-      if(Object.keys(cloud).length >= Object.keys(DATA).length){ DATA = cloud; saveLocal(); render(); }
+      if(Object.keys(cloud).length >= Object.keys(DATA).length){ DATA = cloud; meta(); saveLocal(); render(); }
     }
     setSync("☁︎ synchronisé","ok");
   })
@@ -446,8 +785,8 @@ function pullCloud(){
 }
 
 /* ---------- ÉTAT DES SÉANCES ---------- */
-function isDone(s){ return !!meta().done[s.id]; }
-function doneDate(s){ return meta().done[s.id] || ""; }
+function isDone(s){ return isPdc(s) ? !!meta().pdcDone[s.id] : !!meta().done[s.id]; }
+function doneDate(s){ return (isPdc(s) ? meta().pdcDone[s.id] : meta().done[s.id]) || ""; }
 function filledCount(s){
   let tot=0, ok=0;
   s.blocks.forEach((b,bi) => b.items.forEach(it => {
@@ -458,13 +797,14 @@ function filledCount(s){
   return [ok,tot];
 }
 function curIndex(){
-  for(let i=0;i<SESS.length;i++) if(!isDone(SESS[i])) return i;
-  return SESS.length - 1;   // bloc terminé : on reste sur la dernière
+  for(let i=0;i<N;i++) if(!isDone(SESS[i])) return i;
+  return N - 1;
 }
 function blocFini(){ return SESS.every(isDone); }
+
 function finishSession(id){
   const s = SESS.find(x=>x.id===id); if(!s) return;
-  const [ok,tot] = filledCount(s);
+  const [ok] = filledCount(s);
   if(ok===0 && !confirm("Aucune perf notée sur cette séance. La marquer quand même comme faite ?")) return;
   meta().done[id] = new Date().toISOString().slice(0,10);
   openId = null; view = "today"; scheduleSave(); render(); window.scrollTo(0,0);
@@ -473,11 +813,46 @@ function reopenSession(id){
   delete meta().done[id];
   openId = id; scheduleSave(); render(); window.scrollTo(0,0);
 }
+function finishPdc(id){
+  const s = PDC.find(x=>x.id===id); if(!s) return;
+  const [ok] = filledCount(s);
+  if(ok===0 && !confirm("Aucune perf notée. Marquer quand même comme faite ?")) return;
+  meta().pdcDone[id] = new Date().toISOString().slice(0,10);
+  scheduleSave(); render(); window.scrollTo(0,0);
+}
+function reopenPdc(id){ delete meta().pdcDone[id]; scheduleSave(); render(); }
+
+/* Archive la perf courante d'une séance PDC et vide les champs pour un nouvel essai */
+function newAttempt(id){
+  const s = PDC.find(x=>x.id===id); if(!s) return;
+  const txt = perfLine(s);
+  if(!txt){ alert("Rien à archiver : aucune perf notée."); return; }
+  if(!confirm("Archiver la perf actuelle et repartir sur des champs vides ?")) return;
+  const m = meta();
+  m.att[id] = m.att[id] || [];
+  m.att[id].push({ date: doneDate(s) || new Date().toISOString().slice(0,10), txt: txt });
+  s.blocks.forEach((b,bi) => b.items.forEach(it => { delete DATA[K(s.id,bi,it.id)]; }));
+  delete m.pdcDone[id];
+  scheduleSave(); render(); window.scrollTo(0,0);
+}
+/* Résumé une ligne des perfs d'une séance (utilisé pour l'archive et l'historique) */
+function perfLine(s){
+  const parts = [];
+  s.blocks.forEach((b,bi) => b.items.forEach(it => {
+    const d = DATA[K(s.id,bi,it.id)];
+    if(!d) return;
+    if(b.wod){ if(d.score) parts.push(it.name + " : " + d.score); return; }
+    const r = (d.reps||[]).filter(x=>x!==""&&x!=null);
+    const p = (d.poids||[]).filter(x=>x!==""&&x!=null);
+    if(!r.length && !p.length) return;
+    parts.push(it.name + " " + (p.length ? p.join("/") + " lb " : "") + (r.length ? r.join(", ") + " " + (it.unit||"") : ""));
+  }));
+  return parts.join(" · ");
+}
 
 /* ---------- HISTORIQUE D'UN EXERCICE ---------- */
-/* Cherche la dernière fois que cet exercice a été renseigné, avant la séance courante. */
 function prevPerf(exSlug, curIdx){
-  if(!exSlug) return null;
+  if(!exSlug || curIdx==null) return null;
   for(let i=curIdx-1;i>=0;i--){
     const s = SESS[i];
     for(let bi=0;bi<s.blocks.length;bi++){
@@ -497,8 +872,8 @@ function histLine(it, curIdx){
   const p = prevPerf(it.ex, curIdx);
   if(p){
     let txt = "<b>" + esc(p.sess.day.replace("JOUR ","J")) + "</b> · ";
-    if(p.poids.length) txt += "<b>" + p.poids.join(" / ") + " lb</b> — ";
-    if(p.reps.length) txt += p.reps.join(", ") + " " + esc(p.unit||"");
+    if(p.poids.length) txt += "<b>" + esc(p.poids.join(" / ")) + " lb</b> — ";
+    if(p.reps.length) txt += esc(p.reps.join(", ")) + " " + esc(p.unit||"");
     else if(p.score) txt += esc(p.score);
     return '<div class="hist">↩︎ Dernière fois : ' + txt + "</div>";
   }
@@ -509,14 +884,15 @@ function histLine(it, curIdx){
 /* ---------- RENDU ---------- */
 function render(){
   const nav = document.getElementById("nav");
-  const tabs = [["today","▶︎ AUJOURD'HUI"],["all","📋 TOUTES"],["hist","📊 HISTORIQUE"],["guide","📖 GUIDE"]];
+  const tabs = [["today","▶︎ AUJOURD'HUI"],["all","📋 LES 12"],["pdc","💪 POIDS DE CORPS"],["hist","📊 HISTORIQUE"],["guide","📖 GUIDE"]];
   nav.innerHTML = tabs.map(t =>
-    '<button class="' + (view===t[0]?"on":"") + '" onclick="view=\'' + t[0] + '\';render();window.scrollTo(0,0)">' + t[1] + "</button>"
+    '<button class="' + (view===t[0]?"on":"") + '" onclick="view=\'' + t[0] + '\';openId=null;render();window.scrollTo(0,0)">' + t[1] + "</button>"
   ).join("");
 
   const main = document.getElementById("main");
   if(view==="guide"){ main.innerHTML = guideHTML(); return; }
   if(view==="hist"){ main.innerHTML = histHTML(); return; }
+  if(view==="pdc"){ main.innerHTML = pdcHTML(); return; }
 
   const ci = curIndex();
   const doneN = SESS.filter(isDone).length;
@@ -524,23 +900,35 @@ function render(){
   let h = "";
   if(view==="today"){
     if(blocFini()){
-      h += '<div class="weeknote"><b>Bloc 4 terminé — 10 séances sur 10 ✓</b><br>'
-        + "Ouvre 🤖 Résumé en bas, copie tout et colle-le dans le projet Claude pour construire le Bloc 5.</div>";
+      h += '<div class="weeknote"><b>Bloc 5 terminé — ' + N + " séances sur " + N + " ✓</b><br>"
+        + "Ouvre 🤖 Résumé en bas, copie tout et colle-le dans le projet Claude pour construire le Bloc 6.</div>";
     } else {
-      h += '<div class="weeknote"><b>Séance ' + (ci+1) + " sur 10 — " + esc(SESS[ci].name) + "</b><br>"
-        + doneN + " séance" + (doneN>1?"s":"") + " faite" + (doneN>1?"s":"") + " · il en reste " + (10-doneN)
-        + ". Rotation : muscu → haltéro+WOD → poids de corps.</div>";
+      h += '<div class="weeknote"><b>Séance ' + (ci+1) + " sur " + N + " — " + esc(SESS[ci].name) + "</b><br>"
+        + doneN + " séance" + (doneN>1?"s":"") + " faite" + (doneN>1?"s":"") + " · il en reste " + (N-doneN)
+        + ". Alternance : muscu complète → haltéro + WOD.</div>";
     }
     h += progBar(ci);
     h += sessionHTML(SESS[ci], ci, true);
-    if(ci>0)  h += '<button class="up" style="width:100%;padding:12px;margin-top:4px" onclick="view=\'all\';openId=\'' + SESS[ci-1].id + '\';render()">↩︎ Revoir la séance précédente (' + esc(SESS[ci-1].day) + ")</button>";
+    if(ci>0) h += '<button class="up" style="width:100%;padding:12px;margin-top:4px" onclick="view=\'all\';openId=\'' + SESS[ci-1].id + '\';render()">↩︎ Revoir la séance précédente (' + esc(SESS[ci-1].day) + ")</button>";
   } else {
-    h += '<div class="weeknote"><b>Les 10 séances du bloc</b><br>'
+    h += '<div class="weeknote"><b>Les ' + N + ' séances du bloc</b><br>'
       + "Touche une séance pour l'ouvrir. Les séances vertes sont terminées — tu peux toujours les rouvrir pour corriger une perf.</div>";
     h += progBar(ci);
     SESS.forEach((s,i) => { h += sessionHTML(s, i, openId===s.id); });
   }
   main.innerHTML = h;
+}
+
+function pdcHTML(){
+  const n = PDC.filter(isDone).length;
+  let h = '<div class="weeknote"><b>Séances poids de corps — tirées du livre</b><br>'
+    + "Elles sont <b>hors rotation</b> : à faire le week-end, en déplacement, ou n'importe quand la salle n'est pas accessible. "
+    + "Aucun ordre imposé. Le texte de chaque séance est repris tel quel du livre. "
+    + "Tu peux refaire une séance autant de fois que tu veux : le bouton <b>Nouvel essai</b> archive la perf précédente et remet les champs à zéro."
+    + (n ? "<br><br><b>" + n + "</b> séance" + (n>1?"s":"") + " déjà notée" + (n>1?"s":"") + " sur " + PDC.length + "." : "")
+    + "</div>";
+  PDC.forEach(s => { h += sessionHTML(s, null, openId===s.id); });
+  return h;
 }
 
 function progBar(ci){
@@ -552,16 +940,30 @@ function progBar(ci){
 function sessionHTML(s, idx, open){
   const [ok,tot] = filledCount(s);
   const done = isDone(s);
-  const ci = curIndex();
-  let h = '<div class="sess' + (open?" open":"") + (done?" isdone":"") + (!done && idx===ci ? " iscur":"") + '" id="sess_' + s.id + '">'
+  const pdc = isPdc(s);
+  const ci = pdc ? -1 : curIndex();
+  const att = (meta().att[s.id] || []);
+
+  let h = '<div class="sess' + (open?" open":"") + (done?" isdone":"") + (!pdc && !done && idx===ci ? " iscur":"") + '" id="sess_' + s.id + '">'
     + '<div class="shead" onclick="toggleSess(\'' + s.id + '\')">'
-    + '<div class="sid">' + (done ? "✓" : esc(s.day.replace("JOUR ","J"))) + "</div>"
+    + '<div class="sid">' + (done ? "✓" : esc(s.day.replace("JOUR ","J").replace("PDC ","P"))) + "</div>"
     + '<div class="stitle"><b>' + esc(s.day) + " — " + esc(s.name) + "</b><small>"
-    + (done ? "Fait le " + esc(doneDate(s)) : ok + "/" + tot + " renseigné" + (ok>1?"s":"")) + " · " + esc(s.dur) + "</small></div>"
+    + (done ? "Fait le " + esc(doneDate(s)) : ok + "/" + tot + " renseigné" + (ok>1?"s":""))
+    + (att.length ? " · " + att.length + " essai" + (att.length>1?"s":"") + " archivé" + (att.length>1?"s":"") : "")
+    + " · " + esc(s.dur) + "</small></div>"
     + '<div class="tag ' + s.tag + '">' + esc(s.tag) + "</div>"
     + '<div class="chev">' + (open?"▲":"▼") + "</div></div>"
-    + '<div class="sbody">'
-    + '<div class="focus">' + s.focus + "</div>";
+    + '<div class="sbody">';
+
+  if(s.focus) h += '<div class="focus">' + s.focus + "</div>";
+  if(s.verbatim){
+    h += '<div class="verb">' + s.verbatim.map(l => "<div>" + l + "</div>").join("")
+      + (s.src ? '<div class="src">Source : ' + esc(s.src) + "</div>" : "") + "</div>";
+  }
+  if(att.length){
+    h += '<div class="attempts"><b>Essais précédents</b>'
+      + att.map(a => "<div>• " + esc(a.date) + " — " + esc(a.txt) + "</div>").join("") + "</div>";
+  }
 
   s.blocks.forEach((b,bi) => {
     h += '<div class="bt">' + esc(b.title) + "</div>";
@@ -570,9 +972,9 @@ function sessionHTML(s, idx, open){
       const filled = b.wod ? !!d.score : ((d.reps||[]).some(x=>x!==""&&x!=null) || (d.poids||[]).some(x=>x!==""&&x!=null));
       h += '<div class="ex' + (filled?" done":"") + '" id="ex_' + k.replace(/\|/g,"_") + '">'
         + '<div class="exh"><b>' + esc(it.name) + "</b></div>"
-        + '<div class="presc">' + esc(it.presc) + "</div>"
+        + (it.presc ? '<div class="presc">' + esc(it.presc) + "</div>" : "")
         + (it.target ? '<div class="target">🎯 ' + esc(it.target) + "</div>" : "")
-        + histLine(it, idx);
+        + (pdc ? (it.ref ? '<div class="hist">↩︎ Référence : ' + esc(it.ref) + "</div>" : "") : histLine(it, idx));
 
       if(b.wod){
         h += '<div class="score"><input type="text" inputmode="text" placeholder="' + esc(it.score)
@@ -601,15 +1003,22 @@ function sessionHTML(s, idx, open){
     });
   });
 
-  h += done
-    ? '<button class="finish re" onclick="reopenSession(\'' + s.id + '\')">↩︎ Rouvrir cette séance</button>'
-    : '<button class="finish" onclick="finishSession(\'' + s.id + '\')">✓ Séance terminée</button>';
+  if(pdc){
+    h += done
+      ? '<button class="finish re" onclick="reopenPdc(\'' + s.id + '\')">↩︎ Rouvrir cette séance</button>'
+      : '<button class="finish pdc" onclick="finishPdc(\'' + s.id + '\')">✓ Séance faite</button>';
+    h += '<button class="finish re" onclick="newAttempt(\'' + s.id + '\')">🔄 Nouvel essai (archive la perf actuelle)</button>';
+  } else {
+    h += done
+      ? '<button class="finish re" onclick="reopenSession(\'' + s.id + '\')">↩︎ Rouvrir cette séance</button>'
+      : '<button class="finish" onclick="finishSession(\'' + s.id + '\')">✓ Séance terminée</button>';
+  }
   h += "</div></div>";
   return h;
 }
 
 function toggleSess(id){
-  if(view==="today") return;              // en vue du jour la séance reste ouverte
+  if(view==="today") return;
   openId = (openId===id) ? null : id;
   render();
 }
@@ -627,13 +1036,13 @@ function markDone(k){
 
 /* ---------- HISTORIQUE ---------- */
 function histHTML(){
-  const done = SESS.filter(isDone);
-  let h = '<div class="weeknote"><b>Historique du bloc</b><br>'
-    + "Toutes les charges et perfs déjà notées, séance par séance. Pour corriger quelque chose, passe par l'onglet <b>Toutes</b>.</div>";
-  if(!done.length) return h + '<div class="ex"><div class="presc">Aucune séance terminée pour l\'instant.</div></div>';
+  const all = SESS.concat(PDC).filter(isDone);
+  let h = '<div class="weeknote"><b>Historique</b><br>'
+    + "Toutes les charges et perfs déjà notées, séance par séance — salle et poids de corps. "
+    + "Pour corriger, passe par l'onglet <b>Les " + N + "</b> ou <b>Poids de corps</b>.</div>";
+  if(!all.length) return h + '<div class="ex"><div class="presc">Aucune séance terminée pour l\'instant.</div></div>';
 
-  done.forEach((s,si) => {
-    const idx = SESS.indexOf(s);
+  all.forEach(s => {
     let body = "";
     s.blocks.forEach((b,bi) => b.items.forEach(it => {
       const d = DATA[K(s.id,bi,it.id)];
@@ -650,6 +1059,9 @@ function histHTML(){
       if(d.note) line += '<div class="presc" style="margin:4px 0 0">' + esc(d.note) + "</div>";
       body += '<div class="ex" style="margin-bottom:6px"><div style="font-size:12.5px">' + line + "</div></div>";
     }));
+    (meta().att[s.id]||[]).forEach(a => {
+      body += '<div class="ex" style="margin-bottom:6px"><div style="font-size:12.5px;color:var(--dim)">Essai archivé ' + esc(a.date) + " — " + esc(a.txt) + "</div></div>";
+    });
     h += '<div class="sess open"><div class="shead"><div class="sid">✓</div>'
       + '<div class="stitle"><b>' + esc(s.day) + " — " + esc(s.name) + "</b><small>Fait le " + esc(doneDate(s)) + "</small></div>"
       + '<div class="tag ' + s.tag + '">' + esc(s.tag) + "</div></div>"
@@ -661,58 +1073,68 @@ function histHTML(){
 
 /* ---------- GUIDE ---------- */
 function guideHTML(){
-  return '<div class="weeknote"><b>Comment fonctionne ce bloc</b><br>'
-    + "10 séances numérotées, en rotation <b>muscu → haltéro+WOD → poids de corps</b>. Tu les fais dans l'ordre, à ton rythme. "
-    + "L'app s'ouvre toujours sur la première séance non terminée : tu n'as rien à chercher en arrivant à la salle.</div>"
+  return '<div class="weeknote"><b>Comment fonctionne le Bloc 5</b><br>'
+    + N + " séances en salle, en alternance <b>muscu complète → haltéro + WOD</b>, à faire dans l'ordre à ton rythme. "
+    + "À côté, l'onglet <b>💪 Poids de corps</b> contient les séances du livre, sans ordre ni obligation.</div>"
 
     + '<div class="sess open"><div class="shead"><div class="sid">?</div><div class="stitle"><b>Repères d\'utilisation</b></div></div><div class="sbody" style="display:block;padding-top:12px">'
+
+    + '<div class="bt">La structure de la semaine</div><div class="ex"><div class="presc">'
+    + "3 à 4 séances de salle par semaine (elles s'enchaînent dans l'ordre J1, J2, J3…), plus tes <b>1 à 2 séances de foot ou boxe</b>. "
+    + "Les séances poids de corps viennent en plus, quand tu ne peux pas aller à la salle. Ne colle pas foot ou boxe la veille d'un jour haltéro : "
+    + "Grace, Isabel et Fran demandent des jambes fraîches.</div></div>"
+
+    + '<div class="bt">Les deux cycles</div><div class="ex"><div class="presc">'
+    + "J1 à J6 = premier tour. J7 à J12 = <b>les mêmes séances, plus lourdes</b>, avec des séries plus courtes sur les mouvements de force. "
+    + "Les trois WOD (Grace, Isabel, Fran) sont refaits <b>à charge identique</b> au deuxième tour : c'est ce qui mesure vraiment le bloc.</div></div>"
+
     + '<div class="bt">Les deux lignes de cases</div><div class="ex"><div class="presc">'
     + "La ligne <b style=\"color:var(--warn)\">lb</b> = la charge de chaque série. La ligne du dessous = les reps (ou secondes, ou mètres) réellement faites. "
-    + "Une série ratée se note telle quelle : c'est l'information utile pour construire le bloc suivant.</div></div>"
+    + "Une série ratée se note telle quelle : c'est l'information utile pour construire le bloc suivant. Les temps s'écrivent en clair : <b>6'40</b>, pas 640.</div></div>"
 
     + '<div class="bt">« Dernière fois »</div><div class="ex"><div class="presc">'
     + "Le bandeau violet sous chaque exercice rappelle la charge et les reps de la dernière fois que tu l'as fait dans ce bloc. "
-    + "Tant que l'exercice n'a jamais été noté, il affiche ta référence du Bloc 2 ou du Bloc 3.</div></div>"
+    + "Tant que l'exercice n'a jamais été noté, il affiche ta référence du Bloc 2, 3 ou 4.</div></div>"
 
-    + '<div class="bt">« ✓ Séance terminée »</div><div class="ex"><div class="presc">'
-    + "Le bouton en bas de chaque séance. Il enregistre la date et fait passer l'app à la séance suivante. "
-    + "Tu peux toujours rouvrir une séance terminée depuis l'onglet <b>Toutes</b> pour corriger une valeur.</div></div>"
+    + '<div class="bt">Onglet Poids de corps</div><div class="ex"><div class="presc">'
+    + "Les 13 séances du livre, avec le texte d'origine. Elles ne bloquent pas la progression du bloc : rien ne t'oblige à les faire, et tu peux "
+    + "refaire la même autant de fois que tu veux. Le bouton <b>🔄 Nouvel essai</b> archive la perf actuelle (elle reste visible en haut de la séance et dans l'Historique) "
+    + "et repart sur des champs vides.</div></div>"
 
-    + '<div class="bt">Foot et boxe</div><div class="ex"><div class="presc">'
-    + "Tes 1 à 2 séances de foot ou boxe s'intercalent librement. Évite juste de les coller la veille d'un jour haltéro : "
-    + "les WOD Grace, Isabel et Fran demandent des jambes fraîches.</div></div>"
+    + '<div class="bt">Progression des charges</div><div class="ex"><div class="presc">'
+    + "Si toutes les séries prescrites passent en RPE 8 ou moins : <b>+5 lb</b> au haut du corps, <b>+10 lb</b> au bas du corps la prochaine fois. "
+    + "Si une série casse, on garde la charge. Le bouton <b>↑ Peut monter</b> sert exactement à marquer ça sur le moment.</div></div>"
 
-    + '<div class="bt">Échauffement et retour au calme</div><div class="ex"><div class="presc">'
-    + "10 à 15 minutes d'échauffement progressif avant chaque séance, 5 minutes d'étirements légers après. "
-    + "Sur les jours haltéro, ajoute 5 minutes de mobilité épaules/poignets avant la barre — c'est ton point faible identifié.</div></div>"
+    + '<div class="bt">Échauffement</div><div class="ex"><div class="presc">'
+    + "10 à 15 minutes avant chaque séance, 5 minutes d'étirements légers après. Sur les jours haltéro, ajoute 5 minutes de mobilité épaules/poignets "
+    + "avant de toucher la barre — c'est ton point faible identifié depuis le Bloc 2.</div></div>"
 
     + '<div class="bt">Nutrition — OMAD</div><div class="ex"><div class="presc">'
-    + "Le volume de ce bloc est plus élevé qu'au Bloc 3 (barre + WOD). Sur un repas unique : vise <b>2 g/kg de protéines</b>, "
-    + "sale correctement, et place le repas après la séance quand l'organisation le permet.</div></div>"
-
-    + '<div class="bt">Progression d\'un bloc à l\'autre</div><div class="ex"><div class="presc">'
-    + "Règle simple : si les séries prescrites passent toutes en RPE 8 ou moins, <b>+5 lb</b> au haut du corps et <b>+10 lb</b> au bas du corps "
-    + "pour le bloc suivant. Si une série casse, on garde la charge. Le bouton <b>↑ Peut monter</b> sert exactement à ça.</div></div>"
+    + "Ce bloc vise aussi la prise de muscle, et le volume de travail est plus élevé qu'au Bloc 4. Sur un repas unique : vise <b>2 g/kg de protéines</b>, "
+    + "sale correctement, et place le repas après la séance quand l'organisation le permet. Sans ce minimum de protéines, le volume ajouté ne se transformera pas en muscle.</div></div>"
     + "</div></div>";
 }
 
 /* ---------- PROGRESSION ---------- */
+function wodScore(sid){
+  const s = SESS.find(x=>x.id===sid); if(!s) return "";
+  for(let bi=0;bi<s.blocks.length;bi++){
+    if(!s.blocks[bi].wod) continue;
+    const it = s.blocks[bi].items[0];
+    const d = DATA[K(sid,bi,it.id)];
+    if(d && d.score) return d.score;
+  }
+  return "";
+}
 function showProg(){
-  let rows = TESTS.map(t => {
-    const a = REF_B3[t[0]];
-    const b = parseFloat((get(K("J10",0,t[0])).reps||[])[0]);
-    let d = "—", cls = "";
-    if(!isNaN(a) && !isNaN(b)){
-      const diff = b - a, pct = a ? Math.round(diff/a*1000)/10 : 0;
-      d = (diff>0?"+":"") + Math.round(diff*10)/10 + " " + t[2] + " (" + (pct>0?"+":"") + pct + "%)";
-      cls = diff>0 ? "pos" : (diff<0 ? "neg" : "");
-    }
-    return "<tr><td>" + t[1] + "</td><td>" + a + "</td><td>" + (isNaN(b)?"—":b) + '</td><td class="d ' + cls + '">' + d + "</td></tr>";
+  const rows = RETESTS.map(t => {
+    const a = wodScore(t[0]), b = wodScore(t[1]);
+    return "<tr><td>" + esc(t[2]) + "</td><td>" + (a||"—") + "</td><td>" + (b||"—") + '</td><td class="d">'
+      + (a && b ? "à comparer" : "—") + "</td></tr>";
   }).join("");
 
-  /* meilleures charges du bloc, par exercice */
   const best = {};
-  SESS.forEach((s,i) => s.blocks.forEach((b,bi) => b.items.forEach(it => {
+  SESS.forEach(s => s.blocks.forEach((b,bi) => b.items.forEach(it => {
     if(!it.w || !it.ex) return;
     const d = DATA[K(s.id,bi,it.id)];
     if(!d) return;
@@ -726,23 +1148,22 @@ function showProg(){
     "<tr><td>" + esc(best[k].name) + "</td><td colspan=2><b>" + best[k].v + " lb</b></td><td>" + esc(best[k].sess) + "</td></tr>"
   ).join("");
 
-  let ups = [], wods = [];
+  let ups = [], pdcScores = [];
   SESS.forEach(s => s.blocks.forEach((b,bi) => b.items.forEach(it => {
     const d = DATA[K(s.id,bi,it.id)];
-    if(!d) return;
-    if(d.up) ups.push(s.day.replace("JOUR ","J") + " · " + it.name);
-    if(b.wod && d.score) wods.push(s.day.replace("JOUR ","J") + " · " + it.name + " → <b>" + esc(d.score) + "</b>");
+    if(d && d.up) ups.push(s.day.replace("JOUR ","J") + " · " + it.name);
   })));
+  PDC.forEach(s => { const l = perfLine(s); if(l) pdcScores.push(esc(s.name) + " → " + esc(l)); });
 
   open_("📈 Progression",
-    '<div class="prog"><div class="bt">Retest — Bloc 3 J1 vs Bloc 4 J10</div>'
-    + "<table><tr><th>Test</th><th>Bloc 3</th><th>J10</th><th>Δ</th></tr>" + rows + "</table>"
+    '<div class="prog"><div class="bt">WOD — cycle 1 vs cycle 2 (même charge)</div>'
+    + "<table><tr><th>WOD</th><th>1er passage</th><th>Retest</th><th></th></tr>" + rows + "</table>"
     + '<div class="bt">Charges les plus lourdes du bloc</div>'
     + (bestRows ? "<table>" + bestRows + "</table>" : '<div class="presc">Aucune charge notée pour l\'instant.</div>')
-    + '<div class="bt">Scores WOD</div>'
-    + (wods.length ? wods.map(x => '<div class="pill" style="display:block;margin-bottom:5px">' + x + "</div>").join("") : '<div class="presc">Aucun score enregistré.</div>')
-    + '<div class="bt">Marqués ↑ (à durcir au Bloc 5)</div>'
+    + '<div class="bt">Marqués ↑ (à durcir au Bloc 6)</div>'
     + (ups.length ? ups.map(x => '<span class="pill">' + esc(x) + "</span>").join("") : '<div class="presc">Rien pour l\'instant.</div>')
+    + '<div class="bt">Poids de corps</div>'
+    + (pdcScores.length ? pdcScores.map(x => '<div class="pill" style="display:block;margin-bottom:5px">' + x + "</div>").join("") : '<div class="presc">Aucune séance poids de corps notée.</div>')
     + "</div>");
 }
 
@@ -751,38 +1172,53 @@ function doExport(){
   const blob = new Blob([JSON.stringify({ store:STORE, bloc:PROGRAM.bloc, date:new Date().toISOString(), data:DATA }, null, 2)], { type:"application/json" });
   const a = document.createElement("a");
   a.href = URL.createObjectURL(blob);
-  a.download = "bloc4-" + new Date().toISOString().slice(0,10) + ".json";
+  a.download = "bloc5-" + new Date().toISOString().slice(0,10) + ".json";
   a.click();
   setTimeout(() => URL.revokeObjectURL(a.href), 3000);
 }
 
+function sessionResume(s){
+  let stxt = "";
+  s.blocks.forEach((b,bi) => b.items.forEach(it => {
+    const d = DATA[K(s.id,bi,it.id)];
+    if(!d) return;
+    if(b.wod){
+      if(!d.score) return;
+      stxt += " • " + it.name + " → " + d.score + (d.up?" ↑":"") + "\n";
+    } else {
+      const r = (d.reps||[]).filter(x=>x!==""&&x!=null);
+      const p = (d.poids||[]).filter(x=>x!==""&&x!=null);
+      if(!r.length && !p.length && !d.note) return;
+      stxt += " • " + it.name
+        + (p.length ? " [" + p.join("/") + " lb]" : "")
+        + (r.length ? " → [" + r.join(",") + "] " + it.unit : "")
+        + (d.rpe ? " RPE" + d.rpe : "") + (d.up?" ↑":"") + "\n";
+    }
+    if(d.note) stxt += "   Note : " + d.note + "\n";
+  }));
+  (meta().att[s.id]||[]).forEach(a => { stxt += " • [essai archivé " + a.date + "] " + a.txt + "\n"; });
+  return stxt;
+}
+
 function buildResume(){
-  let out = "=== MON BILAN — BLOC 4 (MUSCU / HALTÉRO / POIDS DE CORPS) ===\n"
+  let out = "=== MON BILAN — BLOC 5 (MUSCU COMPLÈTE / HALTÉRO + WOD) ===\n"
     + "Date : " + new Date().toLocaleDateString("fr-FR") + "\n"
-    + "Séances terminées : " + SESS.filter(isDone).length + "/10\n";
+    + "Séances salle terminées : " + SESS.filter(isDone).length + "/" + N + "\n";
   SESS.forEach(s => {
-    let stxt = "";
-    s.blocks.forEach((b,bi) => b.items.forEach(it => {
-      const d = DATA[K(s.id,bi,it.id)];
-      if(!d) return;
-      if(b.wod){
-        if(!d.score) return;
-        stxt += " • " + it.name + " → " + d.score + (d.up?" ↑":"") + "\n";
-      } else {
-        const r = (d.reps||[]).filter(x=>x!==""&&x!=null);
-        const p = (d.poids||[]).filter(x=>x!==""&&x!=null);
-        if(!r.length && !p.length && !d.note) return;
-        stxt += " • " + it.name
-          + (p.length ? " [" + p.join("/") + " lb]" : "")
-          + (r.length ? " → [" + r.join(",") + "] " + it.unit : "")
-          + (d.rpe ? " RPE" + d.rpe : "") + (d.up?" ↑":"") + "\n";
-      }
-      if(d.note) stxt += "   Note : " + d.note + "\n";
-    }));
+    const stxt = sessionResume(s);
     if(stxt || isDone(s))
       out += "\n── " + s.day + " — " + s.name + (isDone(s) ? " (fait le " + doneDate(s) + ")" : " (non terminée)") + " ──\n" + stxt;
   });
-  out += "\n=== DEMANDE ===\nVoici mon bilan Bloc 4. Analyse mes progressions et crée mon Bloc 5 (10 jours, même rotation).\n";
+
+  let pdcOut = "";
+  PDC.forEach(s => {
+    const stxt = sessionResume(s);
+    if(stxt || isDone(s))
+      pdcOut += "\n── " + s.day + " — " + s.name + (isDone(s) ? " (fait le " + doneDate(s) + ")" : "") + " ──\n" + stxt;
+  });
+  if(pdcOut) out += "\n\n=== SÉANCES POIDS DE CORPS ===" + pdcOut;
+
+  out += "\n=== DEMANDE ===\nVoici mon bilan Bloc 5. Analyse mes progressions et crée mon Bloc 6 (12 séances, même alternance muscu / haltéro + WOD).\n";
   return out;
 }
 function showResume(){ open_("🤖 Résumé à coller dans Claude", '<textarea id="box" readonly>' + esc(buildResume()) + "</textarea>"); }
@@ -809,9 +1245,9 @@ function fallbackCopy(txt){
 function initData(){
   try{ DATA = JSON.parse(localStorage.getItem(STORE) || "{}"); }catch(e){ DATA = {}; }
   meta();
-  render();                       // rendu immédiat depuis le local
+  render();
   setSync("↻ sync…","");
-  pullCloud();                    // puis le cloud, sans bloquer l'affichage
+  pullCloud();
 }
 window.addEventListener("online", () => { pullCloud(); pushCloud(); });
 document.addEventListener("visibilitychange", () => { if(!document.hidden && Date.now()-lastCloud > 30000) pullCloud(); });
