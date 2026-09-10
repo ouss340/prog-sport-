@@ -154,7 +154,8 @@ main{padding:14px 14px 90px}
 <script>
 /* =========================================================================
    BLOC 5 — 12 séances · alternance MUSCU (complète) → HALTÉRO + WOD
-   + onglet séparé POIDS DE CORPS (séances du livre, à faire quand tu veux)
+   Ordre : poussée → chaîne postérieure → jambes/tirage (faite le 08/09)
+   + onglet séparé POIDS DE CORPS et onglet CHARGES (historique par exercice)
    Salle CrossFit sans machines. Charges en LIVRES (lb).
    ========================================================================= */
 
@@ -165,82 +166,28 @@ const PROGRAM = {
 
   /* ================================================== CYCLE 1 — J1 à J6 */
   {
-    id:"J1", day:"JOUR 1", name:"MUSCU A — Jambes & tirage", tag:"MUSCU", dur:"65-70 min",
-    focus:"<b>Séance complète bas du corps + dos.</b> Tu as passé les 5×5 à 145 lb au Bloc 4 mais en notant « difficilement ». On monte de 5 lb seulement et on ajoute du volume jambes derrière : c'est le volume, pas la charge maximale, qui fait grossir le muscle.",
-    blocks:[
-      { title:"FORCE", items:[
-        { id:"bs", ex:"back_squat", name:"Back Squat", presc:"5 séries de 5 — repos 2'30''", sets:5, unit:"reps", w:1,
-          ref:"Bloc 4 : 145 lb × 5,5,5,5,5 (« difficilement »)", target:"150 lb. Si les 5 séries passent en RPE ≤ 8, +10 lb au J7." },
-        { id:"bul", ex:"bulgare", name:"Fentes bulgares haltères", presc:"3 séries de 10 par jambe — repos 90''", sets:3, unit:"reps/jbe", w:1,
-          ref:"Bloc 4 : 22 lb × 10,10,10", target:"24 lb par haltère. Pied arrière sur un box." },
-        { id:"rdl", ex:"rdl", name:"Soulevé de terre roumain", presc:"3 séries de 10 — repos 90''", sets:3, unit:"reps", w:1,
-          ref:"Bloc 4 : 145 lb × 10,10,7", target:"Reste à 145 lb tant que les 3×10 ne sont pas complètes." }
-      ]},
-      { title:"VOLUME JAMBES", items:[
-        { id:"fm", ex:"fentes_march", name:"Fentes marchées haltères", presc:"3 séries de 12 pas par jambe — repos 75''", sets:3, unit:"reps/jbe", w:1,
-          target:"Charge par haltère. Grand pas, genou arrière proche du sol." },
-        { id:"mol", ex:"mollets", name:"Mollets debout (barre ou haltères)", presc:"4 séries de 15 — repos 45''", sets:4, unit:"reps", w:1,
-          target:"Amplitude complète, 1'' de pause en haut." }
-      ]},
-      { title:"TIRAGE", items:[
-        { id:"tl", ex:"trac_lest", name:"Tractions lestées strictes", presc:"4 séries de 5 — repos 2'", sets:4, unit:"reps", w:1,
-          ref:"Bloc 4 : 35 lb × 6,6,6,6 (marqué ↑)", target:"40 lb. Charge = lest en lb. 1'' d'arrêt bras tendus en bas." },
-        { id:"row", ex:"row_hal", name:"Rowing haltère 1 bras", presc:"3 séries de 12 par bras — repos 75''", sets:3, unit:"reps/bras", w:1,
-          ref:"Bloc 4 : 44 lb × 12,12,12 (marqué ↑)", target:"48 lb." }
-      ]},
-      { title:"BRAS & GAINAGE", items:[
-        { id:"curl", ex:"curl_mart", name:"Curl marteau haltères", presc:"3 séries de 12 — repos 60''", sets:3, unit:"reps", w:1 },
-        { id:"gain", ex:"gain_bt", name:"Gainage bras tendus", presc:"4 × 50'' — repos 30''", sets:4, unit:"sec",
-          ref:"Bloc 4 : 45'' × 4 (marqué ↑)", target:"Note les secondes réellement tenues sans casser." }
-      ]}
-    ]
-  },
-
-  {
-    id:"J2", day:"JOUR 2", name:"HALTÉRO A — Clean & Jerk + Grace", tag:"HALTERO", dur:"60-65 min",
-    focus:"<b>Technique d'abord, WOD ensuite, muscle à la fin.</b> Le C&J est ta meilleure progression historique (95 → 140 lb). Le WOD Grace donne un chrono de référence qu'on retestera au J8, à la même charge, pour mesurer le bloc.",
-    blocks:[
-      { title:"TECHNIQUE", items:[
-        { id:"pc", ex:"power_clean", name:"Power clean", presc:"5 séries de 3 — repos 2'", sets:5, unit:"reps", w:1,
-          ref:"Bloc 2 : C&J max 140 lb", target:"100-110 lb. Vitesse sous la barre, pas la charge." },
-        { id:"jerk", ex:"split_jerk", name:"Split jerk", presc:"5 séries de 2 — repos 2'", sets:5, unit:"reps", w:1,
-          target:"Fente franche, bras verrouillés avant de recevoir." }
-      ]},
-      { title:"MONTÉE EN CHARGE", items:[
-        { id:"cj", ex:"cj_max", name:"Clean & Jerk — 5 singles montants", presc:"1 rep par série, on monte à chaque série", sets:5, unit:"reps", w:1,
-          ref:"Bloc 2 : 140 lb", target:"Dernière série = lourd du jour, pas un max. Arrête si la technique casse." }
-      ]},
-      { title:"WOD — GRACE ALLÉGÉE", wod:true, items:[
-        { id:"wod", ex:"wod_grace", name:"30 Clean & Jerk @ 95 lb — for time", presc:"Barre au sol à chaque rep. Découpe en séries de 5 dès que ça brûle. Chrono de référence : on refait exactement le même au J8.", score:"ex : 6'40" }
-      ]},
-      { title:"FINITION MUSCULAIRE", items:[
-        { id:"rowb", ex:"row_barre", name:"Rowing barre penché", presc:"3 séries de 10 — repos 90''", sets:3, unit:"reps", w:1,
-          target:"Dos plat, barre au nombril." },
-        { id:"dip", ex:"dips_force", name:"Dips stricts", presc:"3 séries au maximum de reps — repos 2'", sets:3, unit:"reps",
-          ref:"Bloc 3 : 11 dips max", target:"Ton point faible. Séries courtes et propres, négatives de 5'' si échec." }
-      ]}
-    ]
-  },
-
-  {
-    id:"J3", day:"JOUR 3", name:"MUSCU B — Poussée haut du corps", tag:"MUSCU", dur:"65-70 min",
-    focus:"<b>Force puis hypertrophie sur la même séance.</b> Les 3 premiers exercices sont lourds en séries courtes (c'est ce qui débloque ton plateau de poussée : 33 pompes et 11 dips en max). Les 4 suivants sont en séries longues pour la masse.",
+    id:"J1", day:"JOUR 1", name:"MUSCU A — Poussée haut du corps", tag:"MUSCU", dur:"65-70 min",
+    focus:"<b>On démarre par la poussée</b>, puisque tu as fait jambes et dos avant-hier. Force puis hypertrophie sur la même séance : les 3 premiers exercices sont lourds en séries courtes — c'est ce qui débloque ton plateau (33 pompes et 11 dips en max au Bloc 3), les 5 suivants sont en séries longues pour la masse.",
     blocks:[
       { title:"FORCE", items:[
         { id:"dc", ex:"bench", name:"Développé couché", presc:"5 séries de 5 — repos 2'30''", sets:5, unit:"reps", w:1,
-          ref:"Bloc 2 : 4×10 à 155 lb non tenu", target:"Départ 150 lb sur 5 reps. +5 lb quand les 5×5 passent." },
+          target:"Départ 160-165 lb. Tu as fait 175 × 5×5 au pic du Bloc 2 : reprends 10 lb en dessous après la coupure, tu le rattraperas au J7." },
         { id:"dm", ex:"ohp", name:"Développé militaire barre (strict)", presc:"4 séries de 8 — repos 2'", sets:4, unit:"reps", w:1,
-          target:"Debout, sans élan de jambes. Gainage serré." },
+          target:"Départ 90 lb (tu as tenu 100 lb en 5×5 au Bloc 2). Debout, sans élan de jambes." },
         { id:"dipl", ex:"dips_lest", name:"Dips lestés", presc:"4 séries de 6 — repos 2'", sets:4, unit:"reps", w:1,
-          ref:"Bloc 3 : 11 dips à vide", target:"Charge = lest. Si 6 reps à vide sont dures, reste à vide et note 0." }
+          target:"Départ +25 lb. Charge = lest. Si 6 reps à vide sont dures, reste à vide et note 0." }
       ]},
       { title:"VOLUME — MASSE", items:[
-        { id:"dinc", ex:"dev_incl", name:"Développé incliné haltères", presc:"4 séries de 12 — repos 75''", sets:4, unit:"reps", w:1 },
+        { id:"dinc", ex:"dev_incl", name:"Développé incliné haltères", presc:"4 séries de 12 — repos 75''", sets:4, unit:"reps", w:1,
+          target:"44-50 lb par haltère (66 lb × 7 au Bloc 2, mais en séries de 5)." },
         { id:"ecart", ex:"ecarte", name:"Écartés haltères sur banc", presc:"3 séries de 15 — repos 60''", sets:3, unit:"reps", w:1,
           target:"Charge légère, amplitude maximale, on étire." },
-        { id:"elev", ex:"elev_lat", name:"Élévations latérales", presc:"4 séries de 15 — repos 60''", sets:4, unit:"reps", w:1 },
-        { id:"skull", ex:"skull", name:"Barre au front (skull crusher)", presc:"3 séries de 12 — repos 60''", sets:3, unit:"reps", w:1 },
-        { id:"ext", ex:"ext_nuque", name:"Extension nuque haltère", presc:"3 séries de 12 — repos 60''", sets:3, unit:"reps", w:1 }
+        { id:"elev", ex:"elev_lat", name:"Élévations latérales", presc:"4 séries de 15 — repos 60''", sets:4, unit:"reps", w:1,
+          target:"⚠️ Reste à 16,5 lb. À 22 lb tu avais noté des picotements derrière la nuque — plus de reps, pas plus lourd." },
+        { id:"skull", ex:"skull", name:"Barre au front (skull crusher)", presc:"3 séries de 12 — repos 60''", sets:3, unit:"reps", w:1,
+          target:"Départ 55 lb (67 lb × 8 au Bloc 2)." },
+        { id:"ext", ex:"ext_nuque", name:"Extension nuque haltère", presc:"3 séries de 12 — repos 60''", sets:3, unit:"reps", w:1,
+          target:"Nouveau : commence à 22-27 lb, coudes serrés. Note la charge, elle servira de repère." }
       ]},
       { title:"GAINAGE", items:[
         { id:"lat", ex:"gain_lat", name:"Gainage latéral", presc:"4 × 40'' par côté — repos 30''", sets:4, unit:"sec/côté" }
@@ -249,49 +196,54 @@ const PROGRAM = {
   },
 
   {
-    id:"J4", day:"JOUR 4", name:"HALTÉRO B — Arraché + Isabel", tag:"HALTERO", dur:"60-65 min",
-    focus:"<b>Mobilité épaules et poignets.</b> Ton point faible relevé au Bloc 2 (« dur pour les poignets » sur l'OHS). L'overhead squat en début de séance sert autant de mobilité que de force. Isabel donne le chrono de référence, retesté au J10.",
+    id:"J2", day:"JOUR 2", name:"HALTÉRO A — Clean & Jerk + Grace", tag:"HALTERO", dur:"60-65 min",
+    focus:"<b>Technique d'abord, WOD ensuite, muscle à la fin.</b> Ton C&J réel est monté à <b>155 lb</b> en singles à la fin du Bloc 2 — pas 140. Le WOD Grace donne un chrono de référence qu'on retestera au J8 à la même charge.",
     blocks:[
-      { title:"MOBILITÉ & FORCE", items:[
-        { id:"ohs", ex:"ohs", name:"Overhead squat", presc:"5 séries de 5 — repos 2' — barre à vide puis charge légère", sets:5, unit:"reps", w:1,
-          ref:"Bloc 2 : gênant pour les poignets", target:"Descends aussi bas que la mobilité le permet. Priorité : bras verrouillés." },
-        { id:"ps", ex:"power_snatch", name:"Power snatch", presc:"6 séries de 2 — repos 2'", sets:6, unit:"reps", w:1,
-          target:"65-70 % : reste léger, cherche le placement." }
+      { title:"TECHNIQUE", items:[
+        { id:"pc", ex:"power_clean", name:"Power clean", presc:"5 séries de 3 — repos 2'", sets:5, unit:"reps", w:1,
+          target:"105-115 lb (70-75 % de 155). Vitesse sous la barre, pas la charge." },
+        { id:"jerk", ex:"split_jerk", name:"Split jerk", presc:"5 séries de 2 — repos 2'", sets:5, unit:"reps", w:1,
+          target:"Fente franche, bras verrouillés avant de recevoir." }
       ]},
       { title:"MONTÉE EN CHARGE", items:[
-        { id:"sn", ex:"snatch_max", name:"Arraché — 5 singles montants", presc:"1 rep par série, on monte à chaque série", sets:5, unit:"reps", w:1,
-          target:"Lourd du jour, technique intacte." }
+        { id:"cj", ex:"cj_max", name:"Clean & Jerk — 5 singles montants", presc:"1 rep par série, on monte à chaque série", sets:5, unit:"reps", w:1,
+          target:"Dernière série = lourd du jour, pas un max. Ton pic Bloc 2 : 155 lb." }
       ]},
-      { title:"WOD — ISABEL ALLÉGÉE", wod:true, items:[
-        { id:"wod", ex:"wod_isabel", name:"30 arrachés @ 75 lb — for time", presc:"Power snatch autorisé. Barre au sol à chaque rep. Même WOD au J10 pour comparer.", score:"ex : 5'10" }
+      { title:"WOD — GRACE ALLÉGÉE", wod:true, items:[
+        { id:"wod", ex:"wod_grace", name:"30 Clean & Jerk @ 95 lb — for time", presc:"Barre au sol à chaque rep. Découpe en séries de 5 dès que ça brûle. Chrono de référence : on refait exactement le même au J8.", score:"ex : 6'40" }
       ]},
       { title:"FINITION MUSCULAIRE", items:[
-        { id:"tr", ex:"trac_str", name:"Tractions strictes", presc:"3 séries au maximum de reps — repos 2'", sets:3, unit:"reps",
-          ref:"Bloc 3 : 21 tractions strictes max", target:"Ton point fort : exploite-le, sans lest ici." },
-        { id:"gain", ex:"gain_bt", name:"Gainage bras tendus", presc:"3 × 50'' — repos 30''", sets:3, unit:"sec" }
+        { id:"rowb", ex:"row_barre", name:"Rowing barre penché", presc:"3 séries de 10 — repos 90''", sets:3, unit:"reps", w:1,
+          target:"Départ 130 lb (140 lb × 8 au Bloc 2). Dos plat, barre au nombril." },
+        { id:"dip", ex:"dips_force", name:"Dips stricts", presc:"3 séries au maximum de reps — repos 2'", sets:3, unit:"reps",
+          target:"Ton point faible. Séries courtes et propres, négatives de 5'' si échec." }
       ]}
     ]
   },
 
   {
-    id:"J5", day:"JOUR 5", name:"MUSCU C — Chaîne postérieure & dos", tag:"MUSCU", dur:"65-70 min",
-    focus:"<b>Le soulevé de terre est ton mouvement le plus lourd</b> (235 → 275 lb au Bloc 2). Séries de 3, plus sûres, puis beaucoup de volume fessiers / ischios / dos. C'est la séance qui apporte le plus de masse sur l'ensemble du corps.",
+    id:"J3", day:"JOUR 3", name:"MUSCU B — Chaîne postérieure & dos", tag:"MUSCU", dur:"65-70 min",
+    focus:"<b>Le soulevé de terre est ton mouvement le plus lourd</b> — <b>295 lb en singles</b> à la fin du Bloc 2, 275 lb en doubles. On repart à 245 en séries de 3 après la coupure, puis beaucoup de volume ischios / fessiers / dos.",
     blocks:[
       { title:"FORCE", items:[
         { id:"dl", ex:"deadlift", name:"Soulevé de terre", presc:"5 séries de 3 — repos 3'", sets:5, unit:"reps", w:1,
-          ref:"Bloc 2 : 275 lb", target:"Départ 240 lb. Dos verrouillé, on ne cherche pas le max ce bloc." },
+          target:"Départ 245 lb. Dos verrouillé, on ne cherche pas le max ce bloc." },
         { id:"ht", ex:"hip_thrust", name:"Hip thrust barre", presc:"4 séries de 10 — repos 90''", sets:4, unit:"reps", w:1,
-          target:"1'' de contraction en haut, menton rentré." },
-        { id:"gm", ex:"good_morning", name:"Good morning", presc:"3 séries de 12 — repos 90'' — charge légère", sets:3, unit:"reps", w:1 }
+          target:"Nouveau mouvement : commence léger, 1'' de contraction en haut, menton rentré." },
+        { id:"gm", ex:"good_morning", name:"Good morning", presc:"3 séries de 12 — repos 90'' — charge légère", sets:3, unit:"reps", w:1,
+          target:"Nouveau : barre à vide ou 65-75 lb. Le dos doit rester plat du début à la fin." }
       ]},
       { title:"DOS", items:[
-        { id:"rowb", ex:"row_barre", name:"Rowing barre penché", presc:"4 séries de 8 — repos 90''", sets:4, unit:"reps", w:1 },
+        { id:"rowb", ex:"row_barre", name:"Rowing barre penché", presc:"4 séries de 8 — repos 90''", sets:4, unit:"reps", w:1,
+          target:"140 lb × 8 au Bloc 2 — c'est la cible à retrouver." },
         { id:"sup", ex:"trac_sup", name:"Tractions supination", presc:"4 séries de 8 — repos 90''", sets:4, unit:"reps",
-          ref:"Bloc 3 : 10 max", target:"Objectif du livre : 15 d'affilée. Lest si les 4×8 passent." },
-        { id:"shrug", ex:"shrug", name:"Shrugs barre", presc:"3 séries de 15 — repos 60''", sets:3, unit:"reps", w:1 }
+          target:"Objectif du livre : 15 d'affilée (tu étais à 10 au Bloc 3). Lest si les 4×8 passent." },
+        { id:"shrug", ex:"shrug", name:"Shrugs barre", presc:"3 séries de 15 — repos 60''", sets:3, unit:"reps", w:1,
+          target:"Nouveau : 135-155 lb, tu peux mettre lourd. Épaules aux oreilles, pas de rotation." }
       ]},
       { title:"BRAS & FINISHER", items:[
-        { id:"curl", ex:"curl_barre", name:"Curl barre", presc:"3 séries de 12 — repos 60''", sets:3, unit:"reps", w:1 },
+        { id:"curl", ex:"curl_barre", name:"Curl barre", presc:"3 séries de 12 — repos 60''", sets:3, unit:"reps", w:1,
+          target:"Départ 50 lb (62 lb × 8 au Bloc 2)." },
         { id:"farm", ex:"farmer", name:"Farmer walk", presc:"4 × 40 m — repos 90''", sets:4, unit:"m", w:1,
           target:"Charge = poids par main. Épaules basses, gainage serré." }
       ]}
@@ -299,15 +251,74 @@ const PROGRAM = {
   },
 
   {
+    id:"J4", day:"JOUR 4", name:"HALTÉRO B — Arraché + Isabel", tag:"HALTERO", dur:"60-65 min",
+    focus:"<b>Mobilité épaules et poignets.</b> Ton OHS plafonne à 105 lb avec la mention « dur pour les poignets » depuis le Bloc 2 : l'overhead squat en début de séance sert autant de mobilité que de force. Isabel donne le chrono de référence, retesté au J10.",
+    blocks:[
+      { title:"MOBILITÉ & FORCE", items:[
+        { id:"ohs", ex:"ohs", name:"Overhead squat", presc:"5 séries de 5 — repos 2' — barre à vide puis charge légère", sets:5, unit:"reps", w:1,
+          target:"85-95 lb en séries de 5 (tu faisais 105 lb en doubles). Priorité : bras verrouillés, pas la charge." },
+        { id:"ps", ex:"power_snatch", name:"Power snatch", presc:"6 séries de 2 — repos 2'", sets:6, unit:"reps", w:1,
+          target:"85 lb pour commencer (hang squat snatch à 105 lb au Bloc 2). Cherche le placement." }
+      ]},
+      { title:"MONTÉE EN CHARGE", items:[
+        { id:"sn", ex:"snatch_max", name:"Arraché — 5 singles montants", presc:"1 rep par série, on monte à chaque série", sets:5, unit:"reps", w:1,
+          target:"Lourd du jour, technique intacte. Snatch balance à 100 lb au Bloc 2." }
+      ]},
+      { title:"WOD — ISABEL ALLÉGÉE", wod:true, items:[
+        { id:"wod", ex:"wod_isabel", name:"30 arrachés @ 75 lb — for time", presc:"Power snatch autorisé. Barre au sol à chaque rep. Même WOD au J10 pour comparer.", score:"ex : 5'10" }
+      ]},
+      { title:"FINITION MUSCULAIRE", items:[
+        { id:"tr", ex:"trac_str", name:"Tractions strictes", presc:"3 séries au maximum de reps — repos 2'", sets:3, unit:"reps",
+          target:"Ton point fort : 21 en max au Bloc 3. Sans lest ici." },
+        { id:"gain", ex:"gain_bt", name:"Gainage bras tendus", presc:"3 × 50'' — repos 30''", sets:3, unit:"sec" }
+      ]}
+    ]
+  },
+
+  {
+    id:"J5", day:"JOUR 5", name:"MUSCU C — Jambes & tirage", tag:"MUSCU", dur:"65-70 min",
+    focus:"<b>La séance que tu as faite le 08/09</b> — elle revient ici, une semaine plus tard. Tu avais noté « passé difficilement » à 145 lb au back squat et « dans le mal » sur les bulgares. On monte de 5 lb seulement au squat, et on ajoute du volume jambes derrière : c'est le volume, pas la charge maximale, qui fait grossir le muscle.",
+    blocks:[
+      { title:"FORCE", items:[
+        { id:"bs", ex:"back_squat", name:"Back Squat", presc:"5 séries de 5 — repos 2'30''", sets:5, unit:"reps", w:1,
+          target:"150 lb. Ton pic Bloc 2 : 175 lb en 3×5. Si les 5 séries passent en RPE ≤ 8, +10 lb au J11." },
+        { id:"bul", ex:"bulgare", name:"Fentes bulgares haltères", presc:"3 séries de 10 par jambe — repos 90''", sets:3, unit:"reps/jbe", w:1,
+          target:"24 lb par haltère (33 lb × 10 au Bloc 2 — objectif à retrouver). Pied arrière sur un box." },
+        { id:"rdl", ex:"rdl", name:"Soulevé de terre roumain", presc:"3 séries de 10 — repos 90''", sets:3, unit:"reps", w:1,
+          target:"Reste à 145 lb tant que les 3×10 ne sont pas complètes (tu as cassé à 7). Cible Bloc 2 : 165 lb × 10." }
+      ]},
+      { title:"VOLUME JAMBES", items:[
+        { id:"fm", ex:"fentes_march", name:"Fentes marchées haltères", presc:"3 séries de 12 pas par jambe — repos 75''", sets:3, unit:"reps/jbe", w:1,
+          target:"Charge par haltère. Grand pas, genou arrière proche du sol." },
+        { id:"mol", ex:"mollets", name:"Mollets debout (barre ou haltères)", presc:"4 séries de 15 — repos 45''", sets:4, unit:"reps", w:1,
+          target:"115 lb (145 lb × 12 au Bloc 2). Amplitude complète, 1'' de pause en haut." }
+      ]},
+      { title:"TIRAGE", items:[
+        { id:"tl", ex:"trac_lest", name:"Tractions lestées strictes", presc:"4 séries de 5 — repos 2'", sets:4, unit:"reps", w:1,
+          target:"40 lb (+45 lb × 4 au Bloc 2, +35 × 6 le 08/09). 1'' d'arrêt bras tendus en bas." },
+        { id:"row", ex:"row_hal", name:"Rowing haltère 1 bras", presc:"3 séries de 12 par bras — repos 75''", sets:3, unit:"reps/bras", w:1,
+          target:"48 lb (61,6 lb × 8 au Bloc 2, mais en séries plus courtes)." }
+      ]},
+      { title:"BRAS & GAINAGE", items:[
+        { id:"curl", ex:"curl_mart", name:"Curl marteau haltères", presc:"3 séries de 12 — repos 60''", sets:3, unit:"reps", w:1,
+          target:"Prise neutre : compte 5 à 10 lb de moins par haltère qu'au curl barre." },
+        { id:"gain", ex:"gain_bt", name:"Gainage bras tendus", presc:"4 × 50'' — repos 30''", sets:4, unit:"sec",
+          target:"Note les secondes réellement tenues sans casser." }
+      ]}
+    ]
+  },
+
+  {
     id:"J6", day:"JOUR 6", name:"HALTÉRO C — Front squat / Thruster + Fran", tag:"HALTERO", dur:"60-65 min",
-    focus:"<b>Front rack.</b> Tes notes du Bloc 2 disaient « monte peu » sur front squat et thruster : c'est une limite de position, pas de jambes. Front squat lourd, puis Fran pour l'appliquer en fatigue. Retest au J12.",
+    focus:"<b>Front rack.</b> « Monte peu » revient sur front squat et thruster depuis le Bloc 2 : c'est une limite de position, pas de jambes. Front squat lourd, puis Fran pour l'appliquer en fatigue. Retest au J12.",
     blocks:[
       { title:"FORCE", items:[
         { id:"fs", ex:"front_squat", name:"Front squat", presc:"5 séries de 5 — repos 2'30''", sets:5, unit:"reps", w:1,
-          ref:"Bloc 2 : position inconfortable", target:"Coudes hauts. Si les poignets bloquent : prise 2 doigts ou sangles." },
-        { id:"pp", ex:"push_press", name:"Push press", presc:"5 séries de 3 — repos 2'", sets:5, unit:"reps", w:1 },
+          target:"Départ 135 lb (165 lb en singles au Bloc 2). Coudes hauts ; si les poignets bloquent : prise 2 doigts ou sangles." },
+        { id:"pp", ex:"push_press", name:"Push press", presc:"5 séries de 3 — repos 2'", sets:5, unit:"reps", w:1,
+          target:"Départ 115 lb (push jerk à 135 lb × 2 au Bloc 2)." },
         { id:"thr", ex:"thruster", name:"Thruster", presc:"4 séries de 6 — repos 2'", sets:4, unit:"reps", w:1,
-          target:"Un seul mouvement fluide du squat au verrouillage." }
+          target:"Départ 105 lb (140 lb en doubles au Bloc 2). Un seul mouvement fluide du squat au verrouillage." }
       ]},
       { title:"WOD — FRAN", wod:true, items:[
         { id:"wod", ex:"wod_fran", name:"21-15-9 — Thrusters @ 95 lb + Tractions — for time", presc:"Le benchmark le plus connu. Note si tu as scalé la charge. Même WOD au J12.", score:"ex : 8'15" }
@@ -321,44 +332,45 @@ const PROGRAM = {
 
   /* ================================================= CYCLE 2 — J7 à J12 */
   {
-    id:"J7", day:"JOUR 7", name:"MUSCU A2 — Jambes & tirage (lourd)", tag:"MUSCU", dur:"65-70 min",
-    focus:"<b>Deuxième tour, mêmes mouvements, charges plus hautes.</b> Le bandeau violet « Dernière fois » te rappelle automatiquement ce que tu as fait au J1 : ajoute +10 lb au bas du corps et +5 lb au haut si tout est passé en RPE ≤ 8. Le RDL passe en séries de 8, plus lourdes.",
+    id:"J7", day:"JOUR 7", name:"MUSCU A2 — Poussée haut du corps (lourd)", tag:"MUSCU", dur:"65-70 min",
+    focus:"<b>Deuxième passage sur la poussée.</b> Le développé couché passe en 6×4 : plus lourd, plus court. C'est le schéma qui casse un plateau de force — et c'est là que tu dois retoucher tes 175 lb du Bloc 2. Le volume d'hypertrophie derrière ne bouge pas.",
     blocks:[
       { title:"FORCE", items:[
-        { id:"bs", ex:"back_squat", name:"Back Squat", presc:"5 séries de 5 — repos 2'30''", sets:5, unit:"reps", w:1,
-          target:"+10 lb par rapport au J1 si les 5 séries y sont passées." },
-        { id:"bul", ex:"bulgare", name:"Fentes bulgares haltères", presc:"3 séries de 10 par jambe — repos 90''", sets:3, unit:"reps/jbe", w:1 },
-        { id:"rdl", ex:"rdl", name:"Soulevé de terre roumain", presc:"4 séries de 8 — repos 90''", sets:4, unit:"reps", w:1,
-          target:"Séries plus courtes qu'au J1 → tu peux mettre plus lourd." }
+        { id:"dc", ex:"bench", name:"Développé couché", presc:"6 séries de 4 — repos 2'30''", sets:6, unit:"reps", w:1,
+          target:"+10 lb sur le J1 (séries plus courtes). Cible : 175 lb, ton pic Bloc 2." },
+        { id:"dm", ex:"ohp", name:"Développé militaire barre (strict)", presc:"5 séries de 6 — repos 2'", sets:5, unit:"reps", w:1,
+          target:"+5 à +10 lb sur le J1." },
+        { id:"dipl", ex:"dips_lest", name:"Dips lestés", presc:"5 séries de 5 — repos 2'", sets:5, unit:"reps", w:1,
+          target:"Ajoute du lest si les 4×6 du J1 sont passées. Cible : +45 lb, ton pic Bloc 2." }
       ]},
-      { title:"VOLUME JAMBES", items:[
-        { id:"fm", ex:"fentes_march", name:"Fentes marchées haltères", presc:"3 séries de 12 pas par jambe — repos 75''", sets:3, unit:"reps/jbe", w:1 },
-        { id:"mol", ex:"mollets", name:"Mollets debout", presc:"4 séries de 15 — repos 45''", sets:4, unit:"reps", w:1 }
+      { title:"VOLUME — MASSE", items:[
+        { id:"dinc", ex:"dev_incl", name:"Développé incliné haltères", presc:"4 séries de 12 — repos 75''", sets:4, unit:"reps", w:1 },
+        { id:"ecart", ex:"ecarte", name:"Écartés haltères sur banc", presc:"3 séries de 15 — repos 60''", sets:3, unit:"reps", w:1,
+          target:"Charge légère, amplitude maximale, on étire." },
+        { id:"elev", ex:"elev_lat", name:"Élévations latérales", presc:"4 séries de 15 — repos 60''", sets:4, unit:"reps", w:1,
+          target:"⚠️ On ne monte pas au-dessus de 16,5 lb — picotements nuque notés à 22 lb." },
+        { id:"skull", ex:"skull", name:"Barre au front (skull crusher)", presc:"3 séries de 12 — repos 60''", sets:3, unit:"reps", w:1 },
+        { id:"ext", ex:"ext_nuque", name:"Extension nuque haltère", presc:"3 séries de 12 — repos 60''", sets:3, unit:"reps", w:1,
+          target:"Nouveau : commence à 22-27 lb, coudes serrés. Note la charge, elle servira de repère." }
       ]},
-      { title:"TIRAGE", items:[
-        { id:"tl", ex:"trac_lest", name:"Tractions lestées strictes", presc:"5 séries de 5 — repos 2'", sets:5, unit:"reps", w:1,
-          target:"Une série de plus qu'au J1. Charge = lest en lb." },
-        { id:"row", ex:"row_hal", name:"Rowing haltère 1 bras", presc:"4 séries de 12 par bras — repos 75''", sets:4, unit:"reps/bras", w:1 }
-      ]},
-      { title:"BRAS & GAINAGE", items:[
-        { id:"curl", ex:"curl_mart", name:"Curl marteau haltères", presc:"3 séries de 12 — repos 60''", sets:3, unit:"reps", w:1 },
-        { id:"gain", ex:"gain_bt", name:"Gainage bras tendus", presc:"4 × 60'' — repos 30''", sets:4, unit:"sec",
-          target:"On passe à 60''. Note les secondes réellement tenues." }
+      { title:"GAINAGE", items:[
+        { id:"lat", ex:"gain_lat", name:"Gainage latéral", presc:"4 × 50'' par côté — repos 30''", sets:4, unit:"sec/côté" }
       ]}
     ]
   },
 
   {
     id:"J8", day:"JOUR 8", name:"HALTÉRO A2 — Clean & Jerk + Grace (retest)", tag:"HALTERO", dur:"60-65 min",
-    focus:"<b>Retest de Grace, exactement comme au J2 : 30 C&J à 95 lb.</b> Même charge, même consigne — l'écart de chrono mesure ce que le bloc t'a apporté. L'onglet Progression le calcule tout seul.",
+    focus:"<b>Retest de Grace, exactement comme au J2 : 30 C&J à 95 lb.</b> Même charge, même consigne — l'écart de chrono mesure ce que le bloc t'a apporté. L'onglet Progression le met en face du premier passage.",
     blocks:[
       { title:"TECHNIQUE", items:[
         { id:"pc", ex:"power_clean", name:"Power clean", presc:"5 séries de 3 — repos 2'", sets:5, unit:"reps", w:1 },
-        { id:"jerk", ex:"split_jerk", name:"Split jerk", presc:"5 séries de 2 — repos 2'", sets:5, unit:"reps", w:1 }
+        { id:"jerk", ex:"split_jerk", name:"Split jerk", presc:"5 séries de 2 — repos 2'", sets:5, unit:"reps", w:1,
+          target:"Fente franche, bras verrouillés avant de recevoir." }
       ]},
       { title:"MONTÉE EN CHARGE", items:[
         { id:"cj", ex:"cj_max", name:"Clean & Jerk — 5 singles montants", presc:"1 rep par série, on monte à chaque série", sets:5, unit:"reps", w:1,
-          target:"Vise plus haut qu'au J2. Objectif du bloc : retoucher 140 lb." }
+          target:"Vise plus haut qu'au J2. Objectif du bloc : retoucher 155 lb." }
       ]},
       { title:"WOD — GRACE (RETEST)", wod:true, items:[
         { id:"wod", ex:"wod_grace", name:"30 Clean & Jerk @ 95 lb — for time", presc:"Retest à l'identique du J2. Ne change pas la charge, c'est la mesure.", score:"ex : 6'40" }
@@ -372,25 +384,28 @@ const PROGRAM = {
   },
 
   {
-    id:"J9", day:"JOUR 9", name:"MUSCU B2 — Poussée haut du corps (lourd)", tag:"MUSCU", dur:"65-70 min",
-    focus:"<b>Deuxième passage sur la poussée.</b> Le développé couché passe en 6×4 : encore plus lourd, encore plus court. C'est le schéma qui casse un plateau de force. Le volume d'hypertrophie reste derrière, inchangé.",
+    id:"J9", day:"JOUR 9", name:"MUSCU B2 — Chaîne postérieure & dos (lourd)", tag:"MUSCU", dur:"65-70 min",
+    focus:"<b>Deuxième passage sur la chaîne postérieure.</b> Le soulevé de terre passe en 5×2 : c'est là que tu peux aller chercher une charge proche de tes 275-295 lb du Bloc 2, en sécurité, sans faire un vrai max.",
     blocks:[
       { title:"FORCE", items:[
-        { id:"dc", ex:"bench", name:"Développé couché", presc:"6 séries de 4 — repos 2'30''", sets:6, unit:"reps", w:1,
-          target:"+5 à +10 lb par rapport au J3 (séries plus courtes)." },
-        { id:"dm", ex:"ohp", name:"Développé militaire barre (strict)", presc:"5 séries de 6 — repos 2'", sets:5, unit:"reps", w:1 },
-        { id:"dipl", ex:"dips_lest", name:"Dips lestés", presc:"5 séries de 5 — repos 2'", sets:5, unit:"reps", w:1,
-          target:"Ajoute du lest si les 4×6 du J3 sont passées." }
+        { id:"dl", ex:"deadlift", name:"Soulevé de terre", presc:"5 séries de 2 — repos 3'", sets:5, unit:"reps", w:1,
+          target:"+20 à +30 lb sur le J3 si les 5×3 étaient propres. Stop dès que le dos s'arrondit." },
+        { id:"ht", ex:"hip_thrust", name:"Hip thrust barre", presc:"4 séries de 10 — repos 90''", sets:4, unit:"reps", w:1 },
+        { id:"gm", ex:"good_morning", name:"Good morning", presc:"3 séries de 12 — repos 90''", sets:3, unit:"reps", w:1,
+          target:"+10 lb sur le J3 si le dos est resté plat." }
       ]},
-      { title:"VOLUME — MASSE", items:[
-        { id:"dinc", ex:"dev_incl", name:"Développé incliné haltères", presc:"4 séries de 12 — repos 75''", sets:4, unit:"reps", w:1 },
-        { id:"ecart", ex:"ecarte", name:"Écartés haltères sur banc", presc:"3 séries de 15 — repos 60''", sets:3, unit:"reps", w:1 },
-        { id:"elev", ex:"elev_lat", name:"Élévations latérales", presc:"4 séries de 15 — repos 60''", sets:4, unit:"reps", w:1 },
-        { id:"skull", ex:"skull", name:"Barre au front (skull crusher)", presc:"3 séries de 12 — repos 60''", sets:3, unit:"reps", w:1 },
-        { id:"ext", ex:"ext_nuque", name:"Extension nuque haltère", presc:"3 séries de 12 — repos 60''", sets:3, unit:"reps", w:1 }
+      { title:"DOS", items:[
+        { id:"rowb", ex:"row_barre", name:"Rowing barre penché", presc:"4 séries de 8 — repos 90''", sets:4, unit:"reps", w:1,
+          target:"Cible : dépasser les 155 lb × 5 du Bloc 2." },
+        { id:"sup", ex:"trac_sup", name:"Tractions supination", presc:"4 séries de 8 — repos 90''", sets:4, unit:"reps",
+          target:"Lest si les 4×8 du J3 sont passées." },
+        { id:"shrug", ex:"shrug", name:"Shrugs barre", presc:"3 séries de 15 — repos 60''", sets:3, unit:"reps", w:1,
+          target:"Nouveau : 135-155 lb, tu peux mettre lourd. Épaules aux oreilles, pas de rotation." }
       ]},
-      { title:"GAINAGE", items:[
-        { id:"lat", ex:"gain_lat", name:"Gainage latéral", presc:"4 × 50'' par côté — repos 30''", sets:4, unit:"sec/côté" }
+      { title:"BRAS & FINISHER", items:[
+        { id:"curl", ex:"curl_barre", name:"Curl barre", presc:"3 séries de 12 — repos 60''", sets:3, unit:"reps", w:1 },
+        { id:"farm", ex:"farmer", name:"Farmer walk", presc:"4 × 40 m — repos 90''", sets:4, unit:"m", w:1,
+          target:"Charge = poids par main. Monte tant que les 40 m passent sans poser." }
       ]}
     ]
   },
@@ -401,7 +416,7 @@ const PROGRAM = {
     blocks:[
       { title:"MOBILITÉ & FORCE", items:[
         { id:"ohs", ex:"ohs", name:"Overhead squat", presc:"5 séries de 5 — repos 2'", sets:5, unit:"reps", w:1,
-          target:"Compare la charge au J4 : c'est ton marqueur de mobilité." },
+          target:"Compare la charge au J4 : c'est ton marqueur de mobilité. Plafond historique : 105 lb." },
         { id:"ps", ex:"power_snatch", name:"Power snatch", presc:"6 séries de 2 — repos 2'", sets:6, unit:"reps", w:1 }
       ]},
       { title:"MONTÉE EN CHARGE", items:[
@@ -418,24 +433,31 @@ const PROGRAM = {
   },
 
   {
-    id:"J11", day:"JOUR 11", name:"MUSCU C2 — Chaîne postérieure & dos (lourd)", tag:"MUSCU", dur:"65-70 min",
-    focus:"<b>Dernière séance de force du bloc.</b> Le soulevé de terre passe en 5×2 : c'est là que tu peux aller chercher une charge proche de tes 275 lb du Bloc 2, en sécurité, sans faire un vrai max.",
+    id:"J11", day:"JOUR 11", name:"MUSCU C2 — Jambes & tirage (lourd)", tag:"MUSCU", dur:"65-70 min",
+    focus:"<b>Deuxième tour sur les jambes, charges plus hautes.</b> Le bandeau violet « Dernière fois » te rappelle automatiquement ce que tu as fait au J5 : +10 lb au bas du corps et +5 lb au haut si tout est passé en RPE ≤ 8. Le RDL passe en séries de 8, donc plus lourdes.",
     blocks:[
       { title:"FORCE", items:[
-        { id:"dl", ex:"deadlift", name:"Soulevé de terre", presc:"5 séries de 2 — repos 3'", sets:5, unit:"reps", w:1,
-          target:"+20 lb sur le J5 si les 5×3 étaient propres. Stop dès que le dos s'arrondit." },
-        { id:"ht", ex:"hip_thrust", name:"Hip thrust barre", presc:"4 séries de 10 — repos 90''", sets:4, unit:"reps", w:1 },
-        { id:"gm", ex:"good_morning", name:"Good morning", presc:"3 séries de 12 — repos 90''", sets:3, unit:"reps", w:1 }
+        { id:"bs", ex:"back_squat", name:"Back Squat", presc:"5 séries de 5 — repos 2'30''", sets:5, unit:"reps", w:1,
+          target:"+10 lb sur le J5 si les 5 séries y sont passées. Cible du bloc : 175 lb." },
+        { id:"bul", ex:"bulgare", name:"Fentes bulgares haltères", presc:"3 séries de 10 par jambe — repos 90''", sets:3, unit:"reps/jbe", w:1 },
+        { id:"rdl", ex:"rdl", name:"Soulevé de terre roumain", presc:"4 séries de 8 — repos 90''", sets:4, unit:"reps", w:1,
+          target:"Séries plus courtes qu'au J5 → tu peux mettre plus lourd. Cible : 175 lb × 8, ton chiffre du Bloc 2." }
       ]},
-      { title:"DOS", items:[
-        { id:"rowb", ex:"row_barre", name:"Rowing barre penché", presc:"4 séries de 8 — repos 90''", sets:4, unit:"reps", w:1 },
-        { id:"sup", ex:"trac_sup", name:"Tractions supination", presc:"4 séries de 8 — repos 90''", sets:4, unit:"reps",
-          target:"Lest si les 4×8 du J5 sont passées." },
-        { id:"shrug", ex:"shrug", name:"Shrugs barre", presc:"3 séries de 15 — repos 60''", sets:3, unit:"reps", w:1 }
+      { title:"VOLUME JAMBES", items:[
+        { id:"fm", ex:"fentes_march", name:"Fentes marchées haltères", presc:"3 séries de 12 pas par jambe — repos 75''", sets:3, unit:"reps/jbe", w:1,
+          target:"Même charge que les bulgares, ou un cran en dessous." },
+        { id:"mol", ex:"mollets", name:"Mollets debout", presc:"4 séries de 15 — repos 45''", sets:4, unit:"reps", w:1 }
       ]},
-      { title:"BRAS & FINISHER", items:[
-        { id:"curl", ex:"curl_barre", name:"Curl barre", presc:"3 séries de 12 — repos 60''", sets:3, unit:"reps", w:1 },
-        { id:"farm", ex:"farmer", name:"Farmer walk", presc:"4 × 40 m — repos 90''", sets:4, unit:"m", w:1 }
+      { title:"TIRAGE", items:[
+        { id:"tl", ex:"trac_lest", name:"Tractions lestées strictes", presc:"5 séries de 5 — repos 2'", sets:5, unit:"reps", w:1,
+          target:"Une série de plus qu'au J5. Charge = lest en lb." },
+        { id:"row", ex:"row_hal", name:"Rowing haltère 1 bras", presc:"4 séries de 12 par bras — repos 75''", sets:4, unit:"reps/bras", w:1 }
+      ]},
+      { title:"BRAS & GAINAGE", items:[
+        { id:"curl", ex:"curl_mart", name:"Curl marteau haltères", presc:"3 séries de 12 — repos 60''", sets:3, unit:"reps", w:1,
+          target:"Prise neutre : compte 5 à 10 lb de moins par haltère qu'au curl barre." },
+        { id:"gain", ex:"gain_bt", name:"Gainage bras tendus", presc:"4 × 60'' — repos 30''", sets:4, unit:"sec",
+          target:"On passe à 60''. Note les secondes réellement tenues." }
       ]}
     ]
   },
@@ -463,7 +485,7 @@ const PROGRAM = {
   ]
 };
 
-/* WOD retestés dans le bloc : [id du WOD au cycle 1, id au cycle 2, libellé] */
+/* WOD retestés dans le bloc : [id cycle 1, id cycle 2, libellé] */
 const RETESTS = [
   ["J2","J8","Grace — 30 C&J @ 95 lb"],
   ["J4","J10","Isabel — 30 arrachés @ 75 lb"],
@@ -471,127 +493,158 @@ const RETESTS = [
 ];
 
 /* =========================================================================
-   POIDS DE CORPS — séances du livre, reprises telles quelles.
-   Hors rotation : à faire le week-end, en déplacement, ou quand la salle
-   n'est pas accessible. Chaque séance peut être refaite autant de fois
-   que tu veux : le bouton « Nouvel essai » archive la perf précédente.
+   HISTORIQUE DES CHARGES — relevé réel des blocs précédents.
+   Source : base Supabase (prog_logs_v4 = Bloc 2, prog_logs_v6 = Bloc 4).
+   Sert de repli au bandeau « Dernière fois » et alimente l'onglet CHARGES,
+   pour pouvoir reprendre au bon niveau après une coupure.
+   ========================================================================= */
+const REF_LOADS = [
+  { ex:"back_squat",   name:"Back Squat",                 h:[["B2 S7","185 lb × 2 (5 séries)"],["B2 S6","175 lb × 3×5"],["B2 S5","165 lb × 4×5"],["B4 J1","145 lb × 5×5 — « difficilement »"]] },
+  { ex:"deadlift",     name:"Soulevé de terre",           h:[["B2 S7","295 lb × 1 (4 séries)"],["B2 S6","275 lb × 2,2,2,3"],["B2 S5","265 lb × 3,3,3,4"]] },
+  { ex:"rdl",          name:"Soulevé de terre roumain",   h:[["B2 S7","185 lb × 6,6,6"],["B2 S6","175 lb × 8×4"],["B2 S5","165 lb × 10,10,10,9"],["B4 J1","145 lb × 10,10,7"]] },
+  { ex:"front_squat",  name:"Front squat",                h:[["B2 S7","165 lb × 1 (5 séries)"],["B2 S6","155 lb × 2 (5 séries)"],["B2 S2","145 lb × 3×4"]] },
+  { ex:"bulgare",      name:"Fentes bulgares haltères",   h:[["B2 S7","44 lb × 6,6,6"],["B2 S6","38,5 lb × 8×3"],["B2 S5","33 lb × 10,10,9"],["B4 J1","22 lb × 10×3 — « dans le mal »"]] },
+  { ex:"mollets",      name:"Mollets debout",             h:[["B2 S7","125-155 lb × 12×3"],["B2 S6","115 lb × 15×4"],["B2 S5","115 lb × 20,20,18"]] },
+  { ex:"hip_thrust",   name:"Hip thrust barre",           h:[["—","jamais fait — commence léger"]] },
+  { ex:"bench",        name:"Développé couché",           h:[["B2 S7","175 lb × 5×5 (complet)"],["B2 S6","175 lb × 5,5,5,4,4"],["B2 S5","160 lb × 7×4"],["B2 S3","175 lb × 5,5,4,3,2"]] },
+  { ex:"ohp",          name:"Développé militaire barre",  h:[["B2 S7","125 lb × 2 (5 séries)"],["B2 S6","120 lb × 3 (5 séries)"],["B2 S5","110 lb × 4,4,4,5"],["B2 S1","100 lb × 5,5,5,4,4"]] },
+  { ex:"push_press",   name:"Push press / Push jerk",     h:[["B2 S7","135 lb × 2 (5 séries)"],["B2 S6","130 lb × 2 (5 séries)"],["B2 S5","120 lb × 3×4"]] },
+  { ex:"thruster",     name:"Thruster (squat clean thr.)",h:[["B2 S7","140 lb × 2×4"],["B2 S6","135 lb × 2×4"],["B2 S5","125 lb × 2,2,2"]] },
+  { ex:"dips_lest",    name:"Dips lestés",                h:[["B2 S7","+45 lb × 6,6,6,4"],["B2 S6","+45 lb × 5,5,5,6"],["B2 S5","+33 lb × 7,7,8"]] },
+  { ex:"dips_force",   name:"Dips stricts (à vide)",      h:[["B3","11 reps en max"]] },
+  { ex:"dev_incl",     name:"Développé incliné haltères", h:[["B2 S7","66 lb × 7,7,6,6"],["B2 S6","66 lb × 6,6,6"],["B2 S5","55 lb × 9,9,10"],["B2 S1","44 lb × 12,10,8"]] },
+  { ex:"skull",        name:"Barre au front",             h:[["B2 S3","67 lb × 8,8,8,9"],["B2 S2","57 lb × 10,10,7"],["B2 S1","52 lb × 12×4"]] },
+  { ex:"elev_lat",     name:"Élévations latérales",       h:[["B2 S7","22 lb × 12×3"],["B2 S6","16,5 lb × 12×4"],["B2 S5","22 lb × 10×4 — ⚠️ picotements nuque, redescendre et monter les reps"]] },
+  { ex:"row_barre",    name:"Rowing barre penché",        h:[["B2 S7","155 lb × 5×4 — « monte peu »"],["B2 S6","145 lb × 6×4"],["B2 S5","140 lb × 8,8,8,7"],["B2 S3","145 lb × 6×4"]] },
+  { ex:"row_hal",      name:"Rowing haltère 1 bras",      h:[["B2 S7","77 lb × 5×4"],["B2 S6","66 lb × 6,6,6,7"],["B2 S5","61,6 lb × 8,8,8,7"],["B4 J1","44 lb × 12×3"]] },
+  { ex:"trac_lest",    name:"Tractions lestées strictes", h:[["B2 S7","+45 lb × 5,4,4,8"],["B2 S6","+33 lb × 5,5,5,8"],["B2 S5","+27,5 lb × 6,6,6,7"],["B4 J1","+35 lb × 6×4"]] },
+  { ex:"trac_str",     name:"Tractions strictes (à vide)",h:[["B3","21 reps en max"]] },
+  { ex:"trac_sup",     name:"Tractions supination",       h:[["B3","10 reps en max — objectif livre : 15"]] },
+  { ex:"curl_barre",   name:"Curl barre",                 h:[["B2 S3","62 lb × 8,8,10"],["B2 S2","57 lb × 10×3"],["B2 S1","52 lb × 12,12,7"]] },
+  { ex:"cj_max",       name:"Clean & Jerk (singles)",     h:[["B2 S7","155 lb"],["B2 S6","150 lb"],["B2 S5","145 lb"],["B2 S3","140 lb"]] },
+  { ex:"power_clean",  name:"Power clean / Squat clean",  h:[["B2 S7","155 lb × 1 (5 séries)"],["B2 S6","145 lb × 2×5"],["B2 S5","140 lb × 2 (5 séries)"]] },
+  { ex:"ohs",          name:"Overhead squat",             h:[["B2 S6","105 lb × 2×4 — « dur pour les poignets »"],["B2 S5","100 lb × 2×4"],["B2 S1","90 lb × 3×3"]] },
+  { ex:"power_snatch", name:"Power / Hang squat snatch",  h:[["B2 S6","105 lb × 2×4"],["B2 S5","100 lb × 2×4"],["B2 S3","95 lb × 2×4"]] },
+  { ex:"snatch_max",   name:"Arraché / Snatch balance",   h:[["B2 S7","100 lb × 2"],["B2 S6","95 lb × 2"],["B2 S5","90 lb × 2"]] },
+  { ex:"gain_bt",      name:"Gainage bras tendus",        h:[["B4 J1","45'' × 4"],["B3","3 gainages de 30'' tenus sur 7"]] }
+];
+const REF_MAP = {};
+REF_LOADS.forEach(r => { REF_MAP[r.ex] = r; });
+
+/* =========================================================================
+   POIDS DE CORPS — hors rotation.
+   P1 à P6 : nouvelles séances (les 6 premières du bloc précédent ont été
+   faites pendant les vacances). P7 à P13 : séances du livre, texte repris
+   tel quel. Chaque séance peut être refaite : « Nouvel essai » archive.
    ========================================================================= */
 
 const PDC = [
   {
-    id:"P1", day:"PDC 1", name:"WOD UNITÉS D'ÉLITE — POLICE (test)", tag:"TEST", dur:"~45 min",
-    src:"TRAINING 87 – 20 octobre 2017",
+    id:"P1", day:"PDC 1", name:"CINDY — AMRAP 20'00''", tag:"WOD", dur:"20 min",
+    src:"Benchmark CrossFit — ajouté hors livre",
     verbatim:[
-      "<b>- FOR TIME – WOD UNITÉS D'ÉLITE - POLICE</b>",
-      "- TEST COOPER - PARCOURIR LA PLUS GRANDE DISTANCE POSSIBLE en 12'00''",
-      "REPOS : 5'00''",
-      "PUIS Effectuer :",
-      "MAX en Tractions strictes",
-      "MAX en Pompes",
-      "2 Montées de corde de 5m",
-      "Max en DIPS",
-      "Max en STRICT TOES TO BAR",
-      "REPOS : 2'00'' entre les exercices",
-      "<u>CONSIGNES ET PÉNALITÉS</u>",
-      "- TEST COOPER : distance minimale 3100m, sinon 50 Burpees de pénalité (en fin de WOD)",
-      "- TRACTIONS : temps d'arrêt d'1 seconde bras tendus en bas. Moins de 17 : 25 Burpees",
-      "- POMPES : poitrine au sol, bras déverrouillés. Moins de 55 : 25 Burpees",
-      "- 2 MONTÉES DE CORDE de 5m, bras seuls. <b>Substitution (pas de corde) : MAX de tractions supination.</b> Objectif 15 d'affilée, sinon 25 Burpees",
-      "- DIPS : épaules sous les coudes en bas. Moins de 20 : 25 Burpees",
-      "- STRICT TOES TO BAR : sans balancier, pieds à la barre. Moins de 18 : 25 Burpees"
-    ],
-    blocks:[{ title:"À NOTER", items:[
-      { id:"cooper", ex:"t_cooper", name:"Test Cooper 12'00''", presc:"Distance parcourue", sets:1, unit:"m", ref:"Bloc 3 : 2570 m", target:"Minimum 3100 m" },
-      { id:"maxpu", ex:"t_pu", name:"Max tractions strictes", presc:"", sets:1, unit:"reps", ref:"Bloc 3 : 21", target:"Minimum 17 — déjà dépassé" },
-      { id:"maxpush", ex:"t_push", name:"Max pompes", presc:"", sets:1, unit:"reps", ref:"Bloc 3 : 33", target:"Minimum 55" },
-      { id:"corde", ex:"t_sup", name:"Max tractions supination", presc:"Substitution des 2 montées de corde", sets:1, unit:"reps", ref:"Bloc 3 : 10", target:"Objectif 15" },
-      { id:"maxdips", ex:"t_dips", name:"Max dips", presc:"", sets:1, unit:"reps", ref:"Bloc 3 : 11", target:"Minimum 20" },
-      { id:"maxt2b", ex:"t_t2b", name:"Max strict toes-to-bar", presc:"", sets:1, unit:"reps", ref:"Bloc 3 : 10", target:"Minimum 18" },
-      { id:"pen", ex:"t_pen", name:"Burpees de pénalité", presc:"Total à effectuer en fin de séance", sets:1, unit:"reps" }
-    ]}]
-  },
-  {
-    id:"P2", day:"PDC 2", name:"AMRAP ÉVOLUTIF 30'00''", tag:"WOD", dur:"30 min",
-    src:"TRAINING 1 – 14 mars 2014",
-    verbatim:[
-      "<b>- AMRAP évolutif 30'00'' - Effectuer LE PLUS DE ROUNDS en 30'00'' :</b>",
-      "1ère série : 1 Pull up – 1 Push up",
-      "2ème série : 2 Pull ups – 2 Push ups",
-      "3ème série : 3 Pull ups – 3 Push ups",
-      "Etc."
+      "<b>- AMRAP 20'00'' – Effectuer LE PLUS DE ROUNDS POSSIBLE :</b>",
+      "5 Pull ups",
+      "10 Push ups",
+      "15 Air squats",
+      "<u>REPÈRE :</u> 15 rounds = bon niveau, 20 rounds = très bon.",
+      "Ne t'arrête pas au premier essoufflement : c'est un rythme, pas un sprint."
     ],
     blocks:[{ title:"SCORE", wod:true, items:[
-      { id:"wod", ex:"p_amrap30", name:"Série atteinte en 30'00''", presc:"Note la dernière série complétée (+ reps entamées)", score:"ex : 19 + 12" }
+      { id:"wod", ex:"p_cindy", name:"Rounds en 20'00''", presc:"Note les rounds complets + les reps entamées", score:"ex : 16 + 8" }
     ]}]
   },
   {
-    id:"P3", day:"PDC 3", name:"AMÉLIORER SON MAX EN POMPE", tag:"FORCE", dur:"~35 min",
-    src:"TRAINING 57 – 20 novembre 2016",
+    id:"P2", day:"PDC 2", name:"FORCE POUSSÉE — dips & pompes lestées", tag:"FORCE", dur:"~45 min",
+    src:"Séance ciblée sur ton point faible n°1 — ajoutée hors livre",
     verbatim:[
-      "<b>- AMÉLIORER SON MAX EN POMPE</b>",
-      "Pieds surélevés, effectuer 8 séries de 15 Push ups",
-      "Entre chaque série, rester en position gainage pompes pendant 30''",
-      "Si possible : ne pas décoller une main pendant le gainage",
-      "Soit 120 Pompes - 3'30'' de Gainage bras tendus."
+      "<b>- SÉANCE DE FORCE MAX, PAS DE VOLUME.</b>",
+      "Tu encaisses 120 pompes et 100 dips en fractionné mais tu plafonnes à 33 pompes et 11 dips en série max.",
+      "Ce n'est pas un manque d'endurance : c'est un manque de force. Donc séries courtes, lourdes, très reposées.",
+      "<u>1. DIPS LESTÉS</u> — 8 séries de 3, repos 2'00''. Si 3 reps lestées sont impossibles : dips à vide, ou négatives de 5''.",
+      "<u>2. POMPES PIEDS SURÉLEVÉS LESTÉES</u> — 5 séries de 5, repos 2'00''. Lest = sac à dos chargé, ou disque sur le dos.",
+      "<u>3. GAINAGE BRAS TENDUS</u> — 5 × 45'', repos 30''. Sans décoller de main."
     ],
     blocks:[{ title:"À NOTER", items:[
-      { id:"a1", ex:"p_pompe_sur", name:"Pompes pieds surélevés", presc:"8 séries de 15 — 30'' de gainage entre chaque", sets:8, unit:"reps" },
-      { id:"a2", ex:"p_gain7", name:"Gainages de 30'' tenus complets", presc:"Sur 7", sets:1, unit:"/7", ref:"Bloc 3 : 3/7" }
+      { id:"a1", ex:"dips_lest", name:"Dips lestés — 8 × 3", presc:"Charge = lest en lb", sets:8, unit:"reps", w:1 },
+      { id:"a2", ex:"p_pompe_lest", name:"Pompes pieds surélevés lestées — 5 × 5", presc:"Charge = lest en lb", sets:5, unit:"reps", w:1 },
+      { id:"a3", ex:"gain_bt", name:"Gainage bras tendus", presc:"5 × 45'' — note les secondes tenues", sets:5, unit:"sec" }
     ]}]
   },
   {
-    id:"P4", day:"PDC 4", name:"FOR TIME — 500m & 50 RÉPÉTITIONS", tag:"CARDIO", dur:"~50 min",
-    src:"TRAINING 20 – 26 avril 2015",
+    id:"P3", day:"PDC 3", name:"HALF MURPH", tag:"CARDIO", dur:"~40 min",
+    src:"Benchmark CrossFit (version 1/2) — ajouté hors livre",
     verbatim:[
       "<b>- FOR TIME – Effectuer LE PLUS VITE POSSIBLE :</b>",
-      "500m de course – 50 Push ups",
-      "500m de course – 50 Sit ups",
-      "500m de course – 50 Air squats",
-      "500m de course – 50 Mountain climbers (de chaque côté)",
-      "500m de course – 50 Jumping Jacks",
-      "500m de course – 50 Burpees",
-      "500m de course – 50 Fentes (25 de chaque côté)",
-      "500m de course – 50 Toes touches",
-      "500m de course – 50 Fentes latérales (25 de chaque côté)",
-      "500m de course"
+      "800m de course",
+      "50 Pull ups",
+      "100 Push ups",
+      "150 Air squats",
+      "800m de course",
+      "<u>CONSIGNE :</u> le bloc du milieu se partitionne librement.",
+      "Le découpage classique : 10 rounds de (5 tractions – 10 pompes – 15 air squats).",
+      "Sans gilet lesté."
     ],
     blocks:[{ title:"SCORE", wod:true, items:[
-      { id:"wod", ex:"p_500_50", name:"Temps total", presc:"5 km de course + 450 répétitions", score:"ex : 52'30" }
+      { id:"wod", ex:"p_halfmurph", name:"Temps total", presc:"1,6 km + 50 tractions + 100 pompes + 150 air squats", score:"ex : 32'00" }
     ]}]
   },
   {
-    id:"P5", day:"PDC 5", name:"FOR TIME — PULL UPS / DIPS 1→10→1", tag:"WOD", dur:"~35 min",
-    src:"TRAINING 25 – 07 juillet 2015",
+    id:"P4", day:"PDC 4", name:"EMOM 24'00'' — 4 stations", tag:"WOD", dur:"24 min",
+    src:"Séance ajoutée hors livre",
     verbatim:[
-      "<b>- FOR TIME – Effectuer LE PLUS VITE POSSIBLE :</b>",
-      "1 – 2 – 3 – 4 – 5 – 6 – 7 – 8 – 9 – 10 – 10 – 9 – 8 – 7 – 6 – 5 – 4 – 3 – 2 – 1 en Pull up",
-      "Doubler le nombre de répétitions en Dips",
-      "1ère série : 1 Pull up - 2 Dips",
-      "2ème série : 2 Pull ups - 4 Dips",
-      "3ème série : 3 Pull ups - 6 Dips",
-      "Etc."
+      "<b>- EMOM 24'00'' – Départ toutes les 1'00'', 6 tours de 4 minutes :</b>",
+      "Minute 1 : 8 Pull ups",
+      "Minute 2 : 12 Push ups",
+      "Minute 3 : 8 Toes-to-bar",
+      "Minute 4 : 10 Burpees",
+      "<u>CONSIGNE :</u> le repos, c'est ce qu'il reste de la minute. Si tu ne finis plus une station dans la minute, note le tour où ça casse et termine les tours suivants en réduisant les reps de moitié."
     ],
-    blocks:[{ title:"SCORE", wod:true, items:[
-      { id:"wod", ex:"p_1101", name:"Temps", presc:"110 tractions – 220 dips", score:"ex : 34'15" }
-    ]}]
+    blocks:[
+      { title:"À NOTER", items:[
+        { id:"a1", ex:"p_emom24_tours", name:"Tours complets tenus", presc:"Sur 6", sets:1, unit:"/6" }
+      ]},
+      { title:"SCORE", wod:true, items:[
+        { id:"wod", ex:"p_emom24", name:"Minute où ça casse", presc:"Sur 24 — ou « 24/24 » si tout est passé", score:"ex : 24/24" }
+      ]}
+    ]
   },
   {
-    id:"P6", day:"PDC 6", name:"AMÉLIORER SON MAX EN TRACTION", tag:"FORCE", dur:"~40 min",
-    src:"TRAINING 58 – 22 novembre 2016",
+    id:"P5", day:"PDC 5", name:"BASE AÉROBIE — 5 × 800 m", tag:"CARDIO", dur:"~45 min",
+    src:"Séance ciblée sur ton plus gros écart (Cooper) — ajoutée hors livre",
     verbatim:[
-      "<b>- AMÉLIORER SON MAX EN TRACTION</b>",
-      "<u>1ère Méthode :</u>",
-      "Bloquer 3 secondes en haut, milieu et bas du mouvement sur 3 répétitions + 7 tractions strictes.",
-      "Effectuer 5 séries de (3 + 7) tractions — REPOS : 1'00'' à 1'30''",
-      "<u>2ème Méthode :</u>",
-      "Effectuer 5 séries de 10 × (1 traction stricte + 10'' d'isométrie bras tendus)",
-      "REPOS : 2'00'' entre chaque série"
+      "<b>- 5 × 800m à allure Cooper cible — récupération 2'00'' entre chaque.</b>",
+      "Ton Cooper au Bloc 3 : 2570 m en 12'00'', soit environ 12,8 km/h. Le repère du livre est 3100 m, soit 15,5 km/h.",
+      "L'allure cible ici : <b>3'50'' au 800 m</b> (≈ 12,5 km/h) au premier bloc, puis on descend vers 3'20'' (14,4 km/h) au fil des semaines.",
+      "<u>CONSIGNE :</u> les 5 temps doivent rester dans un écart de 10''. Si le 5e explose, tu es parti trop vite — c'est l'erreur qui coûte le plus au Cooper.",
+      "Note chaque 800 m en clair : 3'48, 3'52…",
+      "<u>FINITION :</u> 3 × 45'' de gainage bras tendus."
     ],
-    blocks:[{ title:"À NOTER", items:[
-      { id:"a1", ex:"p_trac_m1", name:"Méthode 1 — 5 × (3 + 7)", presc:"Reps totales par série (objectif 10)", sets:5, unit:"reps", ref:"Bloc 3 : 45/50 reps" },
-      { id:"a2", ex:"p_trac_m2", name:"Méthode 2 — 5 × 10 (1 traction + 10'' hold)", presc:"Cycles réalisés par série (objectif 10)", sets:5, unit:"cycles" }
+    blocks:[
+      { title:"À NOTER", items:[
+        { id:"a1", ex:"p_800", name:"Temps des 5 × 800 m", presc:"Écris chaque temps en clair, ex : 3'48", sets:5, unit:"min" },
+        { id:"a2", ex:"gain_bt", name:"Gainage bras tendus", presc:"3 × 45''", sets:3, unit:"sec" }
+      ]}
+    ]
+  },
+  {
+    id:"P6", day:"PDC 6", name:"ANGIE", tag:"WOD", dur:"~30 min",
+    src:"Benchmark CrossFit — ajouté hors livre",
+    verbatim:[
+      "<b>- FOR TIME – WOD ANGIE – Effectuer LE PLUS VITE POSSIBLE, dans l'ordre :</b>",
+      "100 Pull ups",
+      "100 Push ups",
+      "100 Sit ups",
+      "100 Air squats",
+      "<u>CONSIGNE :</u> on ne passe à l'exercice suivant qu'une fois les 100 reps terminées. C'est ce qui la rend dure — pas de round pour souffler.",
+      "Fractionne les tractions dès la première série (10 × 10 ou 20 × 5)."
+    ],
+    blocks:[{ title:"SCORE", wod:true, items:[
+      { id:"wod", ex:"p_angie", name:"Temps total", presc:"100 de chaque, dans l'ordre", score:"ex : 28'00" }
     ]}]
   },
+
+  /* ---- séances du livre ---- */
   {
     id:"P7", day:"PDC 7", name:"WOD RUN BABY RUN 2", tag:"CARDIO", dur:"~55 min",
     src:"TRAINING 72 – 27 mai 2017",
@@ -722,7 +775,7 @@ const STORE = PROGRAM.store;
 
 /* ---------- ÉTAT ---------- */
 let DATA = {};
-let view = "today";          // today | all | pdc | hist | guide
+let view = "today";          // today | all | pdc | load | hist | guide
 let openId = null;
 let saveTimer = null;
 let lastCloud = 0;
@@ -878,13 +931,31 @@ function histLine(it, curIdx){
     return '<div class="hist">↩︎ Dernière fois : ' + txt + "</div>";
   }
   if(it.ref) return '<div class="hist">↩︎ Référence : ' + esc(it.ref) + "</div>";
+  const r = REF_MAP[it.ex];
+  if(r && r.h.length) return '<div class="hist">↩︎ Référence <b>' + esc(r.h[0][0]) + "</b> : " + esc(r.h[0][1]) + "</div>";
   return "";
+}
+
+/* Meilleure charge notée dans CE bloc pour un exercice */
+function bestThisBloc(exSlug){
+  let best = null;
+  SESS.concat(PDC).forEach(s => s.blocks.forEach((b,bi) => b.items.forEach(it => {
+    if(it.ex !== exSlug) return;
+    const d = DATA[K(s.id,bi,it.id)];
+    if(!d) return;
+    (d.poids||[]).forEach(v => {
+      const n = parseFloat(String(v).replace(",","."));
+      if(isNaN(n)) return;
+      if(!best || n > best.v) best = { v:n, sess:s.day.replace("JOUR ","J").replace("PDC ","P") };
+    });
+  })));
+  return best;
 }
 
 /* ---------- RENDU ---------- */
 function render(){
   const nav = document.getElementById("nav");
-  const tabs = [["today","▶︎ AUJOURD'HUI"],["all","📋 LES 12"],["pdc","💪 POIDS DE CORPS"],["hist","📊 HISTORIQUE"],["guide","📖 GUIDE"]];
+  const tabs = [["today","▶︎ AUJOURD'HUI"],["all","📋 LES 12"],["pdc","💪 POIDS DE CORPS"],["load","🏋️ CHARGES"],["hist","📊 HISTORIQUE"],["guide","📖 GUIDE"]];
   nav.innerHTML = tabs.map(t =>
     '<button class="' + (view===t[0]?"on":"") + '" onclick="view=\'' + t[0] + '\';openId=null;render();window.scrollTo(0,0)">' + t[1] + "</button>"
   ).join("");
@@ -892,6 +963,7 @@ function render(){
   const main = document.getElementById("main");
   if(view==="guide"){ main.innerHTML = guideHTML(); return; }
   if(view==="hist"){ main.innerHTML = histHTML(); return; }
+  if(view==="load"){ main.innerHTML = chargesHTML(); return; }
   if(view==="pdc"){ main.innerHTML = pdcHTML(); return; }
 
   const ci = curIndex();
@@ -1034,6 +1106,34 @@ function markDone(k){
   el.classList.toggle("done", !!f);
 }
 
+/* ---------- CHARGES : mémoire des poids, bloc après bloc ---------- */
+function chargesHTML(){
+  let h = '<div class="weeknote"><b>Mes charges, bloc après bloc</b><br>'
+    + "Le relevé réel de tout ce que tu as soulevé depuis le Bloc 2, exercice par exercice, du plus récent au plus ancien. "
+    + "C'est ce tableau qui te dit <b>où reprendre</b> quand tu reviens après une coupure — foot, boxe, poids de corps ou vacances : "
+    + "tu repars une marche en dessous de la dernière ligne, pas de zéro.<br><br>"
+    + "La colonne <b>Ce bloc</b> se remplit toute seule dès que tu notes une charge.</div>";
+
+  h += '<div class="prog">';
+  REF_LOADS.forEach(r => {
+    const b = bestThisBloc(r.ex);
+    h += '<div class="sess open" style="margin-bottom:10px"><div class="shead" style="cursor:default;padding-bottom:8px">'
+      + '<div class="stitle"><b>' + esc(r.name) + "</b>"
+      + (b ? '<small style="color:var(--acc2)">Ce bloc : ' + b.v + " lb (" + esc(b.sess) + ")</small>"
+           : "<small>Pas encore noté ce bloc</small>")
+      + "</div></div>"
+      + '<div class="sbody" style="display:block;padding-top:0;border-top:0">'
+      + "<table>" + r.h.map(x =>
+          "<tr><td style=\"width:78px;color:var(--dim);font-size:11.5px\">" + esc(x[0]) + "</td><td>" + esc(x[1]) + "</td></tr>"
+        ).join("") + "</table></div></div>";
+  });
+  h += "</div>";
+  h += '<div class="weeknote" style="border-left-color:var(--blue);margin-top:14px">'
+    + "<b>Lecture</b><br>B2 = Bloc 2 (juin-août, 7 semaines) · B3 = Bloc 3 (poids de corps) · B4 = la séance du 08/09. "
+    + "Les charges sont celles que tu as réellement notées dans l'app, pas les charges prescrites.</div>";
+  return h;
+}
+
 /* ---------- HISTORIQUE ---------- */
 function histHTML(){
   const all = SESS.concat(PDC).filter(isDone);
@@ -1084,9 +1184,19 @@ function guideHTML(){
     + "Les séances poids de corps viennent en plus, quand tu ne peux pas aller à la salle. Ne colle pas foot ou boxe la veille d'un jour haltéro : "
     + "Grace, Isabel et Fran demandent des jambes fraîches.</div></div>"
 
+    + '<div class="bt">L\'ordre des séances muscu</div><div class="ex"><div class="presc">'
+    + "Poussée (J1) → chaîne postérieure et dos (J3) → jambes et tirage (J5). "
+    + "Jambes et tirage arrive en dernier parce que tu l'as faite le 08/09 : elle revient une semaine plus tard, "
+    + "et les deux séances entre les deux ne retapent pas sur les mêmes muscles.</div></div>"
+
     + '<div class="bt">Les deux cycles</div><div class="ex"><div class="presc">'
     + "J1 à J6 = premier tour. J7 à J12 = <b>les mêmes séances, plus lourdes</b>, avec des séries plus courtes sur les mouvements de force. "
     + "Les trois WOD (Grace, Isabel, Fran) sont refaits <b>à charge identique</b> au deuxième tour : c'est ce qui mesure vraiment le bloc.</div></div>"
+
+    + '<div class="bt">Onglet 🏋️ Charges</div><div class="ex"><div class="presc">'
+    + "Tout ce que tu as soulevé depuis le Bloc 2, exercice par exercice, relevé dans la base. "
+    + "Sers-t'en quand tu reviens après une coupure : tu reprends <b>une marche en dessous de la dernière ligne</b>, pas à zéro. "
+    + "Les cibles des séances sont calées là-dessus — par exemple 175 lb au développé couché, c'est ton vrai 5×5 du Bloc 2, pas une estimation.</div></div>"
 
     + '<div class="bt">Les deux lignes de cases</div><div class="ex"><div class="presc">'
     + "La ligne <b style=\"color:var(--warn)\">lb</b> = la charge de chaque série. La ligne du dessous = les reps (ou secondes, ou mètres) réellement faites. "
@@ -1097,7 +1207,8 @@ function guideHTML(){
     + "Tant que l'exercice n'a jamais été noté, il affiche ta référence du Bloc 2, 3 ou 4.</div></div>"
 
     + '<div class="bt">Onglet Poids de corps</div><div class="ex"><div class="presc">'
-    + "Les 13 séances du livre, avec le texte d'origine. Elles ne bloquent pas la progression du bloc : rien ne t'oblige à les faire, et tu peux "
+    + "13 séances. Les 6 premières sont <b>nouvelles</b> (Cindy, force poussée, Half Murph, EMOM 24', 5 × 800 m, Angie) puisque tu avais déjà fait les autres pendant les vacances ; "
+    + "les 7 suivantes viennent du livre, avec le texte d'origine. Elles ne bloquent pas la progression du bloc : rien ne t'oblige à les faire, et tu peux "
     + "refaire la même autant de fois que tu veux. Le bouton <b>🔄 Nouvel essai</b> archive la perf actuelle (elle reste visible en haut de la séance et dans l'Historique) "
     + "et repart sur des champs vides.</div></div>"
 
